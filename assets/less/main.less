@@ -1,0 +1,59 @@
+//定义公共class放在元素上使用,每个文件都会被引入
+/*一行内容超过显示...*/
+.overflow-hide {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+//清除浮动
+.clearfloat {
+  &:after,
+  &:before {
+    content: "";
+    display: block;
+    height: 0;
+    line-height: 0;
+    visibility: hidden;
+    clear: both;
+  }
+}
+
+//上下左右垂直居中
+.middle-center {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+.text-center {
+  text-align: center !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.ele-block {
+  display: block;
+}
+
+.ele-hide {
+  display: none;
+}
