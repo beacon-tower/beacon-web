@@ -2,7 +2,8 @@
 node_modules
 # logs
 npm-debug.log
-
+# tool
+.idea
 # Nuxt build
 .nuxt
 
