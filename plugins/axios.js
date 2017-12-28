@@ -10,5 +10,5 @@ let options = {
     }
   }
 }
-options.baseURL = (process.env.NODE_ENV === 'development') ? 'http://192.168.31.200:8080/bas/' : 'http://192.168.31.201:8080/bas/';
+options.baseURL = (process.env.NODE_ENV === 'development') ? '' : '';
 export default axios.create(options)
