@@ -1,5 +1,5 @@
 <template>
-  <div class="login-wrap">
+  <div class="main-wrap">
     <nuxt/>
   </div>
 </template>
