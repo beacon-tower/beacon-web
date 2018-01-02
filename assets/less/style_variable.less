@@ -1,0 +1,24 @@
+@primarycolor:#3BEDF4;
+.boder_radius(@radius) {
+  -moz-border-radius: @radius; /* Firefox */
+  -webkit-border-radius: @radius; /* Safari 和 Chrome */
+  border-radius: @radius; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */
+}
+//css设置背景图片
+.bgImg(@url:'';@repeat:no-repeat;@position:center center) {
+  background-image: url('../images/@{url}');
+  background-repeat: @repeat;
+  background-position: @position;
+}
+//自适应背景图片
+.bg_img(@url:''){
+  background-image:url("../images/@{url}");
+  filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
+  background-size:100% 100%;
+}
+//超出隐藏
+.overstep-hidden() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

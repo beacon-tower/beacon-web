@@ -38,6 +38,7 @@ module.exports = {
   },
   css: [
     'reset.css',
+    '~assets/fonts/iconfont.css',
     // 项目中的 less 文件
     { src: '~assets/less/main.less', lang: 'less' } // 指定 less
   ],
