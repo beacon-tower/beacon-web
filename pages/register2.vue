@@ -41,7 +41,7 @@
           </div>
         </div>
         <img src="../assets/images/save_money.png" class="login-img-btn" alt="">
-        <router-link :to="{name:'login'}" class="next-txt-link">下一步</router-link>
+        <router-link :to="{name:'register3'}" class="next-txt-link">下一步</router-link>
         <p><a href="javascript:;" @click="goLogin" style="padding-left: 300px;" class="go-link">已有账号？去登陆</a></p>
       </form>
     </div>
