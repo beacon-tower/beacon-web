@@ -1,18 +1,22 @@
 //定义公共class放在元素上使用,每个文件都会被引入
 @import "./style_variable";
-body,html{
+
+body, html {
   font-family: "Microsoft YaHei";
   font-size: 14px;
 }
-*{
+
+* {
   box-sizing: border-box;
 }
+
 /*一行内容超过显示...*/
 .overflow-hide {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 //清除浮动
 .clearfloat {
   &:after,
@@ -35,6 +39,7 @@ body,html{
   bottom: 0;
   margin: auto;
 }
+
 .fl {
   float: left;
 }
@@ -42,6 +47,7 @@ body,html{
 .fr {
   float: right;
 }
+
 .text-center {
   text-align: center !important;
 }
@@ -65,16 +71,29 @@ body,html{
 .ele-hide {
   display: none;
 }
-.form-icon-group{
-  .input-style{
-     border: 1px solid #C8C8C8;
+
+.form-icon-group {
+  .input-style {
+    border: 1px solid #C8C8C8;
     .boder_radius(4px);
-     padding: 0 5px;
-     background:#F8F8F8;
-     font-size: 14px;
+    padding: 0 5px;
+    background: #F8F8F8;
+    font-size: 14px;
   }
-  .input-text{
+  .input-text {
     height: 38px;
   }
+}
+
+.beacon-primary-btn {
+  padding: 10px;
+  border: 1px solid #5EBFEC;
+  background-color: #5EBFEC;
+  color: #fff;
+  font-size: 12px;
+  .boder_radius(4px);
+}
+.red{
+  color: #CD6565;
 }
 
