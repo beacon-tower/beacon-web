@@ -34,7 +34,7 @@ module.exports = {
         // })
       }
     },
-    vendor: ['axios']
+    vendor: ['axios','./assets/js/jquery.min.js']
   },
   css: [
     'reset.css',
