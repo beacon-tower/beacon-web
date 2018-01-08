@@ -4,10 +4,12 @@
 body, html {
   font-family: "Microsoft YaHei";
   font-size: 14px;
+  background-color: #F5F8FF;
 }
 
 * {
   box-sizing: border-box;
+  text-decoration: none;
 }
 
 /*一行内容超过显示...*/
@@ -29,7 +31,6 @@ body, html {
     clear: both;
   }
 }
-
 //上下左右垂直居中
 .middle-center {
   position: absolute;
@@ -39,7 +40,9 @@ body, html {
   bottom: 0;
   margin: auto;
 }
-
+.clear{
+  clear: both;
+}
 .fl {
   float: left;
 }
@@ -97,3 +100,7 @@ body, html {
   color: #CD6565;
 }
 
+.primary-btn{
+  color: @primarycolor;
+  border: 1px solid @primarycolor;
+}

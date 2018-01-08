@@ -1,6 +1,5 @@
 <style lang="less">
   @import "../assets/less/style_variable";
-
   .login-container {
     .img-style {
       width: 100%;

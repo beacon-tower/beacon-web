@@ -4,6 +4,7 @@ node_modules
 npm-debug.log
 # tool
 .idea
+index - 副本.vue
 # Nuxt build
 .nuxt
 
