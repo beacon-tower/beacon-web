@@ -20,7 +20,9 @@
         </div>
       </div>
       <img src="../assets/images/next.png" @click="goReg2" class="login-img-btn" alt="">
-      <p><a href="javascript:;" @click="goLogin" style="padding-left: 300px;" class="go-link">已有账号？去登陆</a></p>
+      <p>
+        <nuxt-link :to="{name:'login'}"  style="padding-left: 300px;" class="go-link">已有账号？去登陆</nuxt-link>
+      </p>
     </form>
   </div>
 </template>
@@ -33,9 +35,6 @@
         }
     },
     methods:{
-      goLogin(){
-        this.$router.push({name:'login'});
-      },
       goReg2(){
         this.$router.push({name:'register2'});
       },

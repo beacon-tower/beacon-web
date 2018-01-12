@@ -14,7 +14,9 @@
           <div class="valid-code-wrap">极验占位</div>
         </div>
         <img src="../assets/images/login_btn.png" class="login-img-btn" alt="">
-        <p><a href="" class="faq-link">FAQ</a><a href="javascript:;" style="padding-left: 240px;" @click="goReg1" class="go-link">没有密钥？注册一个</a></p>
+        <p><a href="" class="faq-link">FAQ</a>
+          <nuxt-link :to="{name:'register1'}"  style="padding-left: 240px;" class="go-link">没有密钥？注册一个</nuxt-link>
+        </p>
       </form>
     </div>
 </template>
@@ -35,9 +37,6 @@
 
     },
     methods: {
-      goReg1(){
-          this.$router.push({name:'register1'});
-      }
     }
 
   }

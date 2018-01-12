@@ -34,7 +34,7 @@ module.exports = {
         // })
       }
     },
-    vendor: ['axios','./assets/js/jquery.min.js']
+    vendor: ['axios','./assets/js/jquery.min.js','promise-polyfill','babel-polyfill']
   },
   css: [
     'reset.css',
