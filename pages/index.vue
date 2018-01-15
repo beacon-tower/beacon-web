@@ -16,6 +16,7 @@
       .hot-ul {
         margin-top: 5px;
         > li {
+          cursor: pointer;
           margin-top: 10px;
         }
         .more-link {
@@ -168,7 +169,7 @@
       <div class="index-left fl">
         <span class="hot-span">热点</span>
         <ul class="hot-ul">
-          <nuxt-link :to="{name:'index'}" tag="li">科技</nuxt-link>
+          <router-link :to="{name:'index'}" tag="li">科技</router-link>
           <nuxt-link :to="{name:'index'}" tag="li">金融</nuxt-link>
           <nuxt-link :to="{name:'index'}" tag="li">创业</nuxt-link>
           <nuxt-link :to="{name:'index'}" tag="li">体育</nuxt-link>
@@ -183,7 +184,7 @@
           <nuxt-link :to="{name:'index'}" tag="li">旅行</nuxt-link>
           <nuxt-link :to="{name:'index'}" tag="li">历史</nuxt-link>
           <nuxt-link :to="{name:'index'}" tag="li">想法</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li" class="more-link">更多</nuxt-link>
+          <nuxt-link :to="{name:'hotmore'}" tag="li" class="more-link">更多</nuxt-link>
         </ul>
       </div>
       <div class="index-center fl">

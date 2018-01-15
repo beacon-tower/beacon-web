@@ -21,7 +21,7 @@
       }
       .reg-btn{
         .boder_radius(25px);
-        padding: 9px 29px;
+        padding: 6px 29px;
        margin-left: 51px;
         margin-right: 20px;
       }
@@ -51,6 +51,16 @@
           top: 11px;
         }
       }
+      .login-info{
+        margin: 0 35px;
+        color: @graycolor;
+      }
+      .pic-img{
+        width: 33px;
+        position: relative;
+        top: 10px;
+      }
+
     }
     .main-content{
       width: 1000px;
@@ -67,8 +77,14 @@
         <img src="../assets/images/index_logo.png" class="index-logo"  alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
-          <nuxt-link :to="{name:'register1'}" class="primary-btn reg-btn">注册</nuxt-link>
+          <span v-if="isLogin" class="login-info">
+            <img class="pic-img" src="../assets/images/person.png" alt="">
+            <i class="iconfont icon-sanjiaodown"></i>
+          </span>
+          <span  v-else>
+            <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
+            <nuxt-link :to="{name:'register1'}" class="primary-btn reg-btn">注册</nuxt-link>
+         </span>
           <nuxt-link :to="{name:'index'}" class="new-article"></nuxt-link>
         </p>
       </div>
@@ -78,3 +94,12 @@
     </div>
   </div>
 </template>
+<script>
+  export default{
+      data(){
+          return{
+            isLogin:false,//是否登录
+          }
+      }
+  }
+</script>
