@@ -1,5 +1,9 @@
 <style lang="less">
+  .tab {
+    position: relative;
+  }
   ul.tabSwitching {
+    margin-right: 300px;
     li {
       cursor: pointer;
       display: inline-block;
@@ -15,6 +19,8 @@
       text-align: center;
       color: #AEAEAE;
       border-bottom: 2px solid #AEAEAE;
+      z-index: 10;
+      margin-bottom: -2px;
       i {
 
       }
@@ -43,6 +49,7 @@
         <span>我的关注</span>
       </li>
     </ul>
+    <FollowSearch />
     <div  class="tabSwitching-box">
       <FollowList />
     </div>
@@ -52,6 +59,7 @@
 <script>
   import axios from '../plugins/axios';
   import Navigation from './user/Navigation.vue';
+  import FollowSearch from './user/follow/FollowSearch.vue';
   import FollowList from './user/follow/FollowList.vue';
   import Recommend from './user/follow/Recommend.vue';
   export default {
@@ -63,6 +71,7 @@
     },
     components: {
       Navigation,
+      FollowSearch,
       FollowList,
       Recommend
     },

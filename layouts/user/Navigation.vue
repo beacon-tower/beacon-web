@@ -8,6 +8,7 @@
     padding: 0 0 30px;
     width: 45px;
     overflow: auto;
+    z-index: 9999;
     .navigation-hot {
       li {
         line-height: 35px;

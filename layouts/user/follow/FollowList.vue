@@ -1,12 +1,12 @@
 <style lang="less">
   @followHeight: 30px;
   .follow_list {
+    border-top: 2px solid #E0E0E0;
     width: 100%;
     .follow_item {
       padding-top: @followHeight;
       padding-bottom: 30px;
       border-bottom: 1px solid #E0E0E0;
-      border-top: 1px solid #E0E0E0;
       position: relative;
       .follow_add {
         position: absolute;
@@ -86,17 +86,26 @@
           .follow_art_box {
             margin-left: 30px;
             i {
-              cursor: pointer;
               color: #AEAEAE;
-              &:hover {
-                color: #109BFE;
-              }
             }
             .follow_art_text {
               margin-left: 10px;
               color: #AEAEAE;
             }
+            &.link-follow{
+              cursor: pointer;
+              &:hover {
+                i {
+                  color: #109BFE;
+                }
+                .follow_art_text {
+                  color: #000000;
+                }
+              }
+            }
+
           }
+
 
         }
       }
@@ -131,11 +140,11 @@
           <span class="follow_art_box">
             <span class="follow_art_text">{{li.date}}</span>
           </span>
-          <span class="follow_art_box">
+          <span class="follow_art_box link-follow">
             <i class="iconfont">&#xe6e7;</i>
             <span class="follow_art_text">{{li.like}}</span>
           </span>
-          <span class="follow_art_box">
+          <span class="follow_art_box link-follow">
             <i class="iconfont">&#xe608;</i>
             <span class="follow_art_text">{{li.fabulous}}</span>
           </span>
