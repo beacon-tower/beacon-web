@@ -1,7 +1,7 @@
 <style lang="less">
   @followHeight: 30px;
   .follow_list {
-    border-top: 2px solid #E0E0E0;
+
     width: 100%;
     .follow_item {
       padding-top: @followHeight;

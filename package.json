@@ -19,7 +19,8 @@
     "babel-polyfill": "^6.26.0",
     "nuxt": "^1.0.0-rc11",
     "promise-polyfill": "^7.0.0",
-    "reset.css": "^2.0.2"
+    "reset.css": "^2.0.2",
+    "vue-tabs-component": "^1.4.0"
   },
   "devDependencies": {
     "cross-env": "^5.1.3",
