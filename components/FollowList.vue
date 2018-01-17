@@ -173,7 +173,7 @@
 
 <script>
   import axios from 'axios'
-  import userDefault from '../../../assets/images/user/user.jpg'
+  import userDefault from '../assets/images/user/user.jpg'
   export default {
     data () {
       return {
