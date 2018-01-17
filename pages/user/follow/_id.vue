@@ -51,7 +51,7 @@
   }
 
 
-  //
+  // 搜索
   .followSearch {
     position: absolute;
     top: 0px;
@@ -137,7 +137,7 @@
     <div class="navigation">
       <ul class="navigation-hot">
         <nuxt-link tag="li" v-for="item in ment" v-bind:to="{path:'/user/follow/' + item.id}" >{{item.title}}</nuxt-link>
-        <nuxt-link to="{name:'index'}" tag="li" class="more-link">更多</nuxt-link>
+        <nuxt-link to="/user/follow" tag="li" class="more-link">更多</nuxt-link>
       </ul>
     </div>
     <!--导航-->
@@ -161,10 +161,10 @@
 
       <tabs :options ="{useUrlFragment:false}">
         <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>推荐关注</span>'>
-          <follow-list />
+          <follow-list :paing="tab1" />
         </tab>
         <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>我的关注</span>'>
-          <follow-list />
+          <follow-list :paing="tab2" />
         </tab>
       </tabs>
     </div>
@@ -179,6 +179,8 @@
     data () {
       return {
         ment: [],
+        tab1: 1,
+        tab2: 2
       }
     },
     components: {
