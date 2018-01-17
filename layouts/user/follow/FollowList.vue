@@ -19,10 +19,17 @@
           height: 42px;
           line-height: 42px;
           border-radius: 21px;
-          background: #19adfc;
           border: none;
-          color: #ffff;
           text-align: center;
+          &.addFollow {
+            color: #ffff;
+            background: #19adfc;
+          }
+          &.unFollow {
+            color: #8c8c8c;
+            background: #ffffff;
+            border: 1px solid hsla(0,0%,59%,.6);
+          }
           .follow_add_text {
             margin-right: 10px;
           }
@@ -68,6 +75,10 @@
         margin-top: 20px;
         .follow_art_item {
           line-height: 30px;
+          a {
+            cursor: pointer;
+            color: #666666;
+          }
           .follow_icon {
             display: inline-block;
             *display:inline;
@@ -114,28 +125,33 @@
 </style>
 <template>
   <ul class="follow_list">
-    <li class="follow_item" v-for="item in sites">
+    <li class="follow_item" v-for="item in project">
       <div class="follow_add">
-        <button>
+        <button class="addFollow" v-if="item.followed" @click="myFollow(item)">
           <span class="follow_add_text">+</span>关注
+        </button>
+        <button class="unFollow" v-else="item.followed" @click="unFollow(item)">
+          <span class="follow_add_text"></span>已关注
         </button>
       </div>
 
-
       <div class="follow_user">
-        <nuxt-link :to="{name: '/p/b8af3beceda0'}">
-          <img v-bind:src="item.avatar" :onerror="userDefault" />
+        <nuxt-link v-bind:to="{path:'/user/follow/' + item.id}">
+          <img v-bind:src="item.avatar_url" :onerror="userDefault" />
         </nuxt-link>
       </div>
 
       <div class="follow_user_left">
-        <nuxt-link :to="{name: '/p/b8af3beceda0'}">{{item.name}}</nuxt-link>
+        <nuxt-link v-bind:to="{path:'/user/follow/' + item.id}">{{item.name}}</nuxt-link>
         <span class="follow_text"><span>文章{{item.art}}篇，{{item.wordNumber}}万字，{{item.followNumber}}人关注</span></span>
       </div>
 
       <ul class="follow_art">
+
         <li class="follow_art_item" v-for="li in item.titleList">
-          <span>{{li.title}}</span>
+          <nuxt-link class="follow_art_item" v-bind:to="{path:'/user/follow/' + li.id}">
+            <span>{{li.title}}</span>
+          </nuxt-link>
           <span class="follow_icon">{{li.category}}</span>
           <span class="follow_art_box">
             <span class="follow_art_text">{{li.date}}</span>
@@ -162,64 +178,52 @@
     data () {
       return {
         userDefault: 'this.src="' + userDefault + '"',
-        sites: [
-          { name: '董小姐',avatar: '//upload.jianshu.io/users/upload_avatars/4092287/f2f762c11fea.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ]},
-          { name: '董小姐',avatar: '//upload.jianshu.io/users/upload_avatars/4092287/f2f762c11fea.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ] },
-          { name: '董小姐',avatar: '//upload.jianshu.io/users/upload_avatars/4092287/f2f762c11fea.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ] },
-          { name: '董小姐',avatar: '//upload.jianshu.io/users/upload_avatars/4092287/f2f762c11fea.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ]},
-          { name: '董小姐',avatar: '//upload.jianshu.io/users/upload_avatars/4092287/f2f762c11fea.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/64/h/64', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ] },
-          { name: '董小姐',avatar: '', art: 10, wordNumber: 10, followNumber: 1000, titleList :[
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            },
-            {
-              title: '生活是什么',category: '科技',date: '2017.01.12',like: 112, fabulous: 222
-            }
-          ] },
-        ]
+        project: []
       }
+    },
+    defaultData(){
+
     },
     components: {
 
     },
     mounted(){
+      axios.post('/subscriptions/recommended').then(res=>{
+        console.log(res.data.data);
+        // get body data
+         this.project = res.data.data;
+      }).catch(error=>console.log(error));
+
       console.log(process.env.NODE_ENV);
     },
-    methods: {}
+    methods: {
+      //关注
+      myFollow (item) {
+        const _this = this;
+        this.isFollowBtn = false;
+        axios.get('follow').then(function (res) {
+            console.log("请求的数据昌：", res.data.data)
+        })
+
+
+      },
+
+      //取消关注
+      unFollow (item) {
+        const _this = this;
+        this.isFollowBtn = true;
+        axios.post('/follow/un').then(function (res) {
+          item.user_followed = false
+        })
+      },
+
+      // 移动事件
+      mouseMoveFollw() {
+        this.isFollowBtn = true;
+      },
+      mouseOutFollw() {
+        this.isFollowBtn = false;
+      }
+    }
   }
 </script>

@@ -22,7 +22,7 @@
       z-index: 10;
       margin-bottom: -2px;
       i {
-
+        margin-right: 10px;
       }
       sapn {
       }
