@@ -131,7 +131,7 @@
           <span class="follow_add_text">+</span>关注
         </button>
         <button class="unFollow" v-else="item.followed" @click="unFollow(item)">
-          <span class="follow_add_text"></span>已关注
+          <span class="follow_add_text">✓</span>已关注
         </button>
       </div>
 
@@ -173,8 +173,9 @@
 
 <script>
   import axios from 'axios'
-  import userDefault from '../../../assets/images/user/user.jpg'
+  import userDefault from '../assets/images/user/user.jpg'
   export default {
+    props: ['paing'],
     data () {
       return {
         userDefault: 'this.src="' + userDefault + '"',
@@ -188,7 +189,8 @@
 
     },
     mounted(){
-      axios.post('/subscriptions/recommended').then(res=>{
+      console.log("从父传递来的数据是:", this.paing)
+      axios.post('/subscriptions/recommended', { follow: this.paing}).then(res=>{
         console.log(res.data.data);
         // get body data
          this.project = res.data.data;
