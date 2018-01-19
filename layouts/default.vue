@@ -53,7 +53,12 @@
       }
       .login-info{
         margin: 0 35px;
-        color: @graycolor;
+        a{
+          color: @graycolor;
+        }
+        .icon-sanjiaodown{
+          color: @graycolor;
+        }
       }
       .pic-img{
         width: 33px;
@@ -78,8 +83,10 @@
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
           <span v-if="isLogin" class="login-info">
-            <img class="pic-img" src="../assets/images/person.png" alt="">
-            <i class="iconfont icon-sanjiaodown"></i>
+             <nuxt-link :to="{name:'personCenter'}">
+                 <img class="pic-img" src="../assets/images/person.png" alt="">
+                 <i class="iconfont icon-sanjiaodown"></i>
+             </nuxt-link>
           </span>
           <span  v-else>
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
@@ -98,7 +105,7 @@
   export default{
       data(){
           return{
-            isLogin:false,//是否登录
+            isLogin:true,//是否登录
           }
       }
   }
