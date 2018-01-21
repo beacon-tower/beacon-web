@@ -83,14 +83,69 @@
         }
     }
     .popup{
-        position:absolute;
+        position:fixed;
         width: 100%;
         height: 100%;
-        left: -100%;
-        height: -5
+        overflow-y:auto;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 666;
+        .content{
+          position: relative;
+          width: 868px;
+          height: 780px;
+          margin: 50px auto;
+          color: rgba(0, 0, 0, 0.870588);
+          transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+          box-sizing: border-box;
+          font-family: Roboto, sans-serif;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+          box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+          border-radius: 2px;
+          text-align: center;
+          background-color: rgb(255, 255, 255);
+          padding: 30px 10%;
+          h5{
+            text-align:center;
+            line-height: 80px;
+            color: #003C7A
+          }
+          .close{
+            position: absolute;
+            right: 40px;
+            top: 20px;
+            font-size: 20px;
+            cursor:pointer;
+          }
+          .inputContainer{
+            min-height: 60px;
+            span{
+              display: inline-block;
+              width: 10%;
+              text-align: left;
+            }
+            .walletIput{
+              width: 90%;
+            }
+            .tip{
+              text-align:left;
+              color: #AEAEAE;
+              line-height: 40px;
+              text-indent: 10%;
+            }
+          }
+          .tradeButton{
+            width: 240px;
+            height: 60px;
+            margin: 40px auto;
+            cursor: pointer;
+            background: url('../assets/images/trade.png') center no-repeat
+          }
+        }
     }
 }
-   
+
 </style>
 <template>
     <div class="writer-wrap" style="height: 420px;">
@@ -98,11 +153,11 @@
             <div class="icon"></div>
             <span>我的烽火币 <font>500</font>枚</span>
             <span class="historyEarn">历史总计赚取100枚</span>
-            <i class="button">转出</i>
+            <i class="button" @click="toggleTradeCard">转出</i>
         </div>
         <div class="address">我的钱包：abcdefghijkfgdsifgifgdisufdisgfdilmn</div>
         <div>
-    
+
         <tabs :options ="{useUrlFragment:false}">
             <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>赚取记录</span>' >
                 <div class="tab-content">赚取记录</div>
@@ -116,7 +171,34 @@
             </tab>
         </tabs>
 
-        <div class="popup">弹出层</div>
+        <div class="popup" v-if="tradeShow">
+          <div class="content">
+            <h5>资产转出</h5>
+            <div class="close" @click="toggleTradeCard">X</div>
+            <div class="inputContainer">
+              <span>发送者</span>
+              <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
+            </div>
+            <div class="inputContainer">
+              <span>接受者</span>
+              <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
+            </div>
+            <div class="inputContainer">
+              <span>金额</span>
+              <input type="text" id="sendPerson" class="textInput walletIput" style="color: #129EFD"/>
+            </div>
+            <div class="inputContainer">
+              <span>费用</span>
+              <input type="text" id="sendPerson" class="textInput walletIput"　style="color: #129EFD "/>
+            </div>
+            <div class="inputContainer">
+              <span>备注</span>
+              <textarea id="sendPerson" class="textInput walletIput"　style="color: #AEAEAE; height: 170px "/>
+              <div class="tip">请确保您正在发送XAS给正确地址,该操作无法撤销</div>
+            </div>
+            <div class="tradeButton"></div>
+          </div>
+        </div>
 </div>
     </div>
 </template>
@@ -128,7 +210,8 @@
         return {
             items: 123,
             tab1: 1,
-            tabs: 2
+            tabs: 2,
+            tradeShow: false
         }
     },
     components: {
@@ -139,8 +222,11 @@
            this.items.forEach((e, i)=>{
               if(type === e.type){
                   e['follow']  = !e['follow'];
-              }   
+              }
           });
+      },
+      toggleTradeCard(){
+        this.tradeShow = !this.tradeShow;
       }
     }
   }
