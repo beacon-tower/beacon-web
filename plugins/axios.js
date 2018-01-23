@@ -6,9 +6,9 @@ let options = {
   timeout: 5000,
   headers: {
     post: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
   }
 }
-options.baseURL = (process.env.NODE_ENV === 'development') ? '' : '';
+options.baseURL = (process.env.NODE_ENV === 'development') ? 'https://api.sofly.cc/api/v1/' : 'https://api.sofly.cc/api/v1/';
 export default axios.create(options)

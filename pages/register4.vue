@@ -27,7 +27,7 @@
           <div class="form-icon-group success-txt">
             注册成功
           </div>
-          <span>10s后自动跳转...</span>
+          <span>{{num}}s后自动跳转...</span>
         </div>
         <img src="../assets/images/immed_login.png" @click="immediateLogin" class="login-img-btn" alt="">
       </form>
@@ -39,15 +39,17 @@
     layout: 'loginwrap',
     data(){
       return {
-        isPlaintext: false,//是否明文
-        loginForm: {
-          user: '',
-          password: ''
-        }
+        num:10
       }
     },
     mounted(){
-
+       let id = setInterval(()=>{
+            this.num--;
+         if(this.num<=0){
+                clearInterval(id);
+                this.immediateLogin();
+            }
+        },1000);
     },
     methods: {
       immediateLogin(){

@@ -22,24 +22,25 @@
   }
 </style>
 <template>
-    <div class="login-wrap reg2-wrap" style="height: 430px;">
+    <div class="login-wrap reg2-wrap" style="height: 445px;">
       <form action="">
         <div class="input-wrap">
           <div class="form-icon-group">
             <i class="iconfont icon-yuechi"></i>
-            <textarea v-model="loginForm.password" placeholder="请输入密钥"
+            <textarea readonly v-model="regForm.password"
                       class="input-style input-password"></textarea>
-            <i class="iconfont icon-shuaxin"></i>
+            <i class="iconfont icon-shuaxin" @click="getSecretInfo"></i>
           </div>
           <div class="form-icon-group">
             <i class="iconfont icon-qianbao"></i>
-            <input type="text" v-model="loginForm.user" placeholder="请输入钱包地址" class="input-style input-text">
+            <input readonly type="text" v-model="regForm.address" class="input-style input-text">
           </div>
           <div class="form-icon-group txt">
           请以最安全的方式保存钱包密钥及地址，钱包密钥将用于你以后登录钱包使用，钱包地址用于接收烽火币.
             <span class="red" style="padding-left: 6px;">密钥丢失后您的数字资产与帐号将永远无法找回</span>，请妥善保管!
           </div>
         </div>
+        <span class="err-tip" v-html="errTip"></span>
         <img src="../assets/images/save_money.png" class="login-img-btn" alt="">
         <nuxt-link :to="{name:'register3'}" class="next-txt-link">下一步</nuxt-link>
         <p><a href="javascript:;" @click="goLogin" style="padding-left: 300px;" class="go-link">已有账号？去登陆</a></p>
@@ -52,19 +53,36 @@
     layout: 'loginwrap',
     data(){
       return {
-        isPlaintext: false,//是否明文
-        loginForm: {
-          user: '',
-          password: ''
+        errTip: '&nbsp;',//是否明文
+        regForm: {
+          password: '',
+          address: '',
         }
       }
     },
     mounted(){
-
+        this.getSecretInfo();
     },
     methods: {
       goLogin(){
         this.$router.push({name:'login'});
+      },
+      getSecretInfo(){//获取密钥和地址信息
+        var qs = require('qs');
+        axios.post('user/register/second/step', qs.stringify({
+          mobile:sessionStorage.getItem('ph')
+        }))
+          .then( (response)=> {
+            if(response.data.code==200){
+              this.regForm.password = response.data.data.secret;
+              this.regForm.address = response.data.data.address;
+            }else{
+              this.errTip = response.data.msg;
+            }
+          })
+          .catch( (error)=> {
+            console.log(error);
+          });
       }
     }
 

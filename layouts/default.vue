@@ -105,7 +105,7 @@
   export default{
       data(){
           return{
-            isLogin:true,//是否登录
+            isLogin:false,//是否登录
           }
       }
   }

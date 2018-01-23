@@ -75,7 +75,7 @@
           cursor: pointer;
           width: 258px;
           margin-left: 80px;
-          margin-top: 20px;
+          margin-top: 10px;
         }
       }
       .faq-link {
