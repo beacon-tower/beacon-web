@@ -125,6 +125,9 @@
             }
           }
         }
+        .pagination{
+          margin-top: 20px;
+        }
     }
     .popup{
         position:fixed;
@@ -207,6 +210,7 @@
             <!-- 转账记录 -->
             <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>赚取记录</span>' >
                 <div class="tab-content">赚取记录</div>
+                <Pagination :callback="changePage" :records="items"/>
             </tab>
 
             <!-- 转账记录 -->
@@ -236,7 +240,9 @@
                         </tbody>
                       </table>
                     </div>
-
+                    <div class="pagination">
+                      <Pagination :callback="changePage" :records="items"/>
+                    </div>
                 </div>
             </tab>
         </tabs>
@@ -276,6 +282,8 @@
 <script>
   import {Tabs, Tab} from 'vue-tabs-component';
   import DatePicker from '../components/DatePicker';
+  import Pagination from '../components/Pagination';
+
   export default{
     layout: 'default',
     data(){
@@ -287,21 +295,14 @@
         }
     },
     components: {
-        Tabs, Tab, DatePicker
+        Tabs, Tab, DatePicker, Pagination
     },
     methods:{
-      changeInterest(type){
-           this.items.forEach((e, i)=>{
-              if(type === e.type){
-                  e['follow']  = !e['follow'];
-              }
-          });
-      },
       toggleTradeCard(){
         this.tradeShow = !this.tradeShow;
       },
-      myCallback(e){
-        console.log(e);
+      changePage(e){
+        console.log('father', e);
       }
     }
   }
