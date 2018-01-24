@@ -62,6 +62,7 @@
             border-bottom: 1px solid #E0E0E0;
             width: 100%;
             background: #efefef;  
+            transition: all 0.5s;
             .d-desc{
                 width: 42.5%;
                 display:inline-block;
@@ -84,51 +85,32 @@
 <template>
     <div class="tableList">
         <div class="e-table">
-        <div class="header hd">
-            <div class="e-num">序号</div>
-            <div class="e-article">文章</div>
-            <div class="e-words">字数</div>
-            <div class="e-time">发表时间</div>
-            <div class="e-money">获币数量</div>
-        </div>
-             <div class="e-Items">
-                <div class="e-num">1</div>
-                <div class="e-article">我的校园生活</div>
-                <div class="e-words">2017</div>
-                <div class="e-time">20171312</div>
-                <div class="e-money">2010<span class="e-arrow-right"></span></div>
+            <div class="header hd">
+                <div class="e-num">序号</div>
+                <div class="e-article">文章</div>
+                <div class="e-words">字数</div>
+                <div class="e-time">发表时间</div>
+                <div class="e-money">获币数量</div>
             </div>
-            <div class="e-Items">
-                <div class="e-num">2</div>
-                <div class="e-article">艺术之旅</div>
-                <div class="e-words">2017</div>
-                <div class="e-time">20171312</div>
-                <div class="e-money">2010<span class="e-arrow-right"></span></div>
-                <div class="e-detail">
+             <div class="e-Items" v-for="data in listData">
+                <div class="e-num">{{data.id}}</div>
+                <div class="e-article">{{data.article}}</div>
+                <div class="e-words">{{data.words}}</div>
+                <div class="e-time">{{data.publishTime}}</div>
+                <div class="e-money">{{data.totalCoin}}<span :class="{'e-arrow-right': !data.show, 'e-arrow-bottom': data.show}" @click="toggleDesc(data.article)"></span></div>
+                <div class="e-detail" v-show="data.show">
                     <div class="hd">
                         <div class="d-desc hd">获币说明</div>
                         <div class="d-time hd">获币时间</div>
                         <div class="d-money hd">获币数量</div>
                     </div>
-                    <div>
-                        <div class="d-desc">获得5000个赞</div>
-                        <div class="d-time">2017-10-2</div>
-                        <div class="d-money">8</div>
-                    </div>
-                    <div>
-                        <div class="d-desc">获得3000个赞</div>
-                        <div class="d-time">2017-10-3</div>
-                        <div class="d-money">12</div>
+                    <div v-for="item in data.detail">
+                        <div class="d-desc">{{item.desc}}</div>
+                        <div class="d-time">{{item.time}}</div>
+                        <div class="d-money">{{item.coinCount}}</div>
                     </div>
                 </div>
-            </div>
-            <div class="e-Items">
-                <div class="e-num">3</div>
-                <div class="e-article">设计是什么</div>
-                <div class="e-words">1111</div>
-                <div class="e-time">20171312</div>
-                <div class="e-money">2010<span class="e-arrow-right"></span></div>
-            </div>
+             </div>
         </div>
     </div>
 </template>
@@ -137,7 +119,37 @@
 export default {
     data(){
         return {
-            
+            listData: [
+                {
+                    id: 1, article: '我的校园生活', words: 2017, publishTime: '2017-10-2', totalCoin: 2010, show: false,
+                    detail: [
+                        {desc: '获得3000个赞', time: '2017-10-5', coinCount: 8},
+                        {desc: '获得3000个赞', time: '2017-10-5', coinCount: 9}
+                    ]
+                },
+                {
+                    id: 2, article: '艺术之旅1', words: 2323, publishTime: '2017-10-5', totalCoin: 3000, show: false,
+                    detail: [
+                        {desc: '获得3000个赞', time: '2017-10-5', coinCount: 2}
+                    ]
+                },
+                {
+                    id: 3, article: '艺术之旅2', words: 2323, publishTime: '2017-10-5', totalCoin: 3000, show: false,
+                    detail: [
+                        {desc: '获得3000个赞', time: '2017-10-5', coinCount: 2}
+                    ]
+                }
+            ]
+        }
+    },
+    methods: {
+        toggleDesc(article){ // 翻页
+           this.listData.forEach((e, i)=>{
+               if(e.article === article){
+                   this.listData[i]['show'] = !this.listData[i]['show'];
+                   return;
+               }
+           });
         }
     }
 }

@@ -22,13 +22,13 @@
             width: 25%;
         }
         .time{
-            width: 15%;
+            width: 25%;
         }
         .money{
             width: 15%;
         }
         .desc{
-            width: 25%;
+            width: 15%;
         }
     }
 }
@@ -45,26 +45,12 @@
             <th class="desc">交易说明</th>
         </tr>
         <tbody>
-            <tr>
-                <td class="type">转账</td>
-                <td class="target">qweqwewqewqewqeqqweq</td>
-                <td class="time">2017-12-12</td>
-                <td class="money">20171312</td>
-                <td lass="desc">转给苏老板</td>
-            </tr>
-            <tr>
-                <td class="type">转账</td>
-                <td class="target">qweqwewqewqewqeqqweq</td>
-                <td class="time">2017-12-12</td>
-                <td class="money">20171312</td>
-                <td lass="desc">转给苏老板</td>
-            </tr>
-            <tr>
-                <td class="type">转账</td>
-                <td class="target">qweqwewqewqewqeqqweq</td>
-                <td class="time">2017-12-12</td>
-                <td class="money">20171312</td>
-                <td lass="desc">转给苏老板</td>
+            <tr v-for="item in dataList">
+                <td class="type">{{item.type}}</td>
+                <td class="target">{{item.target}}</td>
+                <td class="time">{{item.time}}</td>
+                <td class="money">{{item.coin}}</td>
+                <td lass="desc">{{item.desc}}</td>
             </tr>
         </tbody>
         </table>
@@ -75,7 +61,19 @@
 export default {
     data(){
         return {
-            
+            dataList: [
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给苏老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给王老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给苏老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给王老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给苏老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给王老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给苏老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给王老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给苏老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给王老板"},
+                {type: "转账", target: "qweqweqewq", time: "2017-10-20", coin: 200, desc: "转给李老板"}
+            ]
         }
     }
 }

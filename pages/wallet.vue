@@ -144,7 +144,7 @@
 
 </style>
 <template>
-    <div class="wallet-wrap" style="height: 420px;">
+    <div class="wallet-wrap" >
         <div class="top">
             <div class="icon"></div>
             <span>我的烽火币 <font>500</font>枚</span>
