@@ -1,8 +1,10 @@
 <style lang="less">
-.writer-wrap{
+.wallet-wrap{
     margin-top: 40px;
     background: #fff;
     padding: 20px 20px;
+    min-height: 1000px;
+    margin-bottom: 30px;
     .top{
         position: relative;
         .icon{
@@ -50,6 +52,7 @@
     }
     .tabs-component-tabs{
         border-bottom: 1px solid #E0E0E0;
+        font-weight: bold;
     }
     li.tabs-component-tab{
         display: inline-block;
@@ -141,7 +144,7 @@
 
 </style>
 <template>
-    <div class="writer-wrap" style="height: 420px;">
+    <div class="wallet-wrap" style="height: 420px;">
         <div class="top">
             <div class="icon"></div>
             <span>我的烽火币 <font>500</font>枚</span>
@@ -197,7 +200,7 @@
 </template>
 <script>
   import {Tabs, Tab} from 'vue-tabs-component';
-  import WalletTab from '../components/WalletTab';
+  import WalletTab from '../components/wallet/WalletTab';
 
   export default{
     layout: 'default',
