@@ -7,7 +7,7 @@
         display: none
     }
     .toPage{
-        width: 42px;
+        width: 52px;
         height: 28px;
         border: 1px solid #dee2e6;
         margin-top: 2px;
@@ -18,7 +18,7 @@
         margin-top: 2px;
     }
     .skipPage{
-        width: 42px;
+        width: 52px;
         height: 28px;
         border: 1px solid #dee2e6;
         background: #fff;

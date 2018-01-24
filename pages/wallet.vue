@@ -45,6 +45,9 @@
         color: #666666;
         font-size: 14px;
     }
+    a{
+        text-decoration: none;
+    }
     .tabs-component-tabs{
         border-bottom: 1px solid #E0E0E0;
     }
@@ -71,63 +74,6 @@
               color: #003C7A;
           }
        }
-    }
-    .tab-content{
-        margin-top: 40px;
-        .select-option{
-            color: #666;
-            #searchArticle{
-                margin-left: 5px;
-                height: 30px;
-            }
-        }
-        .search{
-          display: inline-block;
-          width: 64px;
-          line-height: 32px;
-          text-align:center;
-          font-size: 14px;
-          color: #3BEDF4;
-          border: 1px solid #3BEDF4;
-          border-radius: 4px;
-          cursor: pointer;
-          margin-left: 15px;
-        }
-        .tableList{
-          margin-top: 40px;
-          text-align: left;
-          color: #666;
-          table{
-            width: 100%;
-            .header{
-              width: 100%;
-              line-height: 30px;
-              color: #0B4480;
-              border-bottom: 1px solid #E0E0E0
-            }
-            td{
-              line-height: 30px;
-            }
-            .type{
-              width: 15%;
-            }
-            .target{
-              width: 25%;
-            }
-            .time{
-              width: 15%;
-            }
-            .money{
-              width: 15%;
-            }
-            .desc{
-              width: 25%;
-            }
-          }
-        }
-        .pagination{
-          margin-top: 20px;
-        }
     }
     .popup{
         position:fixed;
@@ -203,86 +149,55 @@
             <i class="button" @click="toggleTradeCard">转出</i>
         </div>
         <div class="address">我的钱包：abcdefghijkfgdsifgifgdisufdisgfdilmn</div>
+
         <div>
+          <tabs :options ="{useUrlFragment:false}">
+              <!-- 转账记录 -->
+              <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>赚取记录</span>' >
+                   <WalletTab type="赚取"/>
+              </tab>
 
-        <tabs :options ="{useUrlFragment:false}">
-
-            <!-- 转账记录 -->
-            <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>赚取记录</span>' >
-                <div class="tab-content">赚取记录</div>
-                <Pagination :callback="changePage" :records="items"/>
-            </tab>
-
-            <!-- 转账记录 -->
-            <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>转账记录</span>'>
-                <div class="tab-content">
-                    <div class="select-option">
-                        <span>文章:</span><input type="text" id="searchArticle" class="textInput" placeholder="根据文章标题搜索"/>
-                        <div class="search">搜索</div>
-                    </div>
-                    <div class="tableList">
-                      <table >
-                        <tr class="header">
-                          <th class="type">交易类型</th>
-                          <th class="target">交易方地址</th>
-                          <th class="time">交易时间</th>
-                          <th class="money">交易金额</th>
-                          <th class="desc">交易说明</th>
-                        </tr>
-                        <tbody>
-                          <tr>
-                            <td class="type">转账</td>
-                            <td class="target">qweqwewqewqewqeqqweq</td>
-                            <td class="time">2017-12-12</td>
-                            <td class="money">20171312</td>
-                            <td lass="desc">转给苏老板</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="pagination">
-                      <Pagination :callback="changePage" :records="items"/>
-                    </div>
-                </div>
-            </tab>
-        </tabs>
-
-        <!-- 弹出框，转账 -->
-        <div class="popup" v-if="tradeShow">
-          <div class="content">
-            <h5>资产转出</h5>
-            <div class="close" @click="toggleTradeCard">X</div>
-            <div class="inputContainer">
-              <span>发送者</span>
-              <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
+              <!-- 转账记录 -->
+              <tab prefix='<i class="iconfont">&#xe6e7;</i>' name='<span>转账记录</span>'>     
+                 <WalletTab type="转账"/>
+              </tab>
+          </tabs>   
+          <!-- 弹出框，转账 -->
+          <div class="popup" v-if="tradeShow">
+            <div class="content">
+              <h5>资产转出</h5>
+              <div class="close" @click="toggleTradeCard">X</div>
+              <div class="inputContainer">
+                <span>发送者</span>
+                <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
+              </div>
+              <div class="inputContainer">
+                <span>接受者</span>
+                <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
+              </div>
+              <div class="inputContainer">
+                <span>金额</span>
+                <input type="text" id="sendPerson" class="textInput walletIput" style="color: #129EFD"/>
+              </div>
+              <div class="inputContainer">
+                <span>费用</span>
+                <input type="text" id="sendPerson" class="textInput walletIput"　style="color: #129EFD "/>
+              </div>
+              <div class="inputContainer">
+                <span>备注</span>
+                <textarea id="sendPerson" class="textInput walletIput"　style="color: #AEAEAE; height: 170px "/>
+                <div class="tip">请确保您正在发送XAS给正确地址,该操作无法撤销</div>
+              </div>
+              <div class="tradeButton"></div>
             </div>
-            <div class="inputContainer">
-              <span>接受者</span>
-              <input type="text" id="sendPerson" class="textInput walletIput" style="color:#AEAEAE "/>
-            </div>
-            <div class="inputContainer">
-              <span>金额</span>
-              <input type="text" id="sendPerson" class="textInput walletIput" style="color: #129EFD"/>
-            </div>
-            <div class="inputContainer">
-              <span>费用</span>
-              <input type="text" id="sendPerson" class="textInput walletIput"　style="color: #129EFD "/>
-            </div>
-            <div class="inputContainer">
-              <span>备注</span>
-              <textarea id="sendPerson" class="textInput walletIput"　style="color: #AEAEAE; height: 170px "/>
-              <div class="tip">请确保您正在发送XAS给正确地址,该操作无法撤销</div>
-            </div>
-            <div class="tradeButton"></div>
           </div>
-        </div>
-</div>
+      </div>
+
     </div>
 </template>
 <script>
   import {Tabs, Tab} from 'vue-tabs-component';
-  import DatePicker from '../components/DatePicker';
-  import Pagination from '../components/Pagination';
+  import WalletTab from '../components/WalletTab';
 
   export default{
     layout: 'default',
@@ -295,7 +210,7 @@
         }
     },
     components: {
-        Tabs, Tab, DatePicker, Pagination
+        Tabs, Tab, WalletTab
     },
     methods:{
       toggleTradeCard(){
