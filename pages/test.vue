@@ -93,14 +93,13 @@
                 border-bottom: 1px solid #E0E0E0;
                 text-indent: 60px;
                 cursor: pointer;
-                transition: background 0.3s;
                 &:hover{
-                    background: #f7f7f7
+                    background: #E0E0E0
                 }
             }
             .a-selected{
                 border-left: 4px solid #67CFFF;
-                background: #f7f7f7
+                background: #E0E0E0
             }
         }
     }
@@ -129,13 +128,12 @@
             <div class="panel__body">
                 <vddl-list class="panel__body--list" :list="articleList" :horizontal="false">
                     <vddl-draggable class="panel__body--item" v-for="(item, index) in articleList" :key="item.id"
-                        :draggable="item"
                         :index="index"
                         :wrapper="articleList"
-                        :moved="handleMoved"
+                        :moved="dragMove"
                         effect-allowed="move"
                     >
-                    <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">{{item.title}}</div>
+                    <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">{{item.label}}</div>
                     </vddl-draggable>
                     <vddl-placeholder class="placeMove"></vddl-placeholder>
                 </vddl-list>
@@ -164,22 +162,22 @@
             articleList: [
                     {
                         "id": '1',
-                        "title": "花儿为什么这样红",
+                        "label": "花儿为什么这样红",
                         "selected": false
                     },
                     {
                         "id": '2',
-                        "title": "幸福像花儿一样",
+                        "label": "幸福像花儿一样",
                          "selected": false
                     },
                     {
                         "id": '3',
-                        "title": "花开半夏",
+                        "label": "花开半夏",
                          "selected": true
                     },
                     {
                         "id": '4',
-                        "title": "花好月圆",
+                        "label": "花好月圆",
                         "selected": false
                     }
             ]
@@ -202,20 +200,9 @@
               }
           })
       },
-      handleMoved (targetDraggable) {
-
-        //删除元素操作, 解决拖动复制情况
-        this.articleList.splice(targetDraggable.index, 1);
-
-        let new_article_list = [];
-
-        this.articleList.forEach(e=>{
-            new_article_list.push({
-                id: e.id,
-                title: e.title
-            });
-        });
-        console.log(new_article_list);
+      dragMove(a, b, c){
+          debugger;
+          console.log(a, b, c);
       }
     }
   }
