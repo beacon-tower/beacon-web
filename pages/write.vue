@@ -13,6 +13,7 @@
         position: relative;
         display: inline-block;
         vertical-align: top;
+        border-top: 1px solid #ddd;
     }
     .type{
         width: 14%;
@@ -51,6 +52,7 @@
         position:relative;
         .header{
             line-height: 104px;
+            height: 104px;
             font-size: 20px;
             color: #003C7A;
             font-weight: bold;
@@ -88,19 +90,78 @@
             }
             ._article{
                 height: 100px;
-                line-height: 100px;
                 font-size: 20px;
                 border-bottom: 1px solid #E0E0E0;
-                text-indent: 60px;
                 cursor: pointer;
                 transition: background 0.3s;
                 &:hover{
                     background: #f7f7f7
                 }
+                >div{
+                    display: inline-block;
+                    vertical-align: top;
+                }
+                .icon{
+                    width: 16%;
+                    height: 100%;
+                    position: relative;
+                    .bg{
+                        background: url(../assets/images/uns_article.png) no-repeat center;
+                        display: inline-block;
+                        width: 20px;
+                        height: 16px;
+                        position:absolute;
+                        left: 20px;
+                        top: 50%;
+                        margin-top: -8px;
+                    }
+                }
+                .desc{
+                    width: 70%;
+                    .title{
+                        color: #003C7A;
+                        font-size: 18px;
+                        line-height: 60px;
+                    }
+                    .detail{
+                        .num{
+                            padding: 0  5px;
+                            font-size: 12px;
+                        }
+                        .icon{
+                            width: 16px;
+                            height: 16px;
+                            display: inline-block;
+                        }
+                        .fire_coin{
+                            display: inline-block;
+                            width: 13px;
+                            height: 13px;
+                            vertical-align: middle;
+                        }
+                        .iconfont{
+                            color: #AEAEAE;
+                        }
+                    }
+                }
+                .setting{
+                    width: 10%;
+                    .iconfont{
+                        display: none;
+                        color: #666;
+                        font-size: 30px;
+                        line-height: 100px;
+                    }
+                }
             }
             .a-selected{
                 border-left: 4px solid #67CFFF;
-                background: #f7f7f7
+                background: #f7f7f7;
+                .setting{
+                    .iconfont{
+                        display: block;
+                    }
+                }
             }
         }
     }
@@ -135,14 +196,28 @@
                         :moved="handleMoved"
                         effect-allowed="move"
                     >
-                    <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">{{item.title}}</div>
+                    <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">
+                        <div class="icon">
+                            <span class="bg"></span>
+                        </div>
+                        <div class="desc">
+                            <div class="title">{{item.title}}</div>
+                            <div class="detail">
+                                <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""></span><span class="num">{{item.coin}}</span>
+                                <span class="icon"><i class="iconfont icon-yiyue"></i></span><span class="num">{{item.focus}}</span>
+                                <span class="icon"><i class="iconfont icon-xing"></i></span><span class="num">{{item.star}}</span>
+                                <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.like}}</span>
+                            </div>
+                        </div>
+                        <div class="setting"><i class="iconfont icon-yiyue"></i></div>
+                    </div>
                     </vddl-draggable>
                     <vddl-placeholder class="placeMove"></vddl-placeholder>
                 </vddl-list>
             </div>
         </div>
         <div class="write wr-inline">
-            <span>789</span>
+            <span>{{currentArticle}}</span>
         </div>
     </div>
 </template>
@@ -165,22 +240,74 @@
                     {
                         "id": '1',
                         "title": "花儿为什么这样红",
-                        "selected": false
+                        "selected": true,
+                        "coin": 100,
+                        "focus": 100,
+                        "star": 100,
+                        "like": 100
                     },
                     {
                         "id": '2',
                         "title": "幸福像花儿一样",
-                         "selected": false
+                        "selected": false,
+                        "coin": 200,
+                        "focus": 200,
+                        "star": 200,
+                        "like": 200
                     },
                     {
                         "id": '3',
                         "title": "花开半夏",
-                         "selected": true
+                        "selected": false,
+                        "coin": 300,
+                        "focus": 300,
+                        "star": 300,
+                        "like": 300
                     },
                     {
                         "id": '4',
                         "title": "花好月圆",
-                        "selected": false
+                        "selected": false,
+                        "coin": 400,
+                        "focus": 400,
+                        "star": 400,
+                        "like": 400
+                    },
+                    {
+                        "id": '5',
+                        "title": "花开半夏",
+                        "selected": false,
+                        "coin": 300,
+                        "focus": 300,
+                        "star": 300,
+                        "like": 300
+                    },
+                    {
+                        "id": '6',
+                        "title": "花好月圆",
+                        "selected": false,
+                        "coin": 400,
+                        "focus": 400,
+                        "star": 400,
+                        "like": 400
+                    },
+                    {
+                        "id": '7',
+                        "title": "花开半夏",
+                        "selected": false,
+                        "coin": 300,
+                        "focus": 300,
+                        "star": 300,
+                        "like": 300
+                    },
+                    {
+                        "id": '8',
+                        "title": "花好月圆",
+                        "selected": false,
+                        "coin": 400,
+                        "focus": 400,
+                        "star": 400,
+                        "like": 400
                     }
             ]
         }
@@ -196,7 +323,7 @@
           this[list].forEach((e, i)=>{
               if(e[key] === value){
                   this[list][i]['selected'] = true;
-                  this[currentV] = e[value];
+                  this[currentV] = value;
               }else{
                   this[list][i]['selected'] = false;
               }
