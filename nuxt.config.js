@@ -28,16 +28,17 @@ module.exports = {
   */
   build: {
     /*
-    ** Run ESLint on save
+    ** 扩展webpack配置
     */
-    extend (config, ctx) {
-      if (ctx.dev && ctx.isClient) {
+    extend (config, { isDev, isClient }) {
+      if (isDev && isClient) {
         // config.module.rules.push({
         //   enforce: 'pre',
         //   test: /\.(js|vue)$/,
         //   // loader: 'eslint-loader',
         //   exclude: /(node_modules)/
         // })
+       // config.devServer
       }
     },
     vendor: ['axios','./assets/js/jquery.min.js','promise-polyfill','babel-polyfill']

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nuxt",
     "dev:test": "cross-env NODE_ENV='development' nuxt",
-    "dev:online": "cross-env NODE_ENV=\"production\" nuxt",
+    "dev:online": "cross-env NODE_ENV='production' nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

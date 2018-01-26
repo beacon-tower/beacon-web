@@ -134,12 +134,12 @@
 
 
     <!--导航-->
-    // <div class="navigation">
-    //   <ul class="navigation-hot">
-    //     <nuxt-link tag="li" v-for="item in ment" v-bind:to="{path:'/user/follow/' + item.id}" >{{item.title}}</nuxt-link>
-    //     <nuxt-link to="/user/follow" tag="li" class="more-link">更多</nuxt-link>
-    //   </ul>
-    // </div>
+    <div class="navigation">
+       <ul class="navigation-hot">
+        <nuxt-link tag="li" :key="index" v-for="(item,index) in ment" v-bind:to="{path:'/user/follow/' + item.id}" >{{item.title}}</nuxt-link>
+         <nuxt-link to="/user/follow" tag="li" class="more-link">更多</nuxt-link>
+       </ul>
+     </div>
     <!--导航-->
 
     <div class="tab">
