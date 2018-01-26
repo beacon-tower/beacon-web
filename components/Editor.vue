@@ -35,8 +35,15 @@
             vertical-align: middle;
             padding: 14px 15px;
             i{
+                color: #333;
                 font-size: 18px;
             }
+        }
+        .w-e-menu:hover{
+            i{
+                color: #fff;
+            }
+            background: #333
         }
     }
     .publish{
@@ -47,7 +54,8 @@
         right: 30px;
         position: absolute;
         font-size: 18px;
-        color: #999;
+        color: #333;
+        font-weight:bold;
         cursor: pointer;
         &:hover{
             color: #fff;
