@@ -1,6 +1,36 @@
 <style lang="less">
     #editorElem{
         height: 100%;
+        h1{
+            font-size: 32px
+        }
+        h2{
+            font-size: 24px
+        }
+        h3{
+            font-size: 18px
+        }
+        h4{
+            font-size: 16px
+        }
+        p{
+            font-size: 16px;
+        }
+        h5{
+            font-size: 14px;
+        }
+        h6{
+            font-size: 12px;
+        }
+        b, strong{
+            font-weight: bolder!important;
+        }
+        i{
+            font-style: italic!important;
+        }
+        s, strike, del {
+            text-decoration: line-through!important;
+        }
         .w-e-menu{
             vertical-align: middle;
             padding: 14px 15px;
@@ -56,12 +86,12 @@
                 'head',
                 'bold',
                 'italic',
-                'underline',
                 'strikeThrough',  // 删除线
                 'link',  // 插入链接
                 'justify',  // 对齐方式
                 'quote',  // 引用
                 'image',  // 插入图片
+                'video',
                 'code',  // 插入代码
                 'undo',  // 撤销
                 'redo'  // 重复

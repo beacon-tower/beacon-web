@@ -175,7 +175,7 @@
                 outline: none;
                 width: 100%;
                 height: 100px;
-                font-size: 50px;
+                font-size: 40px;
                 text-indent: 20px;
             }
         }
