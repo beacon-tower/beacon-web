@@ -167,6 +167,18 @@
     }
     .write{
         width: 61%;
+        background: #fff;
+        .w-title{
+            height: 100px;
+            input{
+                border: none;
+                outline: none;
+                width: 100%;
+                height: 100px;
+                font-size: 50px;
+                text-indent: 20px;
+            }
+        }
     }
     
 }
@@ -217,11 +229,14 @@
             </div>
         </div>
         <div class="write wr-inline">
-            <span>{{currentArticle}}</span>
+            <div class="w-title"><input type="text" :value="currentArticle" /></div>
+            <Editor />
         </div>
     </div>
 </template>
 <script>
+  import Editor from '../components/Editor';
+
   export default{
     layout: 'default',
     data(){
@@ -316,7 +331,7 @@
         this.currentTopic = this.typeList[0]['topic'];
     },
     components: {
-        
+        Editor
     },
     methods:{
       selecteActiveEle(list, key, value, currentV){
