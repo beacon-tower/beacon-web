@@ -53,33 +53,67 @@
     <form action="" class="person-form">
       <div class="form-icon-group">
         <label for="" class="form-label">昵称</label>
-        <input type="text" class="input-style input-text">
+        <input type="text" v-model="userInfo.nickname" class="input-style input-text">
       </div>
       <div class="form-icon-group">
         <label for="" class="form-label">性别</label>
-        <input type="radio">男    <input type="radio" style="margin-left: 90px">女
+        <input type="radio" v-model="userInfo.sex" value="男">男    <input v-model="userInfo.sex" type="radio" value="女" style="margin-left: 90px">女
       </div>
       <div class="form-icon-group">
         <label for="" class="form-label">出生日期</label>
-        <input type="text" class="input-style input-text">
+        <input type="text" v-model="userInfo.birthday" class="input-style input-text">
       </div>
       <div class="form-icon-group">
         <label for="" class="form-label" style="vertical-align: top">个人简介</label>
-        <textarea class="input-style" style="width: 430px;height: 150px;"></textarea>
+        <textarea class="input-style" v-model="userInfo.introduce" style="width: 430px;height: 150px;"></textarea>
       </div>
       <h4 class="line-title"><i class="iconfont icon-web-icon-"></i> 电话号码</h4>
       <div class="form-icon-group">
         <label for="" class="form-label">手机</label>
-        <input type="text" class="input-style input-text">
+        <input type="text" class="input-style input-text" v-model="userInfo.mobile">
       </div>
       <div class="form-icon-group">
         <label for="" class="form-label">邮箱</label>
-        <input type="text" class="input-style input-text">
+        <input type="text" v-model="userInfo.email" class="input-style input-text">
       </div>
-      <img src="../assets/images/imme_update.png" class="imme_update">
+      <img src="../assets/images/imme_update.png" class="imme_update" @click="immediatelyUpdate">
     </form>
   </div>
 </template>
 <script>
-  export default{}
+  import axios from '../plugins/axios'
+  export default{
+      data(){
+          return{
+              userInfo:{
+                avatarImage: {
+                  createTime: "",
+                  id: 0,
+                  type: "",
+                  url: ""
+                },
+                birthday: "",
+                email: "",
+                id: 0,
+                introduce: "",
+                mobile: "",
+                nickname: "",
+                sex: ""
+              }
+          }
+      },
+      mounted(){
+          if(sessionStorage.getItem('userInfo')){
+            this.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+          }
+      },
+      methods:{
+        immediatelyUpdate(){
+          let config = {
+            headers:{'Content-Type':'multipart/form-data'}
+          };  //添加请求头
+          // axios.post('http://upload.qiniu.com/',{},config);
+        }
+      }
+  }
 </script>
