@@ -27,12 +27,12 @@
         regForm: {
           nickname: '',
           secret: '',
-          mobile:sessionStorage.getItem('ph')
+          mobile:''
         }
       }
     },
     mounted(){
-
+        this.regForm.mobile = sessionStorage.getItem('ph');
     },
     methods: {
       goReg4(){

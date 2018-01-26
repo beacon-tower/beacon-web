@@ -17,7 +17,7 @@
           <i class="iconfont icon-yuechi"></i>
           <input type="text" v-model="regForm.code" placeholder="请输入验证码" style="width: 125px;"
                  class="input-style input-text">
-          <button type="button" class="beacon-primary-btn" @click="sendCode">{{codebtn}}</button>
+          <button type="button" class="beacon-primary-btn" style="width: 82px;" @click="sendCode">{{codebtn}}</button>
         </div>
       </div>
       <span class="err-tip" v-html="errTip"></span>
@@ -35,6 +35,7 @@
     layout: 'loginwrap',
     data(){
       return {
+        isGetDynamic:false,
         codebtn: '发送验证码',
         errTip:'&nbsp;',
         regForm: {
@@ -92,7 +93,7 @@
         _vm.isGetDynamic = true;
         _vm.codebtn = countn + 's';
         //定时器
-        var counttime = setInterval(function () {
+        var counttime = setInterval( () =>{
           countn--;
           _vm.codebtn = countn + 's';
           if (countn < 0) {
@@ -109,10 +110,17 @@
           this.errTip = '手机号不能为空';
         }else{
             if(validatePhone(this,this.regForm.mobile)){
+              let countID = this.etClocking(this, 60);
               var qs = require('qs');
-              axios.post('sms/code', qs.stringify(this.loginForm))
+              axios.post('sms/code', qs.stringify({
+                mobile:this.regForm.mobile,
+                type:'register'
+              }))
                 .then( (response)=> {
-                  this.errTip = response.data.msg;
+                  if (response.data.code != 200) {
+                    this.clearClockingTime(this, countID);
+                    this.errTip = response.data.msg;
+                  }
                 })
                 .catch( (error)=> {
                   console.log(error);
