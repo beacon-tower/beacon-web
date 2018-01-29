@@ -162,7 +162,6 @@
                 'justify',  // 对齐方式
                 'quote',  // 引用
                 'image',  // 插入图片
-                'video', // 插入视频
                 'undo',  // 撤销
                 'redo'  // 重复
           ];
