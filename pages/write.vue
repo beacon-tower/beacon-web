@@ -290,7 +290,7 @@
                     },
                     {
                         "id": '5',
-                        "title": "花开半夏",
+                        "title": "一花一世界",
                         "selected": false,
                         "coin": 300,
                         "focus": 300,
@@ -299,7 +299,7 @@
                     },
                     {
                         "id": '6',
-                        "title": "花好月圆",
+                        "title": "花红",
                         "selected": false,
                         "coin": 400,
                         "focus": 400,
@@ -308,7 +308,7 @@
                     },
                     {
                         "id": '7',
-                        "title": "花开半夏",
+                        "title": "半夏",
                         "selected": false,
                         "coin": 300,
                         "focus": 300,
@@ -317,7 +317,7 @@
                     },
                     {
                         "id": '8',
-                        "title": "花好月圆",
+                        "title": "栀子花开",
                         "selected": false,
                         "coin": 400,
                         "focus": 400,
