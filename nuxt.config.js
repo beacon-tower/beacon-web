@@ -43,7 +43,6 @@ module.exports = {
     },
     vendor: ['axios','./assets/js/jquery.min.js','promise-polyfill','babel-polyfill']
   },
-  plugins: ['~plugins/vue-drag-and-drop-list'],
   css: [
     'reset.css',
     '~assets/fonts/iconfont.css',
