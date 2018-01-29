@@ -230,6 +230,10 @@
     </div>
 </template>
 <script>
+  /**
+  * @desc 写文章部分，包括 左侧话题列表， 中间文章列表， 右侧文章编辑器部分
+  * @author lihongkai
+  **/
   import Editor from '../components/Editor';
   import draggable from 'vuedraggable';
   
@@ -237,7 +241,7 @@
     layout: 'default',
     data(){
         return {
-            typeList: [
+            typeList: [ // 话题列表
                 {topic: '科技', num: 100, selected: false},
                 {topic: '教育', num: 100, selected: false},
                 {topic: '文艺', num: 100, selected: false},
@@ -245,10 +249,10 @@
                 {topic: '理财', num: 100, selected: false},
                 {topic: '生活', num: 100, selected: false}
             ],
-            currentTopic: '',
-            currentArticle: '',
-            timer: '',
-            articleList: [
+            currentTopic: '',  // 当前话题
+            currentArticle: '', // 当前文章
+            timer: '',  // 拖拽文章避免向后台发送数据使用
+            articleList: [ // 文章列表
                     {
                         "id": '0',
                         "title": "A",

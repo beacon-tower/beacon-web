@@ -1,26 +1,31 @@
 <style lang="less">
-    #editorElem{
-        height: 100%;
         h1{
-            font-size: 32px
+            font-size: 32px;
+            line-height: 48px!important
         }
         h2{
-            font-size: 24px
+            font-size: 24px;
+            line-height: 36px!important;
         }
         h3{
-            font-size: 18px
+            font-size: 18px;
+            line-height: 29px!important;
         }
         h4{
-            font-size: 16px
+            font-size: 16px;
+            line-height: 24px!important;
         }
         p{
             font-size: 16px;
+            line-height: 24px!important;
         }
         h5{
             font-size: 14px;
+            line-height: 21px!important;
         }
         h6{
             font-size: 12px;
+            line-height: 18px!important;
         }
         b, strong{
             font-weight: bolder!important;
@@ -31,6 +36,8 @@
         s, strike, del {
             text-decoration: line-through!important;
         }
+    #editorElem{
+        height: 100%;
         .w-e-menu{
             vertical-align: middle;
             padding: 14px 15px;
@@ -62,27 +69,83 @@
             background: #333
         }
     }
+    .preview{
+         right: 130px;
+    }
+    .Preview{
+        position: fixed;
+        margin-top: 50px;
+        min-width: 100%;
+        left: 0;
+        top: 0;
+        z-index: 10002;
+        border-top: 1px solid #eee;
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+        .menu{
+            height: 50px;
+            margin-left: 100px;
+            >div{
+                display: inline-block;
+                vertical-align: top;
+                line-height: 30px;
+                padding: 10px;
+                text-decoration:underline;
+                cursor: pointer;
+                &:hover{
+                    color: #67CFFF;
+                }
+            }
+        }
+        .content{
+            width: 900px;
+            padding: 20px;
+            margin: 0px auto;
+            margin-bottom: 100px;
+            min-height: 1100px;
+            background: #fff;
+        }
+    }
 </style>
 <template>
     <div style="position: relative">
         <div id="editorElem" style="text-align:left,"></div>
-        <div class="publish" @click="getContent">发布文章</div>
+        <div class="publish" @click="publishPaper">发布文章</div>
+        <div class="publish preview" @click="preview">预览</div>
+        <div class="Preview" v-if="previewShow">
+            <div class="menu">
+                <div @click="toggleShow">返回</div>
+                <div>发布文章</div>
+            </div>
+            <div class="content" v-html="contentHTML"></div>
+        </div>
     </div>
 </template>
 
 <script>
+    /*
+    * @desc 编辑器内容输入模块 -- 单独提出来
+    * @author lihongkai
+    */
     export default {
       data () {
         return { 
-          editorContent: '',  // 输入栏里的内容
-          Editor: ''  // 编辑器缓存对象
+          contentHTML: '',  // 输入栏里的内容
+          Editor: '' , // 编辑器缓存对象
+          previewShow: false, // 预览
         }
       },
       methods: {
-          getContent: function () {  // 查看内容
-            console.log(this.Editor.txt.html());
-            console.log(this.Editor.txt.text());
-        }
+          publishPaper: function () {  // 发布文章
+            console.log(this.contentHTML);
+         },
+         preview: function() { // 预览
+            this.toggleShow();
+         },
+         toggleShow: function(){ // 显示/隐藏 预览
+            this.previewShow = !this.previewShow;
+         }
       },
       mounted(){
           var E = require('wangeditor');
@@ -103,9 +166,8 @@
                 'undo',  // 撤销
                 'redo'  // 重复
           ];
-
           editor.customConfig.onchange = (html) => {
-            this.editorContent = html
+            this.contentHTML = html
           };
 
           editor.create();
