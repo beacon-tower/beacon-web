@@ -138,7 +138,8 @@
       },
       methods: {
           publishPaper: function () {  // 发布文章
-            console.log(this.contentHTML);
+            window.localStorage.setItem('previewContent', this.contentHTML);
+            window.open('/articlepreview');
          },
          preview: function() { // 预览
             this.toggleShow();
@@ -146,6 +147,9 @@
          toggleShow: function(){ // 显示/隐藏 预览
             this.previewShow = !this.previewShow;
          }
+      },
+      destroyed(){
+           window.localStorage.setItem('previewContent', '');
       },
       mounted(){
           var E = require('wangeditor');
