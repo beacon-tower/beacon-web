@@ -50,6 +50,7 @@
         background: #fff;
         overflow-y: scroll;
         position:relative;
+        overflow-x: hidden;
         .header{
             line-height: 104px;
             height: 104px;
@@ -71,23 +72,6 @@
             cursor: pointer;
         }
         .panel__body{
-            .vddl-list, .vddl-draggable {
-                 position: relative;
-            }
-            .vddl-list {
-                min-height: 44px;
-            }
-            .vddl-dragging{
-                opacity: 0.9;
-            }
-            .vddl-dragging-source {
-                display: none;
-            }
-            .placeMove{
-                height: 100px;
-                line-height: 100px;
-                background: #eee
-            }
             ._article{
                 height: 100px;
                 font-size: 20px;
@@ -148,12 +132,19 @@
                     }
                 }
                 .setting{
-                    width: 10%;
+                    width: 40px;
+                    text-align: center;
+                    position:relative;
                     .iconfont{
-                        display: none;
                         color: #666;
                         font-size: 30px;
                         line-height: 100px;
+                    }
+                    .menu{
+                        position:absolute;
+                        width: 100px;
+                        left: -30px;
+                        top: 38px;
                     }
                 }
             }
@@ -188,7 +179,7 @@
    
 </style>
 <template>
-    <div class="writer-wrap" >
+    <div class="writer-wrap" @click="frameClick">
         <div class="type wr-inline">
             <ul v-for="item in typeList">
                 <li :class="{'selected': item.selected}" @click="selecteActiveEle('typeList', 'topic', item.topic, 'currentTopic')">{{item.topic}}<span class="num">
@@ -196,7 +187,6 @@
                     </span>
                 </li>
             </ul>
-            <Menu />
         </div>
         <div class="list wr-inline">
             <div class="header">
@@ -220,7 +210,10 @@
                                         <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.like}}</span>
                                     </div>
                                 </div>
-                                <div class="setting"><i class="iconfont icon-yiyue"></i></div>
+                                <div class="setting" v-if="item.selected">
+                                    <i class="iconfont icon-yiyue SEETING"></i>
+                                    <div class="menu"><Menu :show="menuShow" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu"/></div>
+                                </div>
                             </div>
                         </div>
                     </transition-group>
@@ -257,10 +250,12 @@
             currentTopic: '',  // 当前话题
             currentArticle: '', // 当前文章
             timer: '',  // 拖拽文章避免向后台发送数据使用
+            menuShow: true, // 是否显示菜单
             articleList: [ // 文章列表
                     {
                         "id": '0',
                         "title": "A",
+                        "isPublished": true,
                         "selected": true,
                         "coin": 100,
                         "focus": 100,
@@ -270,6 +265,7 @@
                     {
                         "id": '1',
                         "title": "B",
+                        "isPublished": false,
                         "selected": false,
                         "coin": 200,
                         "focus": 200,
@@ -279,6 +275,7 @@
                     {
                         "id": '2',
                         "title": "C",
+                        "isPublished": false,
                         "selected": false,
                         "coin": 300,
                         "focus": 300,
@@ -288,6 +285,7 @@
                     {
                         "id": '3',
                         "title": "D",
+                        "isPublished": true,
                         "selected": false,
                         "coin": 300,
                         "focus": 300,
@@ -304,6 +302,16 @@
         Editor, draggable, Menu
     },
     methods:{
+      frameClick(e){  // 显示/隐藏按钮
+          if(!e.target.className || e.target.className.indexOf('SEETING') === -1){
+              this.menuShow = false;
+          }else{
+              this.menuShow = true;
+          };
+      },
+      hideMenu(){ // 从子组件传过来隐藏菜单
+          this.menuShow = false;
+      },
       selecteActiveEle(list, key, value, currentV){
           this[list].forEach((e, i)=>{
               if(e[key] === value){
