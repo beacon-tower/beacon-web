@@ -101,6 +101,9 @@
                     display: inline-block;
                     vertical-align: top;
                 }
+                i{
+                    font-style: normal!important;
+                }
                 .icon{
                     width: 16%;
                     height: 100%;
@@ -175,7 +178,7 @@
                 outline: none;
                 width: 100%;
                 height: 100px;
-                font-size: 50px;
+                font-size: 40px;
                 text-indent: 20px;
             }
         }
@@ -200,32 +203,27 @@
                 <span class="writebtn"></span>
             </div>
             <div class="panel__body">
-                <vddl-list class="panel__body--list" :list="articleList" :horizontal="false">
-                    <vddl-draggable class="panel__body--item" v-for="(item, index) in articleList" :key="item.id"
-                        :draggable="item"
-                        :index="index"
-                        :wrapper="articleList"
-                        :moved="handleMoved"
-                        effect-allowed="move"
-                    >
-                    <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">
-                        <div class="icon">
-                            <span class="bg"></span>
-                        </div>
-                        <div class="desc">
-                            <div class="title">{{item.title}}</div>
-                            <div class="detail">
-                                <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""></span><span class="num">{{item.coin}}</span>
-                                <span class="icon"><i class="iconfont icon-yiyue"></i></span><span class="num">{{item.focus}}</span>
-                                <span class="icon"><i class="iconfont icon-xing"></i></span><span class="num">{{item.star}}</span>
-                                <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.like}}</span>
+                <draggable v-model="articleList" :move="checkMove">
+                    <transition-group>
+                        <div v-for="item in articleList" :key="item.id" >
+                            <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">
+                                <div class="icon">
+                                    <span class="bg"></span>
+                                </div>
+                                <div class="desc">
+                                    <div class="title">{{item.title}}</div>
+                                    <div class="detail">
+                                        <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""></span><span class="num">{{item.coin}}</span>
+                                        <span class="icon"><i class="iconfont icon-yiyue"></i></span><span class="num">{{item.focus}}</span>
+                                        <span class="icon"><i class="iconfont icon-xing"></i></span><span class="num">{{item.star}}</span>
+                                        <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.like}}</span>
+                                    </div>
+                                </div>
+                                <div class="setting"><i class="iconfont icon-yiyue"></i></div>
                             </div>
                         </div>
-                        <div class="setting"><i class="iconfont icon-yiyue"></i></div>
-                    </div>
-                    </vddl-draggable>
-                    <vddl-placeholder class="placeMove"></vddl-placeholder>
-                </vddl-list>
+                    </transition-group>
+                </draggable>
             </div>
         </div>
         <div class="write wr-inline">
@@ -235,13 +233,18 @@
     </div>
 </template>
 <script>
+  /**
+  * @desc 写文章部分，包括 左侧话题列表， 中间文章列表， 右侧文章编辑器部分
+  * @author lihongkai
+  **/
   import Editor from '../components/Editor';
-
+  import draggable from 'vuedraggable';
+  
   export default{
     layout: 'default',
     data(){
         return {
-            typeList: [
+            typeList: [ // 话题列表
                 {topic: '科技', num: 100, selected: false},
                 {topic: '教育', num: 100, selected: false},
                 {topic: '文艺', num: 100, selected: false},
@@ -249,12 +252,13 @@
                 {topic: '理财', num: 100, selected: false},
                 {topic: '生活', num: 100, selected: false}
             ],
-            currentTopic: '',
-            currentArticle: '',
-            articleList: [
+            currentTopic: '',  // 当前话题
+            currentArticle: '', // 当前文章
+            timer: '',  // 拖拽文章避免向后台发送数据使用
+            articleList: [ // 文章列表
                     {
-                        "id": '1',
-                        "title": "花儿为什么这样红",
+                        "id": '0',
+                        "title": "A",
                         "selected": true,
                         "coin": 100,
                         "focus": 100,
@@ -262,8 +266,8 @@
                         "like": 100
                     },
                     {
-                        "id": '2',
-                        "title": "幸福像花儿一样",
+                        "id": '1',
+                        "title": "B",
                         "selected": false,
                         "coin": 200,
                         "focus": 200,
@@ -271,59 +275,23 @@
                         "like": 200
                     },
                     {
+                        "id": '2',
+                        "title": "C",
+                        "selected": false,
+                        "coin": 300,
+                        "focus": 300,
+                        "star": 300,
+                        "like": 300
+                    },           
+                    {
                         "id": '3',
-                        "title": "花开半夏",
+                        "title": "D",
                         "selected": false,
                         "coin": 300,
                         "focus": 300,
                         "star": 300,
                         "like": 300
-                    },
-                    {
-                        "id": '4',
-                        "title": "花好月圆",
-                        "selected": false,
-                        "coin": 400,
-                        "focus": 400,
-                        "star": 400,
-                        "like": 400
-                    },
-                    {
-                        "id": '5',
-                        "title": "花开半夏",
-                        "selected": false,
-                        "coin": 300,
-                        "focus": 300,
-                        "star": 300,
-                        "like": 300
-                    },
-                    {
-                        "id": '6',
-                        "title": "花好月圆",
-                        "selected": false,
-                        "coin": 400,
-                        "focus": 400,
-                        "star": 400,
-                        "like": 400
-                    },
-                    {
-                        "id": '7',
-                        "title": "花开半夏",
-                        "selected": false,
-                        "coin": 300,
-                        "focus": 300,
-                        "star": 300,
-                        "like": 300
-                    },
-                    {
-                        "id": '8',
-                        "title": "花好月圆",
-                        "selected": false,
-                        "coin": 400,
-                        "focus": 400,
-                        "star": 400,
-                        "like": 400
-                    }
+                    }           
             ]
         }
     },
@@ -331,7 +299,7 @@
         this.currentTopic = this.typeList[0]['topic'];
     },
     components: {
-        Editor
+        Editor, draggable
     },
     methods:{
       selecteActiveEle(list, key, value, currentV){
@@ -344,20 +312,18 @@
               }
           })
       },
-      handleMoved (targetDraggable) {
-
-        //删除元素操作, 解决拖动复制情况
-        this.articleList.splice(targetDraggable.index, 1);
-
-        let new_article_list = [];
-
-        this.articleList.forEach(e=>{
-            new_article_list.push({
-                id: e.id,
-                title: e.title
-            });
-        });
-        console.log(new_article_list);
+      checkMove(evt){  // 采用节流的思想，避免多次向后台发送数据请求
+          if(this.timer){
+              return;
+          }
+          this.timer =  window.setTimeout(()=>{
+              clearTimeout(this.timer);
+              this.timer = null;
+              let sendArr = this.articleList.map((e, i)=>{
+                  return e;
+              });
+              console.log(sendArr);  // 返回给后台的新数组数据
+          }, 2000)
       }
     }
   }
