@@ -196,6 +196,7 @@
                     </span>
                 </li>
             </ul>
+            <Menu />
         </div>
         <div class="list wr-inline">
             <div class="header">
@@ -237,9 +238,10 @@
   * @desc 写文章部分，包括 左侧话题列表， 中间文章列表， 右侧文章编辑器部分
   * @author lihongkai
   **/
-  import Editor from '../components/Editor';
+  import Editor from '../components/write/Editor';
   import draggable from 'vuedraggable';
-  
+  import Menu from '../components/write/Menu';
+
   export default{
     layout: 'default',
     data(){
@@ -299,7 +301,7 @@
         this.currentTopic = this.typeList[0]['topic'];
     },
     components: {
-        Editor, draggable
+        Editor, draggable, Menu
     },
     methods:{
       selecteActiveEle(list, key, value, currentV){
