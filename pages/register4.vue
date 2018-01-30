@@ -29,7 +29,7 @@
           </div>
           <span>{{num}}s后自动跳转...</span>
         </div>
-        <img src="../assets/images/immed_login.png" @click="immediateLogin" class="login-img-btn" alt="">
+        <img src="../assets/images/immed_login.png" @click="immediateIndex" class="login-img-btn" alt="">
       </form>
     </div>
 </template>
@@ -47,13 +47,13 @@
             this.num--;
          if(this.num<=0){
                 clearInterval(id);
-                this.immediateLogin();
+                this.immediateIndex();
             }
         },1000);
     },
     methods: {
-      immediateLogin(){
-        this.$router.push({name:'login'});
+      immediateIndex(){
+        this.$router.push({name:'index'});
       }
     }
 

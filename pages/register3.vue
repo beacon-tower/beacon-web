@@ -18,6 +18,7 @@
     </div>
 </template>
 <script>
+  import {validateEmpty} from '../assets/js/common'
   import axios from '../plugins/axios'
   export default{
     layout: 'loginwrap',
@@ -36,18 +37,31 @@
     },
     methods: {
       goReg4(){
-        var qs = require('qs');
-        axios.post('user/register/third/step', qs.stringify(this.regForm))
-          .then( (response)=> {
-            if(response.data.code==200){
-              this.$router.push({name: 'register4'});
-            }else{
-              this.errTip = response.data.msg;
-            }
-          })
-          .catch( (error)=> {
-            console.log(error);
-          });
+        if (validateEmpty(this.regForm)) {
+          this.errTip = '输入框不能为空';
+        } else {
+          var qs = require('qs');
+          var AschJS = require('asch-js');
+          var publicKey = AschJS.crypto.getKeys(this.regForm.secret).publicKey;  //根据密码生成公钥
+          axios.post('user/register/third/step', qs.stringify({
+            nickname: this.regForm.nickname,
+            publicKey: publicKey,
+            mobile: this.regForm.mobile
+          }))
+            .then((response) => {
+              if (response.data.code == 200) {
+                sessionStorage.setItem('rgtk', response.data.data);
+                this.$router.push({name: 'register4'});
+              } else if (response.data.code == 500) {
+                this.errTip = '服务器错误，请联系管理员';
+              } else {
+                this.errTip = response.data.msg;
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
       }
     }
 
