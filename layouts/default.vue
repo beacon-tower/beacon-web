@@ -83,11 +83,11 @@
         <img src="../assets/images/index_logo.png" class="index-logo" alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <span v-if="isLogin == 'true'" class="login-info">
+          <span v-if="isLogin" class="login-info">
              <nuxt-link :to="{name:'personCenter'}">
                  <img class="pic-img" :src="userPicture" alt="">
-                 <i class="iconfont icon-sanjiaodown"></i>
              </nuxt-link>
+            <i class="iconfont icon-sanjiaodown"></i>
           </span>
           <span v-else>
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
@@ -103,6 +103,8 @@
   </div>
 </template>
 <script>
+  import {isnull} from '../assets/js/common'
+  import axios from '../plugins/axios'
   export default{
     data(){
       return {
@@ -111,11 +113,32 @@
       }
     },
     mounted(){
-      this.isLogin = sessionStorage.getItem('isLogin');
-      if (sessionStorage.getItem('userInfo')) {
-        this.userPicture = JSON.parse(sessionStorage.getItem('userInfo')).avatarImage.url;
+      console.log(sessionStorage.getItem('rgtk'), '加载头部信息');
+      if (!isnull(sessionStorage.getItem('rgtk'))) {
+        this.isLogin = true;
+        console.log('登陆之后请求用户信息');
+        this.getUserInfo();
       }
-      console.log(this.isLogin, this.userPicture);
+    },
+    methods: {
+      getUserInfo(){
+        if (!isnull(sessionStorage.getItem('userInfo'))) {
+          this.userPicture = JSON.parse(sessionStorage.getItem('userInfo')).avatarImage.url;
+          return
+        }
+        axios.get('user/info')
+          .then(function (response) {
+            console.log('请求---成功--用户信息');
+            if(!isnull(response.data.data)){
+              sessionStorage.setItem('userInfo', JSON.stringify(response.data.data));
+              this.userPicture = response.data.data.avatarImage.url;
+              console.log(this.userPicture);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     }
   }
 </script>

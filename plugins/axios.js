@@ -10,5 +10,5 @@ let options = {
     }
   }
 }
-options.baseURL = (process.env.NODE_ENV === 'development') ? 'https://api.sofly.cc/api/v1/' : 'https://api.sofly.cc/api/v1/';
+options.baseURL = (process.env.NODE_ENV === 'development') ? '/api/v1/' : '/api/v1/';
 export default axios.create(options)

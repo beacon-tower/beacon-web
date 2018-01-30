@@ -52,6 +52,18 @@ module.exports = {
   env: {
     NODE_ENV: process.env.NODE_ENV
   },
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
+  proxy: [
+    [
+      '/api',
+      {
+        target: 'https://api.sofly.cc', // api主机
+      }
+    ]
+  ],
   router: {
     // middleware: 'stats'
   }

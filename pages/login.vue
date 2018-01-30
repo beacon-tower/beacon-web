@@ -4,7 +4,7 @@
       <div class="input-wrap">
         <div class="form-icon-group">
           <i class="iconfont icon-yonghu"></i>
-          <input type="text" v-model="loginForm.username" placeholder="请输入邮箱或手机号" class="input-style input-text">
+          <input type="text" v-model="loginForm.username" placeholder="请输入手机号" class="input-style input-text">
         </div>
         <div class="form-icon-group">
           <i class="iconfont icon-yuechi"></i>
@@ -25,6 +25,7 @@
 </template>
 <script>
   import axios from '../plugins/axios'
+  import {validatePhone, validateEmpty, validateEmail} from '../assets/js/common'
   import '../assets/js/gt';//极验依赖
   export default{
     layout: 'loginwrap',
@@ -98,11 +99,31 @@
     },
     methods: {
       loginMethod(){
+        if (validateEmpty(this.loginForm)) {
+          this.errTip = '输入框不能为空';
+        } else {
+          if (this.loginForm.username.indexOf('@') != -1) {//验证邮箱
+            if (validateEmail(this, this.loginForm.username)) {
+              this.requestLogin();
+            }
+          } else {//验证手机
+            if (validatePhone(this, this.loginForm.username)) {
+              this.requestLogin();
+            }
+          }
+        }
+      },
+      requestLogin(){
         var qs = require('qs');
-        axios.post('user/login', qs.stringify(this.loginForm))
+        var AschJS = require('asch-js');
+        var publicKey = AschJS.crypto.getKeys(this.loginForm.secret).publicKey;  //根据密码生成公钥
+        axios.post('user/login', qs.stringify({
+          username: this.loginForm.username,
+          publicKey: publicKey
+        }))
           .then((response) => {
             if (response.data.code == 200) {
-              sessionStorage.setItem('isLogin',true);
+              sessionStorage.setItem('rgtk', response.data.data);
               this.$router.push({name: 'index'});
             } else {
               this.errTip = response.data.msg;
@@ -111,17 +132,8 @@
           .catch((error) => {
             console.log(error);
           });
-      },
-      getUserInfo(){
-        axios.get('user/info')
-          .then(function (response) {
-            console.log(response);
-            sessionStorage.setItem('userInfo',JSON.stringify(response.data.data));
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
       }
+
     }
 
   }
