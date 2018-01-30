@@ -1,41 +1,41 @@
 <style lang="less">
-        h1{
-            font-size: 32px;
-            line-height: 48px!important
-        }
-        h2{
-            font-size: 24px;
-            line-height: 36px!important;
-        }
-        h3{
-            font-size: 18px;
-            line-height: 29px!important;
-        }
-        h4{
-            font-size: 16px;
-            line-height: 24px!important;
-        }
-        p{
-            font-size: 16px;
-            line-height: 24px!important;
-        }
-        h5{
-            font-size: 14px;
-            line-height: 21px!important;
-        }
-        h6{
-            font-size: 12px;
-            line-height: 18px!important;
-        }
-        b, strong{
-            font-weight: bolder!important;
-        }
-        i{
-            font-style: italic!important;
-        }
-        s, strike, del {
-            text-decoration: line-through!important;
-        }
+    h1{
+        font-size: 32px;
+        line-height: 48px!important
+    }
+    h2{
+        font-size: 24px;
+        line-height: 36px!important;
+    }
+    h3{
+        font-size: 18px;
+        line-height: 29px!important;
+    }
+    h4{
+        font-size: 16px;
+        line-height: 24px!important;
+    }
+    p{
+        font-size: 16px;
+        line-height: 24px!important;
+    }
+    h5{
+        font-size: 14px;
+        line-height: 21px!important;
+    }
+    h6{
+        font-size: 12px;
+        line-height: 18px!important;
+    }
+    b, strong{
+        font-weight: bolder!important;
+    }
+    i{
+        font-style: italic!important;
+    }
+    s, strike, del {
+        text-decoration: line-through!important;
+    }
     #editorElem{
         height: 100%;
         .w-e-menu{

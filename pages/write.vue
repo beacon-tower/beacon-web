@@ -101,6 +101,9 @@
                     display: inline-block;
                     vertical-align: top;
                 }
+                i{
+                    font-style: normal!important;
+                }
                 .icon{
                     width: 16%;
                     height: 100%;
