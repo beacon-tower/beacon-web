@@ -52,6 +52,9 @@
           top: 11px;
         }
       }
+      a{
+        text-decoration: none;
+      }
       .login-info {
         margin: 0 35px;
         a {
@@ -88,6 +91,7 @@
                  <img class="pic-img" :src="userPicture" alt="">
              </nuxt-link>
             <i class="iconfont icon-sanjiaodown"></i>
+
           </span>
           <span v-else>
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>

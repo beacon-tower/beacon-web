@@ -41,7 +41,7 @@
         </div>
       </div>
       <span class="err-tip" v-html="errTip"></span>
-      <img src="../assets/images/save_money.png" class="login-img-btn" alt="">
+      <img src="../assets/images/save_money.png" @click="saveMoney" class="login-img-btn" alt="">
       <nuxt-link :to="{name:'register3'}" class="next-txt-link">下一步</nuxt-link>
       <p><a href="javascript:;" @click="goLogin" style="padding-left: 300px;" class="go-link">已有账号？去登陆</a></p>
     </form>
@@ -66,6 +66,12 @@
     methods: {
       goLogin(){
         this.$router.push({name: 'login'});
+      },
+      saveMoney(){
+        var txt = `钱包密钥： ${this.regForm.password}\r钱包地址:  ${this.regForm.address}`
+        var FileSaver = require('file-saver');
+        var blob = new Blob([txt], {type: "text/plain;charset=utf-8"});
+        FileSaver.saveAs(blob, "钱包信息.txt");
       },
       getSecretInfo(){//获取密钥和地址信息
         if (sessionStorage.getItem('ph')) {
