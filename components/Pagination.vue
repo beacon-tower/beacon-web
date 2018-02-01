@@ -40,14 +40,20 @@ import {Pagination} from 'vue-pagination-2';
   export default{
     data(){
       return {
-        inputPage: 1,
-        perPage: 12
+        inputPage: 1,//当前页
       }
     },
     components: {
         Pagination
     },
-    props: ['records', 'callback' ],
+    props: {
+      records: Number,//总记录数
+      callback:Function,//分页请求函数
+      perPage: {//每页显示多少条
+          type: Number,
+          default: 12,//默认12条
+      }
+    },
     beforeMount(){
          console.log(this.$props.records);
     },

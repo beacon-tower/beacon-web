@@ -337,9 +337,8 @@
 </template>
 
 <script>
+  import Pagination from '../components/Pagination';
   import axios from '../plugins/axios'
-  //  import Nuxt from "../.nuxt/components/nuxt";
-  //  import NuxtLink from "../.nuxt/components/nuxt-link";
   export default {
 //  asyncData ({ params }) {//页面刷新时不会进入这个函数，页面跳转会进入
 //    return axios.post('user/login.do',{
@@ -350,14 +349,22 @@
 //        return { title: res.data.responseMsg }
 //      })
 //  },
+    data(){
+        return{
+
+        }
+    },
     components: {
-//      NuxtLink,
-//      Nuxt
+
     },
     mounted(){
       console.log(process.env.NODE_ENV);
     },
-    methods: {}
+    methods: {
+      changePage(page){ // 翻页
+        console.log(page,'翻页');
+      }
+    }
   }
 </script>
 
