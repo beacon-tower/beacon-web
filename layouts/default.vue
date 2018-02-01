@@ -57,6 +57,37 @@
       }
       .login-info {
         margin: 0 35px;
+        padding-bottom: 20px;
+        position: relative;
+        .button-wrap{
+          display: none;
+          position: absolute;
+          z-index: 9999;
+          background-color: #fff;
+          padding-top: 10px;
+          border: 1px solid #ddd;
+          border-bottom-color: #ccc;
+          text-align: left;
+          border-radius: 4px;
+          white-space: nowrap;
+          right: 0;
+          top: 28px;
+          .link-a{
+            padding-bottom: 10px;
+            padding-left: 10px;
+            width: 100px;
+            display: block;
+            color: #333;
+            &:hover{
+              color: @primarycolor;
+            }
+          }
+        }
+        &:hover{
+          .button-wrap{
+            display: block;
+          }
+        }
         a {
           color: @graycolor;
         }
@@ -87,11 +118,12 @@
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
           <span v-if="isLogin" class="login-info">
-             <nuxt-link :to="{name:'personCenter'}">
-                 <img class="pic-img" :src="userPicture" alt="">
-             </nuxt-link>
+            <img class="pic-img" :src="userPicture" alt="">
             <i class="iconfont icon-sanjiaodown"></i>
-
+            <ul class="button-wrap">
+                <li><nuxt-link :to="{name:'personCenter'}" class="link-a">个人中心</nuxt-link></li>
+                <li><a href="javascript:;" class="link-a" @click.prevent="logout">退出</a></li>
+            </ul>
           </span>
           <span v-else>
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
@@ -113,7 +145,7 @@
     data(){
       return {
         isLogin: false,//是否登录---
-        userPicture: '',//头像
+        userPicture: require('../assets/images/person.png'),//头像
       }
     },
     mounted(){
@@ -125,6 +157,22 @@
       }
     },
     methods: {
+      logout(){//退出GET /api/v1/user/logout
+        axios.get('user/logout')
+          .then(function (response) {
+            if(response.data.code == 200){
+              //清除所有键值sessionStorage
+              sessionStorage.clear();
+              this.isLogin = false;
+              this.$router.push({name:'index'});
+            }else{
+                alert(response.data.msg);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      },
       getUserInfo(){
         if (!isnull(sessionStorage.getItem('userInfo'))) {
           this.userPicture = JSON.parse(sessionStorage.getItem('userInfo')).avatarImage.url;
