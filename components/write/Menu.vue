@@ -1,26 +1,34 @@
-<style lang="less">
+<style lang="less" scoped>
 .articleList-menu{
   width: 100px;
-  background: #fff;
-  border-radius: 8px;
   cursor: pointer;
+  z-index: 100000;
   .menu{
     position: relative;
+    // border-radius: 6px!important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
     li{
       color: #333!important;
+      background: #fff;
+      font-size: 14px!important;
+      line-height: 36px;
+      text-align: center;
       &:hover{
-        color: #fff!important;
+        color: #eee!important;
         background: #333;
       }
       .menuItem{
         position: relative;
+        z-index: 100000;
         .subMenu{
-          border-radius: 8px;
+          // border-radius: 6px!important;
+          overflow: hidden;
           position: absolute;
-          left: 100%;
+          right: 100%;
           top: 0px;
           width: 100px;
           background: #fff;
+          box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
         }
       }
     }
@@ -39,7 +47,7 @@
 </style>
 
 <template>
-    <div class="articleList-menu">
+    <div class="articleList-menu" @click="stopPropagation" v-show="show">
        <ul class="menu">
           <li v-for="(item, index) in menuList" class="itemli" @mouseover="showSubMenu(index)" :key="item.text" @mouseout="hideSubMenu(index)">
             <div class="menuItem">
@@ -68,15 +76,18 @@ export default{
         ]
       }
     },
-    props: ['isPublished'],
+    props: ['isPublished', 'id', 'show' , 'hideMenu'],
     methods: {
-       showSubMenu: function(index){
+       stopPropagation: function(e){  // 阻止冒泡
+         this.hideMenu();
+         e.stopPropagation();
+       },
+       showSubMenu: function(index){ 
          this.menuList[index]['selected'] = true;
        },
        hideSubMenu: function(index){
          this.menuList[index]['selected'] = false;
        }
-    }
-
+    },
   }
 </script>
