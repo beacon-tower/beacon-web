@@ -53,7 +53,7 @@
             <div class="menuItem">
                 {{item.text }}
                 <ul class="subMenu" v-if="item.selected">
-                  <li class="subItemLi" v-for="subItem in item.subMenu">{{subItem}}</li>
+                  <li class="subItemLi" v-for="subItem in item.subMenu" @click="item.subFun(subItem.id)">{{subItem.name}}</li>
                 </ul>
             </div>
           </li>
@@ -66,17 +66,19 @@
 @desc 文章显示列表组件，这里对菜单组件进行了二级拓展，供后续添加新功能使用
 @author lihongkai
 **/
+import { moveArticle }from '../../service/write.js';
+
 export default{
     data(){
       return {
         menuList: [
           {text: '发布文章', fn: 'fn', subMenu:[], selected: false},
-          {text: '移动文章', fn: 'fn', subMenu:['科技', '社会'], subFun: 'subFN', selected: false},
+          {text: '移动文章', fn: 'fn', subMenu: this.typeList, subFun: this.move, selected: false},
           {text: '删除文章', fn: 'fn', subMenu:[], selected: false}
         ]
       }
     },
-    props: ['isPublished', 'id', 'show' , 'hideMenu'],
+    props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token"],
     methods: {
        stopPropagation: function(e){  // 阻止冒泡
          this.hideMenu();
@@ -87,6 +89,11 @@ export default{
        },
        hideSubMenu: function(index){
          this.menuList[index]['selected'] = false;
+       },
+       move: function(topicId){ // 移动文章
+         moveArticle(topicId, this.id, this.token).then(res=>{
+           console.log(res.data);
+         })
        }
     },
   }

@@ -198,7 +198,7 @@
                 <draggable v-model="articleList" :move="checkMove">
                     <transition-group>
                         <div v-for="item in articleList" :key="item.id" >
-                            <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticle')">
+                            <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticleId')">
                                 <div class="icon">
                                     <span class="bg"></span>
                                 </div>
@@ -213,7 +213,7 @@
                                 </div>
                                 <div class="setting" v-if="item.selected">
                                     <i class="iconfont icon-yiyue SEETING"></i>
-                                    <div class="menu"><Menu :show="menuShow" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu"/></div>
+                                    <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu" :typeList="typeList"/></div>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
   import draggable from 'vuedraggable';
   import Menu from '../components/write/Menu';
   import {isnull} from '../assets/js/common';
-  import { getTopics, getArticleList } from '../service/write.js';
+  import { getTopics, getArticleList, getArticle, moveArticleUnderTopic} from '../service/write.js';
 
   export default{
     layout: 'default',
@@ -244,7 +244,9 @@
         return {
             typeList: [], // 话题列表
             currentTopic: '',  // 当前话题
+            currentTopicId: '',  // 当前话题
             currentArticle: '', // 当前文章
+            currentArticleId: '', // 当前文章
             timer: '',  // 拖拽文章避免向后台发送数据使用
             menuShow: true, // 是否显示菜单
             token: '', // 登录认证标识
@@ -262,6 +264,7 @@
               res.data.data.map((e, i)=>{
                   if(i === 0){
                       this.currentTopic = e.name;
+                      this.currentTopicId = e.id;
                       e.selected = true;
 
                       // 根据话题id 请求相应文章列表
@@ -291,20 +294,29 @@
               this.menuShow = true;
           };
       },
-      hideMenu(){ // 从子组件传过来隐藏菜单
+      // 从子组件传过来隐藏菜单
+      hideMenu(){ 
           this.menuShow = false;
       },
+      // 选择话题/文章
       selecteActiveEle(list, key, value, currentV){
           this[list].forEach((e, i)=>{
               if(e[key] === value){
                   this[list][i]['selected'] = true;
                   this[currentV] = value;
+                  
+                  if(currentV === 'currentTopic'){ //  获取对应话题文章列表
+                      this.getMiddlelist(e.id);
+                  }else{
+                      this.getCurrentArticle(e.id); //  获取对应文章内容
+                  };
               }else{
                   this[list][i]['selected'] = false;
               }
-          })
+          });
       },
-      checkMove(evt){  // 采用节流的思想，避免多次向后台发送数据请求
+      // 采用节流的思想，避免多次向后台发送数据请求
+      checkMove(evt){  
           if(this.timer){
               return;
           }
@@ -312,20 +324,28 @@
               clearTimeout(this.timer);
               this.timer = null;
               let sendArr = this.articleList.map((e, i)=>{
-                  return e;
+                  return e.id;
               });
-              console.log(sendArr);  // 返回给后台的新数组数据
-          }, 2000)
+              
+              // 移动文章列表
+              moveArticleUnderTopic(sendArr, this.token).then(res=>{
+                 // 移动成功，什么也不做~ 
+              }).catch(err=>{
+                  alert('移动失败!');
+              });  
+          }, 1400)
       },
-      getMiddlelist(id){ // 获取中间文章列表数据
+      // 获取中间文章列表数据
+      getMiddlelist(id){ 
         getArticleList(id, this.token).then(resp =>{
             let temp = [];
             resp.data.data.forEach((e, i)=>{
                 if(i === 0){
                     e.selected = true;
                     this.currentArticle = e.title;
+                    this.currentArticleId = e.id;
 
-                    // 获取相应文章内容
+                    // 根据文章id 获取相应文章内容
                     this.getCurrentArticle(e.id);
 
                 }else{
@@ -339,8 +359,11 @@
            //
         }); 
       },
-      getCurrentArticle(){
-
+      // 获取当前文章
+      getCurrentArticle(articleId){
+          getArticle(articleId, this.token).then(res=>{
+              console.log(res.data.data);
+          })
       }
     }
   }
