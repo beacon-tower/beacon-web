@@ -121,7 +121,7 @@
       if (!isnull(sessionStorage.getItem('rgtk'))) {
         this.isLogin = true;
         console.log('登陆之后请求用户信息');
-        this.getUserInfo();
+        // this.getUserInfo();
       }
     },
     methods: {

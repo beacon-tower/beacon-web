@@ -2,6 +2,7 @@
 .writer-wrap{
     position: fixed;
     width: 100%;
+    min-width: 1200px;
     left: 0;
     top: 0;
     padding-top:50px;
@@ -181,9 +182,9 @@
 <template>
     <div class="writer-wrap" @click="frameClick">
         <div class="type wr-inline">
-            <ul v-for="item in typeList">
-                <li :class="{'selected': item.selected}" @click="selecteActiveEle('typeList', 'topic', item.topic, 'currentTopic')">{{item.topic}}<span class="num">
-                         <font>{{item.num}}</font>
+            <ul v-for="item in typeList" :key="item.id">
+                <li :class="{'selected': item.selected}" @click="selecteActiveEle('typeList', 'name', item.name, 'currentTopic')" >{{item.name}}<span class="num">
+                         <font>{{item.followCount}}</font>
                     </span>
                 </li>
             </ul>
@@ -204,10 +205,10 @@
                                 <div class="desc">
                                     <div class="title">{{item.title}}</div>
                                     <div class="detail">
-                                        <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""></span><span class="num">{{item.coin}}</span>
-                                        <span class="icon"><i class="iconfont icon-yiyue"></i></span><span class="num">{{item.focus}}</span>
-                                        <span class="icon"><i class="iconfont icon-xing"></i></span><span class="num">{{item.star}}</span>
-                                        <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.like}}</span>
+                                        <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""></span><span class="num">{{item.coinCount}}</span>
+                                        <span class="icon"><i class="iconfont icon-yiyue"></i></span><span class="num">{{item.readCount}}</span>
+                                        <span class="icon"><i class="iconfont icon-xing"></i></span><span class="num">{{item.seqInTopic}}</span>
+                                        <span class="icon"><i class="iconfont icon-cha"></i></span><span class="num">{{item.likesCount}}</span>
                                     </div>
                                 </div>
                                 <div class="setting" v-if="item.selected">
@@ -234,75 +235,56 @@
   import Editor from '../components/write/Editor';
   import draggable from 'vuedraggable';
   import Menu from '../components/write/Menu';
+  import {isnull} from '../assets/js/common';
+  import { getTopics, getArticleList } from '../service/write.js';
 
   export default{
     layout: 'default',
     data(){
         return {
-            typeList: [ // 话题列表
-                {topic: '科技', num: 100, selected: false},
-                {topic: '教育', num: 100, selected: false},
-                {topic: '文艺', num: 100, selected: false},
-                {topic: '社会', num: 100, selected: false},
-                {topic: '理财', num: 100, selected: false},
-                {topic: '生活', num: 100, selected: false}
-            ],
+            typeList: [], // 话题列表
             currentTopic: '',  // 当前话题
             currentArticle: '', // 当前文章
             timer: '',  // 拖拽文章避免向后台发送数据使用
             menuShow: true, // 是否显示菜单
-            articleList: [ // 文章列表
-                    {
-                        "id": '0',
-                        "title": "A",
-                        "isPublished": true,
-                        "selected": true,
-                        "coin": 100,
-                        "focus": 100,
-                        "star": 100,
-                        "like": 100
-                    },
-                    {
-                        "id": '1',
-                        "title": "B",
-                        "isPublished": false,
-                        "selected": false,
-                        "coin": 200,
-                        "focus": 200,
-                        "star": 200,
-                        "like": 200
-                    },
-                    {
-                        "id": '2',
-                        "title": "C",
-                        "isPublished": false,
-                        "selected": false,
-                        "coin": 300,
-                        "focus": 300,
-                        "star": 300,
-                        "like": 300
-                    },           
-                    {
-                        "id": '3',
-                        "title": "D",
-                        "isPublished": true,
-                        "selected": false,
-                        "coin": 300,
-                        "focus": 300,
-                        "star": 300,
-                        "like": 300
-                    }           
-            ]
+            token: '', // 登录认证标识
+            articleList: []  // 文章列表    
         }
     },
-    created(){
-        this.currentTopic = this.typeList[0]['topic'];
+    beforeMount(){
+      this.token = sessionStorage.getItem('rgtk');
+      if (isnull(this.token)) {
+         this.$router.push({name: 'login'});
+      }else{
+          // 获取左侧 话题列表
+          getTopics(this.token).then(res=>{
+              let temp = []
+              res.data.data.map((e, i)=>{
+                  if(i === 0){
+                      this.currentTopic = e.name;
+                      e.selected = true;
+
+                      // 根据话题id 请求相应文章列表
+                      this.getMiddlelist(e.id);
+
+                  }else{
+                      e.selected = false;
+                  }
+                  temp.push(e);
+                  console.log(e);
+              });
+              this.typeList = temp;
+          }).catch(err=>{
+              //
+          });
+
+      }
     },
     components: {
         Editor, draggable, Menu
     },
     methods:{
-      frameClick(e){  // 显示/隐藏按钮
+      frameClick(e){  // 显示/隐藏设置按钮
           if(!e.target.className || e.target.className.indexOf('SEETING') === -1){
               this.menuShow = false;
           }else{
@@ -334,6 +316,31 @@
               });
               console.log(sendArr);  // 返回给后台的新数组数据
           }, 2000)
+      },
+      getMiddlelist(id){ // 获取中间文章列表数据
+        getArticleList(id, this.token).then(resp =>{
+            let temp = [];
+            resp.data.data.forEach((e, i)=>{
+                if(i === 0){
+                    e.selected = true;
+                    this.currentArticle = e.title;
+
+                    // 获取相应文章内容
+                    this.getCurrentArticle(e.id);
+
+                }else{
+                    e.selected = false;
+                }
+                temp.push(e);
+            });
+
+            this.articleList = temp;   
+        }).catch(err=>{
+           //
+        }); 
+      },
+      getCurrentArticle(){
+
       }
     }
   }
