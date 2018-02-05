@@ -117,7 +117,7 @@
         <img src="../assets/images/index_logo.png" class="index-logo" alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <span v-if="isLogin" class="login-info">
+          <span v-if="$store.state.token" class="login-info">
             <img class="pic-img" :src="userPicture" alt="">
             <i class="iconfont icon-sanjiaodown"></i>
             <ul class="button-wrap">
@@ -141,48 +141,29 @@
 <script>
   import {isnull} from '../assets/js/common'
   import axios from '../plugins/axios'
+//  import axiosToken from '../plugins/axiosToken'
   export default{
     data(){
       return {
-        isLogin: false,//是否登录---
         userPicture: require('../assets/images/person.png'),//头像
       }
     },
     mounted(){
-      console.log(sessionStorage.getItem('rgtk'), '加载头部信息');
-      if (!isnull(sessionStorage.getItem('rgtk'))) {
-        this.isLogin = true;
-        console.log('登陆之后请求用户信息');
-        this.getUserInfo();
-      }
+        this.setToken();
     },
     methods: {
-      logout(){//退出GET /api/v1/user/logout
-        axios.get('user/logout')
-          .then(function (response) {
-            if(response.data.code == 200){
-              //清除所有键值sessionStorage
-              sessionStorage.clear();
-              this.isLogin = false;
-              this.$router.push({name:'index'});
-            }else{
-                alert(response.data.msg);
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      async setToken(){
+        await this.$store.dispatch('setSessionToken', {token:this.$store.state.token});
+        this.getUserInfo();
       },
-      getUserInfo(){
-        if (!isnull(sessionStorage.getItem('userInfo'))) {
-          this.userPicture = JSON.parse(sessionStorage.getItem('userInfo')).avatarImage.url;
-          return
-        }
-        axios.get('user/info')
-          .then(function (response) {
+      getUserInfo(){//获取用户信息-头像
+        axios.get('user/info',{
+          headers:{
+            Authorization:`${this.$store.state.token}`
+          }
+        }).then(function (response) {
             console.log('请求---成功--用户信息');
             if(!isnull(response.data.data)){
-              sessionStorage.setItem('userInfo', JSON.stringify(response.data.data));
               this.userPicture = response.data.data.avatarImage.url;
               console.log(this.userPicture);
             }
@@ -190,6 +171,21 @@
           .catch(function (error) {
             console.log(error);
           });
+      },
+      async logout(){//退出
+        try {
+          await this.$store.dispatch('logout',{token:this.$store.state.token});
+          var result = this.$store.state.result;
+          if(result.code == 200){
+            //清除所有键值sessionStorage
+            sessionStorage.clear();
+            this.$router.push({name:'index'});
+          }else{
+            alert(data.msg);
+          }
+        } catch (e) {
+          alert(e.message);
+        }
       }
     }
   }
