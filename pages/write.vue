@@ -256,7 +256,7 @@
         }
     },
     beforeMount(){
-      this.token = sessionStorage.getItem('rgtk');
+      this.token = this.$store.state.token;
       if (isnull(this.token)) {
          this.$router.push({name: 'login'});
       }else{
