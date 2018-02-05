@@ -141,7 +141,8 @@
 <script>
   import {isnull} from '../assets/js/common'
   import axios from '../plugins/axios'
-//  import axiosToken from '../plugins/axiosToken'
+  import { getUser} from '../service/user';
+
   export default{
     data(){
       return {
@@ -157,15 +158,10 @@
         this.getUserInfo();
       },
       getUserInfo(){//获取用户信息-头像
-        axios.get('user/info',{
-          headers:{
-            Authorization:`${this.$store.state.token}`
-          }
-        }).then(function (response) {
-            console.log('请求---成功--用户信息');
-            if(!isnull(response.data.data)){
-              this.userPicture = response.data.data.avatarImage.url;
-              console.log(this.userPicture);
+        getUser(this.$store.state.token).then(function (response) {
+            let imgObj = response.data.data.avatarImage;
+            if(!isnull(imgObj)){
+              this.userPicture = imgObj.url;
             }
           })
           .catch(function (error) {

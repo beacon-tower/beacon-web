@@ -45,10 +45,23 @@ export const actions = {
       commit('SET_TOKEN', sessionStorage.getItem('rgtk'));
     }
   },
+  async reg3({ commit }, { nickname, publicKey, mobile }) {//注册最后一步
+    try {
+      const { data } = await axios.post('user/register/third/step',
+        qs.stringify({ nickname, publicKey, mobile}))
+      commit('SET_RESULT', data);
+      commit('SET_TOKEN',data.data)
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        throw new Error('Bad credentials')
+      }
+      throw error
+    }
+  },
   async logout({ commit }, { token }) {//退出
     const {data} = await axios.get('user/logout',{
       headers:{
-        Authorization:`${token}`
+        token:`${token}`
       }
     });
     commit('SET_RESULT', data);
