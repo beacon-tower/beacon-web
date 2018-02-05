@@ -222,8 +222,8 @@
             </div>
         </div>
         <div class="write wr-inline">
-            <div class="w-title"><input type="text" :value="currentArticle" /></div>
-            <Editor />
+            <div class="w-title"><input type="text" v-model="currentArticle" @blur="autosave"/></div>
+            <Editor ref="Editor" :autosave="autosave"/>
         </div>
     </div>
 </template>
@@ -237,19 +237,21 @@
   import Menu from '../components/write/Menu';
   import {isnull} from '../assets/js/common';
   import { getTopics, getArticleList, getArticle, moveArticleUnderTopic, saveArticle} from '../service/write.js';
+  import EVENT from '../components/EventBus.js';
 
   export default{
     layout: 'default',
     data(){
         return {
             typeList: [], // 话题列表
-            currentTopic: '',  // 当前话题
-            currentTopicId: '',  // 当前话题
-            currentArticle: '', // 当前文章
-            currentArticleId: '', // 当前文章
+            currentTopic: '',  // 当前话题名称
+            currentTopicId: '',  // 当前话题id
+            currentArticle: '', // 当前文章标题
+            currentArticleId: '', // 当前文章id
             timer: '',  // 拖拽文章避免向后台发送数据使用
             menuShow: false, // 是否显示菜单
             token: '', // 登录认证标识
+            contentHTML: '', // 当前文章内容
             articleList: []  // 文章列表    
         }
     },
@@ -361,17 +363,43 @@
       },
       // 新建文章
       newArticle(){
-        
+        // 获取编辑器内的内容
+        console.log(document.getElementsByClassName('w-e-text')[0].innerHTML);
       },
       // 获取当前文章
       getCurrentArticle(articleId){
           getArticle(articleId, this.token).then(res=>{
-              console.log(res.data.data);
+              // 使用事件班车传递文本数据到编辑器组件
+              EVENT.$emit('CONTENT_HTML', res.data.data);
           })
+      },
+      // 自动保存文章
+      autosave(){
+        let data = {
+            id: this.currentArticleId,
+            title: this.currentArticle,
+            topicId: this.currentTopicId,
+            content: document.getElementsByClassName('w-e-text')[0].innerHTML
+        };
+        this.save(data);
+      },
+      // 向后台发送保存信息指令
+      save(data){
+        saveArticle(data, this.token).then(res=>{
+
+            let index = this.typeList.findIndex((e, i)=>{e.id === data.id});
+
+            if(index > -1){ // 修改已有文章进行保存
+                this.typeList[index].title = data.title;
+            }else{ // 新建文章进行保存
+                console.log('new', res.data);
+            }
+            
+        })
       },
       deleteArticle(articleId){ // 把删除文章从列表移除
           let index = this.articleId.findIndex((e)=> e.id === articleId);
-          if(index){
+          if(index > -1){
               this.articleId.splice(index, 1);
           }
       }

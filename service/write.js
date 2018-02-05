@@ -70,11 +70,11 @@
  }
 
  // 保存文章
- export function saveArticle(data, id, TOKEN = ''){
+ export function saveArticle(postInputDto, TOKEN = ''){
      return axios({
         method: 'post',
         url: `author/posts`,
         headers:  {'token': TOKEN},
-        data: data
+        data: postInputDto
      })
  }
