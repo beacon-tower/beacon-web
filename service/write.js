@@ -21,7 +21,7 @@
      })
  }
 
- // 获取文章
+ // 获取单篇文章的内容
  export function getArticle(ArticleId, TOKEN = ''){
      return axios({
         method: 'get',
@@ -35,21 +35,46 @@
      return axios({
         method: 'put',
         url: `author/posts/sequence`,
-        headers:  {'token': TOKEN},
-        data: {
-            postsIdList
-        }
+        headers:  {'token': TOKEN, 'Content-Type': 'application/json'},
+        data: postsIdList
      })
  }
 
- // 同一话题下移动文章
+ // 多话题移动文章
  export function moveArticle( topicId, id, TOKEN = ''){
+     alert(topicId);
      return axios({
-        method: 'put',
+        method: 'post',
         url: `author/posts/${id}/move`,
+        headers:  {'token': TOKEN, 'Content-Type': 'application/json'},
+        data: Number(topicId)
+     })
+ }
+
+ // 删除文章
+ export function removeArticle(id, TOKEN = ''){
+     return axios({
+        method: 'delete',
+        url: `author/posts/${id}/destroy`,
+        headers:  {'token': TOKEN}
+     })
+ }
+
+ // 发布文章
+ export function publishArticle(id, TOKEN = ''){
+     return axios({
+        method: 'post',
+        url: `author/posts/${id}/publicize`,
+        headers:  {'token': TOKEN}
+     })
+ }
+
+ // 保存文章
+ export function saveArticle(data, id, TOKEN = ''){
+     return axios({
+        method: 'post',
+        url: `author/posts`,
         headers:  {'token': TOKEN},
-        data: {
-            topicId, id
-        }
+        data: data
      })
  }

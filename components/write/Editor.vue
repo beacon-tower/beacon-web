@@ -156,7 +156,8 @@
           var editor = new E('#editorElem');
 
           // 自定义菜单配置
-          editor.customConfig.uploadImgServer = '/upload'; // 上传图片到服务器
+         editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+
           editor.customConfig.menus = [
                 'head',
                 'bold',

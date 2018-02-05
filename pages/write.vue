@@ -192,7 +192,7 @@
         <div class="list wr-inline">
             <div class="header">
                 <span>{{currentTopic}}</span>
-                <span class="writebtn"></span>
+                <span class="writebtn" @click="newArticle"></span>
             </div>
             <div class="panel__body">
                 <draggable v-model="articleList" :move="checkMove">
@@ -213,7 +213,7 @@
                                 </div>
                                 <div class="setting" v-if="item.selected">
                                     <i class="iconfont icon-yiyue SEETING"></i>
-                                    <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu" :typeList="typeList"/></div>
+                                    <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle"/></div>
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
   import draggable from 'vuedraggable';
   import Menu from '../components/write/Menu';
   import {isnull} from '../assets/js/common';
-  import { getTopics, getArticleList, getArticle, moveArticleUnderTopic} from '../service/write.js';
+  import { getTopics, getArticleList, getArticle, moveArticleUnderTopic, saveArticle} from '../service/write.js';
 
   export default{
     layout: 'default',
@@ -248,7 +248,7 @@
             currentArticle: '', // 当前文章
             currentArticleId: '', // 当前文章
             timer: '',  // 拖拽文章避免向后台发送数据使用
-            menuShow: true, // 是否显示菜单
+            menuShow: false, // 是否显示菜单
             token: '', // 登录认证标识
             articleList: []  // 文章列表    
         }
@@ -359,11 +359,21 @@
            //
         }); 
       },
+      // 新建文章
+      newArticle(){
+        
+      },
       // 获取当前文章
       getCurrentArticle(articleId){
           getArticle(articleId, this.token).then(res=>{
               console.log(res.data.data);
           })
+      },
+      deleteArticle(articleId){ // 把删除文章从列表移除
+          let index = this.articleId.findIndex((e)=> e.id === articleId);
+          if(index){
+              this.articleId.splice(index, 1);
+          }
       }
     }
   }
