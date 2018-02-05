@@ -57,6 +57,37 @@
       }
       .login-info {
         margin: 0 35px;
+        padding-bottom: 20px;
+        position: relative;
+        .button-wrap{
+          display: none;
+          position: absolute;
+          z-index: 9999;
+          background-color: #fff;
+          padding-top: 10px;
+          border: 1px solid #ddd;
+          border-bottom-color: #ccc;
+          text-align: left;
+          border-radius: 4px;
+          white-space: nowrap;
+          right: 0;
+          top: 28px;
+          .link-a{
+            padding-bottom: 10px;
+            padding-left: 10px;
+            width: 100px;
+            display: block;
+            color: #333;
+            &:hover{
+              color: @primarycolor;
+            }
+          }
+        }
+        &:hover{
+          .button-wrap{
+            display: block;
+          }
+        }
         a {
           color: @graycolor;
         }
@@ -86,12 +117,13 @@
         <img src="../assets/images/index_logo.png" class="index-logo" alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <span v-if="isLogin" class="login-info">
-             <nuxt-link :to="{name:'personCenter'}">
-                 <img class="pic-img" :src="userPicture" alt="">
-             </nuxt-link>
+          <span v-if="$store.state.token" class="login-info">
+            <img class="pic-img" :src="userPicture" alt="">
             <i class="iconfont icon-sanjiaodown"></i>
-
+            <ul class="button-wrap">
+                <li><nuxt-link :to="{name:'personCenter'}" class="link-a">个人中心</nuxt-link></li>
+                <li><a href="javascript:;" class="link-a" @click.prevent="logout">退出</a></li>
+            </ul>
           </span>
           <span v-else>
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
@@ -109,39 +141,47 @@
 <script>
   import {isnull} from '../assets/js/common'
   import axios from '../plugins/axios'
+  import { getUser} from '../service/user';
+
   export default{
     data(){
       return {
-        isLogin: false,//是否登录---
-        userPicture: '',//头像
+        userPicture: require('../assets/images/person.png'),//头像
       }
     },
     mounted(){
-      console.log(sessionStorage.getItem('rgtk'), '加载头部信息');
-      if (!isnull(sessionStorage.getItem('rgtk'))) {
-        this.isLogin = true;
-        console.log('登陆之后请求用户信息');
-        // this.getUserInfo();
-      }
+        this.setToken();
     },
     methods: {
-      getUserInfo(){
-        if (!isnull(sessionStorage.getItem('userInfo'))) {
-          this.userPicture = JSON.parse(sessionStorage.getItem('userInfo')).avatarImage.url;
-          return
-        }
-        axios.get('user/info')
-          .then(function (response) {
-            console.log('请求---成功--用户信息');
-            if(!isnull(response.data.data)){
-              sessionStorage.setItem('userInfo', JSON.stringify(response.data.data));
-              this.userPicture = response.data.data.avatarImage.url;
-              console.log(this.userPicture);
+      async setToken(){
+        await this.$store.dispatch('setSessionToken', {token:this.$store.state.token});
+        this.getUserInfo();
+      },
+      getUserInfo(){//获取用户信息-头像
+        getUser(this.$store.state.token).then(function (response) {
+            let imgObj = response.data.data.avatarImage;
+            if(!isnull(imgObj)){
+              this.userPicture = imgObj.url;
             }
           })
           .catch(function (error) {
             console.log(error);
           });
+      },
+      async logout(){//退出
+        try {
+          await this.$store.dispatch('logout',{token:this.$store.state.token});
+          var result = this.$store.state.result;
+          if(result.code == 200){
+            //清除所有键值sessionStorage
+            sessionStorage.clear();
+            this.$router.push({name:'index'});
+          }else{
+            alert(data.msg);
+          }
+        } catch (e) {
+          alert(e.message);
+        }
       }
     }
   }
