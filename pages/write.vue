@@ -363,8 +363,13 @@
       },
       // 新建文章
       newArticle(){
-        // 获取编辑器内的内容
-        console.log(document.getElementsByClassName('w-e-text')[0].innerHTML);
+        let newArticle = {
+            topicId: this.currentTopicId,
+            content: '',
+            title: '新建文章',
+            id: this.currentArticleId
+        }
+        this.save(newArticle);
       },
       // 获取当前文章
       getCurrentArticle(articleId){
@@ -386,18 +391,18 @@
       // 向后台发送保存信息指令
       save(data){
         saveArticle(data, this.token).then(res=>{
-
             let index = this.typeList.findIndex((e, i)=>{e.id === data.id});
-
             if(index > -1){ // 修改已有文章进行保存
                 this.typeList[index].title = data.title;
             }else{ // 新建文章进行保存
                 console.log('new', res.data);
+                // 更新文章列表，设置新建文章为当前选定文章，重置文章id 文章内容 文章标题
+                //this.typeList.unshift(res.data);
             }
-            
         })
       },
-      deleteArticle(articleId){ // 把删除文章从列表移除
+      // 把删除文章从列表移除
+      deleteArticle(articleId){ 
           let index = this.articleId.findIndex((e)=> e.id === articleId);
           if(index > -1){
               this.articleId.splice(index, 1);

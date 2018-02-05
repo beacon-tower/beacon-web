@@ -62,7 +62,7 @@
         position: absolute;
         font-size: 18px;
         color: #333;
-        font-weight:normal;
+        font-weight: normal;
         cursor: pointer;
         &:hover{
             color: #fff;
@@ -157,7 +157,7 @@
       },
       destroyed(){
            window.localStorage.setItem('previewContent', '');
-        //    EVENT.off('CONTENT_HTML');
+           // EVENT.off('CONTENT_HTML');
       },
       mounted(){
           var E = require('wangeditor');
