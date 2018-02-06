@@ -52,6 +52,7 @@
         overflow-y: scroll;
         position:relative;
         overflow-x: hidden;
+        padding-bottom: 100px;
         .header{
             line-height: 104px;
             height: 104px;
@@ -94,7 +95,7 @@
                     height: 100%;
                     position: relative;
                     .bg{
-                        background: url(../assets/images/uns_article.png) no-repeat center;
+                        // background: url(../assets/images/uns_article.png) no-repeat center;
                         display: inline-block;
                         width: 20px;
                         height: 16px;
@@ -103,6 +104,15 @@
                         top: 50%;
                         margin-top: -8px;
                         margin-left: -10px;
+                        .paper{
+                            font-size: 22px;          
+                        }
+                    }
+                    .wordsNum{
+                         position:absolute;
+                         bottom:3px;
+                         left: 3px;
+                         font-size: 9px;
                     }
                 }
                 .desc{
@@ -143,7 +153,7 @@
                         position:relative;
                         .iconfont{
                             color: #666;
-                            font-size: 30px;
+                            font-size: 20px;
                             line-height: 100px;
                         }
                         .menu{
@@ -206,7 +216,8 @@
                         <div v-for="item in articleList" :key="item.id" >
                             <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticleId')">
                                 <div class="icon">
-                                    <span class="bg"></span>
+                                    <span class="bg"><i class="iconfont icon-paper paper" :style="{color: item.state === 'published' ? '#67CFFF' : '#ccc'}"></i></span>
+                                    <span v-if="item.selected" class="wordsNum">字数:{{item.wordsCount}}</span>
                                 </div>
                                 <div class="desc">
                                     <div class="title">{{item.title}}</div>
@@ -219,7 +230,7 @@
                                 </div>
                                 <div class="setting" v-if="item.selected">
                                     <div class="s_container">
-                                        <i class="iconfont icon-yiyue SEETING"></i>
+                                        <i class="iconfont icon-setting SEETING"></i>
                                         <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.state" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle"/></div>
                                     </div>
                                 </div>

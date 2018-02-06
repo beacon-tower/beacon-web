@@ -144,14 +144,17 @@
       },
       props: ['autosave'],
       methods: {
-          publishPaper: function () {  // 发布文章
-            window.localStorage.setItem('previewContent', this.contentHTML);
-            window.open('/articlepreview');
+          // 发布文章
+          publishPaper: function () {  
+            // window.localStorage.setItem('previewContent', this.contentHTML);
+            // window.open('/articlepreview');
          },
          preview: function() { // 预览
+            window.localStorage.setItem('previewContent', this.contentHTML);
             this.toggleShow();
          },
-         toggleShow: function(){ // 显示/隐藏 预览
+         // 显示/隐藏 预览
+         toggleShow: function(){ 
             this.previewShow = !this.previewShow;
          }
       },
