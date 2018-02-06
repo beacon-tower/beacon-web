@@ -99,9 +99,10 @@
                         width: 20px;
                         height: 16px;
                         position:absolute;
-                        left: 20px;
+                        left: 50%;
                         top: 50%;
                         margin-top: -8px;
+                        margin-left: -10px;
                     }
                 }
                 .desc{
@@ -110,6 +111,7 @@
                         color: #003C7A;
                         font-size: 18px;
                         line-height: 60px;
+                        height: 60px
                     }
                     .detail{
                         .num{
@@ -133,19 +135,23 @@
                     }
                 }
                 .setting{
-                    width: 40px;
-                    text-align: center;
-                    position:relative;
-                    .iconfont{
-                        color: #666;
-                        font-size: 30px;
-                        line-height: 100px;
-                    }
-                    .menu{
-                        position:absolute;
-                        width: 100px;
-                        left: -30px;
-                        top: 38px;
+                    position: absolute;
+                    right: 3px;
+                    .s_container{
+                        width: 40px;
+                        text-align: center;
+                        position:relative;
+                        .iconfont{
+                            color: #666;
+                            font-size: 30px;
+                            line-height: 100px;
+                        }
+                        .menu{
+                            position:absolute;
+                            width: 100px;
+                            left: -30px;
+                            top: 38px;
+                        }
                     }
                 }
             }
@@ -212,8 +218,10 @@
                                     </div>
                                 </div>
                                 <div class="setting" v-if="item.selected">
-                                    <i class="iconfont icon-yiyue SEETING"></i>
-                                    <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.isPublished" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle"/></div>
+                                    <div class="s_container">
+                                        <i class="iconfont icon-yiyue SEETING"></i>
+                                        <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.state" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle"/></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -256,9 +264,9 @@
         }
     },
     beforeMount(){
-      this.token = this.$store.state.token;
+      this.token = sessionStorage.getItem('rgtk');
       if (isnull(this.token)) {
-         this.$router.push({name: 'login'});
+        this.$router.push({name: 'login'});
       }else{
           // 获取左侧 话题列表
           getTopics(this.token).then(res=>{
@@ -276,7 +284,6 @@
                       e.selected = false;
                   }
                   temp.push(e);
-                  console.log(e);
               });
               this.typeList = temp;
           }).catch(err=>{
@@ -289,17 +296,21 @@
         Editor, draggable, Menu
     },
     methods:{
-      frameClick(e){  // 显示/隐藏设置按钮
+
+      // 显示/隐藏设置按钮
+      frameClick(e){ 
           if(!e.target.className || e.target.className.indexOf('SEETING') === -1){
               this.menuShow = false;
           }else{
               this.menuShow = true;
           };
       },
+
       // 从子组件传过来隐藏菜单
       hideMenu(){ 
           this.menuShow = false;
       },
+
       // 选择话题/文章
       selecteActiveEle(list, key, value, currentV){
           this[list].forEach((e, i)=>{
@@ -310,13 +321,14 @@
                   if(currentV === 'currentTopic'){ //  获取对应话题文章列表
                       this.getMiddlelist(e.id);
                   }else{
-                      this.getCurrentArticle(e.id); //  获取对应文章内容
+                      this.getCurrentArticle(e.id, e.title); //  获取对应文章内容
                   };
               }else{
                   this[list][i]['selected'] = false;
               }
           });
       },
+
       // 采用节流的思想，避免多次向后台发送数据请求
       checkMove(evt){  
           if(this.timer){
@@ -337,18 +349,22 @@
               });  
           }, 1400)
       },
+
       // 获取中间文章列表数据
       getMiddlelist(id){ 
         getArticleList(id, this.token).then(resp =>{
             let temp = [];
+            // 重置右侧输入区域
+            EVENT.$emit('CONTENT_HTML', '<h3></h3>');
+            this.currentArticle = '';
+
             resp.data.data.forEach((e, i)=>{
                 if(i === 0){
                     e.selected = true;
-                    this.currentArticle = e.title;
                     this.currentArticleId = e.id;
 
                     // 根据文章id 获取相应文章内容
-                    this.getCurrentArticle(e.id);
+                    this.getCurrentArticle(e.id, e.title);
 
                 }else{
                     e.selected = false;
@@ -361,23 +377,27 @@
            //
         }); 
       },
+
       // 新建文章
       newArticle(){
         let newArticle = {
             topicId: this.currentTopicId,
-            content: '',
+            content: '<h3>欢迎！</h3>',
             title: '新建文章',
-            id: this.currentArticleId
+            id: null
         }
         this.save(newArticle);
       },
+
       // 获取当前文章
-      getCurrentArticle(articleId){
+      getCurrentArticle(articleId, title){
           getArticle(articleId, this.token).then(res=>{
+              this.currentArticle = title;
               // 使用事件班车传递文本数据到编辑器组件
               EVENT.$emit('CONTENT_HTML', res.data.data);
           })
       },
+
       // 自动保存文章
       autosave(){
         let data = {
@@ -388,24 +408,60 @@
         };
         this.save(data);
       },
+
       // 向后台发送保存信息指令
       save(data){
         saveArticle(data, this.token).then(res=>{
-            let index = this.typeList.findIndex((e, i)=>{e.id === data.id});
-            if(index > -1){ // 修改已有文章进行保存
-                this.typeList[index].title = data.title;
+            let index = this.articleList.findIndex((e, i)=> e.id === data.id);
+
+            // 修改已有文章进行保存
+            if(index > -1){ 
+                this.articleList[index].title = data.title;
+
             }else{ // 新建文章进行保存
-                console.log('new', res.data);
+
                 // 更新文章列表，设置新建文章为当前选定文章，重置文章id 文章内容 文章标题
-                //this.typeList.unshift(res.data);
+                let _new = Object.assign({}, res.data.data, {selected: true});
+                this.articleList.forEach((e)=>{
+                    e.selected = false;
+                });
+                this.currentArticle = _new.title;
+                this.currentArticleId = _new.id;
+                EVENT.$emit('CONTENT_HTML', '<h3>欢迎！</h3>');
+
+                this.articleList.unshift(_new);
             }
         })
       },
+      
+      // 设置文章第一项被选择
+      firstArticleSelected(){
+          let len = this.articleList.length;
+          if(len === 0){
+               EVENT.$emit('CONTENT_HTML', '<h3></h3>');
+               this.currentArticle = '';
+          }else{
+              this.articleList.forEach((e, i)=>{
+                  if(i === 0){
+                    e.selected = true;
+                    this.currentArticleId = e.id;
+
+                    // 根据文章id 获取相应文章内容
+                    this.getCurrentArticle(e.id, e.title);
+
+                  }else{
+                    e.selected = false;
+                 }
+              })
+          }
+      },
+
       // 把删除文章从列表移除
       deleteArticle(articleId){ 
-          let index = this.articleId.findIndex((e)=> e.id === articleId);
+          let index = this.articleList.findIndex((e)=> e.id === articleId);
           if(index > -1){
-              this.articleId.splice(index, 1);
+              this.articleList.splice(index, 1);
+              this.firstArticleSelected();
           }
       }
     }

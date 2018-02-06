@@ -22,8 +22,9 @@
         z-index: 100000;
         .subMenu{
           // border-radius: 6px!important;
-          overflow: hidden;
+          overflow-y: scroll;
           position: absolute;
+          max-height: 300px;
           right: 100%;
           top: 0px;
           width: 100px;
@@ -72,7 +73,7 @@ export default{
     data(){
       return {
         menuList: [
-          {text: `${this.isPublished ? '已发布' : '发布文章'}`, fn: `${this.isPublished ? ()=>{} : this.publish}`, subMenu:[], selected: false},
+          {text: `${this.isPublished === 'published' ? '已发布' : '发布文章'}`, fn: this.isPublished === 'published' ? ()=>{} : ()=>this.publish(this), subMenu:[], selected: false},
           {text: '移动文章', fn: ()=>{}, subMenu: this.typeList, subFun: this.move, selected: false},
           {text: '删除文章', fn: this.remove, subMenu:[], selected: false}
         ]
@@ -80,29 +81,41 @@ export default{
     },
     props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token", "deleteArticle"],
     methods: {
-       stopPropagation: function(e){  // 阻止冒泡
+
+       // 阻止冒泡
+       stopPropagation: function(e){ 
          this.hideMenu();
          e.stopPropagation();
        },
-       showSubMenu: function(index){ // 显示菜单按钮
+
+        // 显示菜单按钮
+       showSubMenu: function(index){
          this.menuList[index]['selected'] = true;
        },
-       hideSubMenu: function(index){ // 隐藏菜单按钮
+
+       // 隐藏菜单按钮
+       hideSubMenu: function(index){ 
          this.menuList[index]['selected'] = false;
        },
-       move: function(topicId){ // 移动文章到其他话题
+
+       // 移动文章到其他话题
+       move: function(topicId){ 
          moveArticle(topicId, this.id, this.token).then(res=>{
            this.deleteArticle(this.id);
          })
        },
-       remove: function(){ // 删除文章
+
+        // 删除文章
+       remove: function(){
          removeArticle(this.id, this.token).then(res=>{
            this.deleteArticle(this.id);
          })
        },
-       publish: ()=>{ // 发布文章
-         publishArticle(this.id, this.token).then(res=>{
-           console.log(res.data); 
+       
+       // 发布文章
+       publish: (THIS)=>{ 
+         publishArticle(THIS.id, THIS.token).then(res=>{
+           // console.log(res.data); 
          })
        }
     },

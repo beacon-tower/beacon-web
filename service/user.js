@@ -1,5 +1,5 @@
 /**
- * @desc  这里放置用户相关的一些方法
+ * @desc  这里放置用户相关的一些http请求
  */
 import axios from '../plugins/axios';
 // 获取用户信息

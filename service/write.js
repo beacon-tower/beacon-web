@@ -42,7 +42,6 @@
 
  // 多话题移动文章
  export function moveArticle( topicId, id, TOKEN = ''){
-     alert(topicId);
      return axios({
         method: 'post',
         url: `author/posts/${id}/move`,

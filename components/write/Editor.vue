@@ -164,7 +164,7 @@
           var editor = new E('#editorElem');
 
           // 自定义菜单配置
-         editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+          editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
 
           editor.customConfig.menus = [
                 'head',
@@ -185,6 +185,10 @@
                     this.autosave();
                 }
             }, 5000);
+          };
+
+          editor.customConfig.onblur = () =>{
+              this.autosave();
           };
 
           editor.create();
