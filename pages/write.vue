@@ -52,6 +52,7 @@
         overflow-y: scroll;
         position:relative;
         overflow-x: hidden;
+        padding-bottom: 100px;
         .header{
             line-height: 104px;
             height: 104px;
@@ -94,7 +95,7 @@
                     height: 100%;
                     position: relative;
                     .bg{
-                        background: url(../assets/images/uns_article.png) no-repeat center;
+                        // background: url(../assets/images/uns_article.png) no-repeat center;
                         display: inline-block;
                         width: 20px;
                         height: 16px;
@@ -103,6 +104,15 @@
                         top: 50%;
                         margin-top: -8px;
                         margin-left: -10px;
+                        .paper{
+                            font-size: 22px;          
+                        }
+                    }
+                    .wordsNum{
+                         position:absolute;
+                         bottom:3px;
+                         left: 3px;
+                         font-size: 9px;
                     }
                 }
                 .desc{
@@ -143,7 +153,7 @@
                         position:relative;
                         .iconfont{
                             color: #666;
-                            font-size: 30px;
+                            font-size: 20px;
                             line-height: 100px;
                         }
                         .menu{
@@ -206,7 +216,8 @@
                         <div v-for="item in articleList" :key="item.id" >
                             <div :class="{'a-selected': item.selected, '_article': true}" @click="selecteActiveEle('articleList', 'id', item.id, 'currentArticleId')">
                                 <div class="icon">
-                                    <span class="bg"></span>
+                                    <span class="bg"><i class="iconfont icon-paper paper" :style="{color: item.state === 'published' ? '#67CFFF' : '#ccc'}"></i></span>
+                                    <span v-if="item.selected" class="wordsNum">字数:{{item.wordsCount}}</span>
                                 </div>
                                 <div class="desc">
                                     <div class="title">{{item.title}}</div>
@@ -219,8 +230,8 @@
                                 </div>
                                 <div class="setting" v-if="item.selected">
                                     <div class="s_container">
-                                        <i class="iconfont icon-yiyue SEETING"></i>
-                                        <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.state" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle"/></div>
+                                        <i class="iconfont icon-setting SEETING"></i>
+                                        <div class="menu"><Menu :show="menuShow" :token="token" :id="item.id" :isPublished="item.state" :hideMenu="hideMenu" :typeList="typeList" :deleteArticle="deleteArticle" :publishSuccessCallback="publishSuccessCallback"/></div>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +242,7 @@
         </div>
         <div class="write wr-inline">
             <div class="w-title"><input type="text" v-model="currentArticle" @blur="autosave"/></div>
-            <Editor ref="Editor" :autosave="autosave"/>
+            <Editor ref="Editor" :autosave="autosave" :token="token" :_id="currentArticleId" :isPublished="currentPublished" :publishSuccessCallback="publishSuccessCallback"/>
         </div>
     </div>
 </template>
@@ -260,6 +271,7 @@
             menuShow: false, // 是否显示菜单
             token: '', // 登录认证标识
             contentHTML: '', // 当前文章内容
+            currentPublished: false, //  当前文章内容是否发布
             articleList: []  // 文章列表    
         }
     },
@@ -321,6 +333,7 @@
                   if(currentV === 'currentTopic'){ //  获取对应话题文章列表
                       this.getMiddlelist(e.id);
                   }else{
+                      this.currentPublished = e.state === 'published';
                       this.getCurrentArticle(e.id, e.title); //  获取对应文章内容
                   };
               }else{
@@ -362,7 +375,7 @@
                 if(i === 0){
                     e.selected = true;
                     this.currentArticleId = e.id;
-
+                    this.currentPublished = e.state === 'published';
                     // 根据文章id 获取相应文章内容
                     this.getCurrentArticle(e.id, e.title);
 
@@ -408,6 +421,13 @@
         };
         this.save(data);
       },
+      
+      // 发布成功后的回调
+      publishSuccessCallback(articleId){
+           let index = this.articleList.findIndex((e, i)=> e.id === articleId);
+           this.articleList[index]['state'] = 'published';
+           this.currentPublished = true;
+      },
 
       // 向后台发送保存信息指令
       save(data){
@@ -427,6 +447,8 @@
                 });
                 this.currentArticle = _new.title;
                 this.currentArticleId = _new.id;
+                this.currentPublished = _new.state === 'published';
+                
                 EVENT.$emit('CONTENT_HTML', '<h3>欢迎！</h3>');
 
                 this.articleList.unshift(_new);
@@ -445,6 +467,7 @@
                   if(i === 0){
                     e.selected = true;
                     this.currentArticleId = e.id;
+                    this.currentPublished = e.state === 'published';
 
                     // 根据文章id 获取相应文章内容
                     this.getCurrentArticle(e.id, e.title);

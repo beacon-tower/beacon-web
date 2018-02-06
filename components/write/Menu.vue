@@ -7,6 +7,11 @@
     position: relative;
     // border-radius: 6px!important;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px;
+    .iconfont{
+      display: inline-block!important;
+      line-height: 36px!important;
+      font-size: 16px!important;
+    }
     li{
       color: #333!important;
       background: #fff;
@@ -16,6 +21,9 @@
       &:hover{
         color: #eee!important;
         background: #333;
+        .iconfont{
+          color: #eee!important;
+        }
       }
       .menuItem{
         position: relative;
@@ -50,10 +58,11 @@
 <template>
     <div class="articleList-menu" @click="stopPropagation" v-show="show">
        <ul class="menu">
-          <li v-for="(item, index) in menuList" class="itemli" @mouseover="showSubMenu(index)" :key="item.text" @mouseout="hideSubMenu(index)">
+          <li v-for="(item, index) in menuList" class="itemli" @mouseover="showSubMenu(index, $event)" :key="item.text" @mouseout="hideSubMenu(index)">
             <div class="menuItem" @click="item.fn()">
+              <i :class="item.icon"></i>
                 {{item.text }}
-                <ul class="subMenu" v-if="item.selected">
+                <ul class="subMenu" v-show="item.selected">
                   <li class="subItemLi" v-for="subItem in item.subMenu" @click="item.subFun(subItem.id)">{{subItem.name}}</li>
                 </ul>
             </div>
@@ -73,13 +82,31 @@ export default{
     data(){
       return {
         menuList: [
-          {text: `${this.isPublished === 'published' ? '已发布' : '发布文章'}`, fn: this.isPublished === 'published' ? ()=>{} : ()=>this.publish(this), subMenu:[], selected: false},
-          {text: '移动文章', fn: ()=>{}, subMenu: this.typeList, subFun: this.move, selected: false},
-          {text: '删除文章', fn: this.remove, subMenu:[], selected: false}
+          { 
+            text: `${this.isPublished === 'published' ? '已发布' : '发布文章'}`, 
+            fn: this.isPublished === 'published' ? ()=>{} : ()=>this.publish(this), 
+            subMenu:[],
+            icon: 'iconfont icon-aui-icon-paper',
+            selected: false
+          },
+          {
+            text: '移动文章', 
+            fn: ()=>{}, subMenu: this.typeList, 
+            subFun: this.move,
+            icon: 'iconfont icon-yidong', 
+            selected: false
+          },
+          {
+            text: '删除文章', 
+            fn: this.remove, 
+            subMenu:[],
+            icon: 'iconfont icon-shanchu',
+            selected: false
+          }
         ]
       }
     },
-    props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token", "deleteArticle"],
+    props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token", "deleteArticle", "publishSuccessCallback"],
     methods: {
 
        // 阻止冒泡
@@ -89,7 +116,17 @@ export default{
        },
 
         // 显示菜单按钮
-       showSubMenu: function(index){
+       showSubMenu: function(index, event){
+
+         // 子菜单排列次序（朝上/朝下）
+         if(event.target.className === 'menuItem'){
+            if(event.pageY && event.pageY + 300 > $(window).height()){
+              $('.subMenu').css('top', '-264px');
+            }else{
+                $('.subMenu').css('top', '0px');
+            };
+         };
+         
          this.menuList[index]['selected'] = true;
        },
 
@@ -115,7 +152,7 @@ export default{
        // 发布文章
        publish: (THIS)=>{ 
          publishArticle(THIS.id, THIS.token).then(res=>{
-           // console.log(res.data); 
+           THIS.publishSuccessCallback(THIS.id);
          })
        }
     },

@@ -114,7 +114,8 @@
 <template>
     <div style="position: relative">
         <div id="editorElem" style="text-align:left,"></div>
-        <div class="publish" @click="publishPaper">发布</div>
+        <div class="publish"  v-if="isPublished">已发布</div>
+        <div class="publish" @click="publishPaper" v-else>发布</div>
         <div class="publish preview" @click="preview">预览</div>
         <div class="publish autosave" @click="autosave">保存</div>
         <div class="Preview" v-if="previewShow">
@@ -122,7 +123,7 @@
                 <div @click="toggleShow">返回</div>
                 <div>发布文章</div>
             </div>
-            <div class="content" v-html="contentHTML"></div>
+            <div class="content" v-html="previewHTML"></div>
         </div>
     </div>
 </template>
@@ -133,25 +134,31 @@
     * @author lihongkai
     */
     import EVENT from '../EventBus.js';
+    import {publishArticle}from '../../service/write.js';
 
     export default {
       data () {
         return { 
           contentHTML: '',  // 输入栏里的内容
           Editor: '' , // 编辑器缓存对象
+          previewHTML: '',
           previewShow: false, // 预览
         }
       },
-      props: ['autosave'],
+      props: ['autosave', 'token', '_id', 'isPublished', "publishSuccessCallback"],
       methods: {
-          publishPaper: function () {  // 发布文章
-            window.localStorage.setItem('previewContent', this.contentHTML);
-            window.open('/articlepreview');
+          // 发布文章
+          publishPaper: function () {
+            publishArticle(this._id, this.token).then(res=>{
+               this.publishSuccessCallback(this._id); 
+             })
          },
          preview: function() { // 预览
+            this.previewHTML = document.getElementsByClassName('w-e-text')[0].innerHTML;
             this.toggleShow();
          },
-         toggleShow: function(){ // 显示/隐藏 预览
+         // 显示/隐藏 预览
+         toggleShow: function(){ 
             this.previewShow = !this.previewShow;
          }
       },
