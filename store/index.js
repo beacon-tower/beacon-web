@@ -38,12 +38,8 @@ export const actions = {
       throw error
     }
   },
-  async setSessionToken({ commit }, { token }) {//将已有的token保存到sessionStorage
-    if(!isnull(token)){
-      sessionStorage.setItem('rgtk',token);
-    }else{
+  async setStateToken({ commit }) {//将已有的sessionStorage保存到vuex对象属性上
       commit('SET_TOKEN', sessionStorage.getItem('rgtk'));
-    }
   },
   async reg3({ commit }, { nickname, publicKey, mobile }) {//注册最后一步
     try {

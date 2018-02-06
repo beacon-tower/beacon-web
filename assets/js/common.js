@@ -54,9 +54,13 @@ const validateEmpty = function (values) {
     return false
   }
 }
+const getSessionToken = function () {//获取session的token
+   return sessionStorage.getItem('rgtk');
+}
 export {
   validatePhone,
   isnull,
   validateEmpty,
-  validateEmail
+  validateEmail,
+  getSessionToken
 }

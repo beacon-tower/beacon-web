@@ -117,7 +117,7 @@
         <img src="../assets/images/index_logo.png" class="index-logo" alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <span v-if="$store.state.token" class="login-info">
+          <span v-if="logintoken" class="login-info">
             <img class="pic-img" :src="userPicture" alt="">
             <i class="iconfont icon-sanjiaodown"></i>
             <ul class="button-wrap">
@@ -139,26 +139,27 @@
   </div>
 </template>
 <script>
-  import {isnull} from '../assets/js/common'
+  import {isnull,getSessionToken} from '../assets/js/common'
   import axios from '../plugins/axios'
-  import { getUser} from '../service/user';
+  import {getUser} from '../service/user';
 
   export default{
     data(){
       return {
+        logintoken:null,
         userPicture: require('../assets/images/person.png'),//头像
       }
     },
     mounted(){
-        this.setToken();
+      this.getUserInfo();
     },
     methods: {
-      async setToken(){
-        await this.$store.dispatch('setSessionToken', {token:this.$store.state.token});
-        this.getUserInfo();
-      },
       getUserInfo(){//获取用户信息-头像
-        getUser(this.$store.state.token).then(function (response) {
+        this.logintoken = getSessionToken();
+        if(isnull(this.logintoken)){
+            return
+        }
+        getUser(this.logintoken).then(function (response) {
             let imgObj = response.data.data.avatarImage;
             if(!isnull(imgObj)){
               this.userPicture = imgObj.url;
@@ -170,7 +171,7 @@
       },
       async logout(){//退出
         try {
-          await this.$store.dispatch('logout',{token:this.$store.state.token});
+          await this.$store.dispatch('logout',{token:this.logintoken});
           var result = this.$store.state.result;
           if(result.code == 200){
             //清除所有键值sessionStorage
