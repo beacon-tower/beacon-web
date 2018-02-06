@@ -5,16 +5,12 @@ import axios from '../plugins/axios'
 import {isnull} from '../assets/js/common'
 var qs = require('qs');
 export const state = () => ({
-  token: null,
   result:null,
 })
 
 export const mutations = {
   SET_RESULT: function (state, result) {
     state.result = result
-  },
-  SET_TOKEN: function (state, token) {
-    state.token = token
   }
 }
 export const actions = {
@@ -30,7 +26,6 @@ export const actions = {
     try {
       const { data } = await axios.post('user/login', qs.stringify({ username, publicKey }))
       commit('SET_RESULT', data);
-      commit('SET_TOKEN',data.data)
     } catch (error) {
       if (error.response && error.response.status === 401) {
         throw new Error('Bad credentials')
@@ -38,15 +33,11 @@ export const actions = {
       throw error
     }
   },
-  async setStateToken({ commit }) {//将已有的sessionStorage保存到vuex对象属性上
-      commit('SET_TOKEN', sessionStorage.getItem('rgtk'));
-  },
   async reg3({ commit }, { nickname, publicKey, mobile }) {//注册最后一步
     try {
       const { data } = await axios.post('user/register/third/step',
         qs.stringify({ nickname, publicKey, mobile}))
       commit('SET_RESULT', data);
-      commit('SET_TOKEN',data.data)
     } catch (error) {
       if (error.response && error.response.status === 401) {
         throw new Error('Bad credentials')
@@ -61,6 +52,5 @@ export const actions = {
       }
     });
     commit('SET_RESULT', data);
-    commit('SET_TOKEN', null);
   }
 }

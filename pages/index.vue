@@ -27,6 +27,7 @@
       .index-center {
         margin: 0 25px;
         width: 670px;
+        min-height: 10px;
         .content-wrap {
           border-bottom: 1px solid @linecolor;
           padding-bottom: 30px;
@@ -163,6 +164,17 @@
         }
       }
     }
+    .no-data{
+      color: @graycolor;
+      text-align: center;
+      padding: 10px;
+    }
+    .fire-act-color{
+      color: #0c797d;
+    }
+    a{
+      text-decoration: none;
+    }
   }
 </style>
 <template>
@@ -172,120 +184,109 @@
       <div class="index-left fl">
         <span class="hot-span">热点</span>
         <ul class="hot-ul">
-          <router-link :to="{name:'index'}" tag="li">科技</router-link>
-          <nuxt-link :to="{name:'index'}" tag="li">金融</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">创业</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">体育</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">游戏</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">娱乐</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">情感</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">社会</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">上班</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">校园</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">读书</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">小说</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">旅行</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">历史</nuxt-link>
-          <nuxt-link :to="{name:'index'}" tag="li">想法</nuxt-link>
+          <li :class="[hotAct[index] ? 'act-color':'']" v-for="(item,index) in hotData" :key="index" @click="getArticleListByHot(item.id,index)" >{{item.name}}</li>
           <nuxt-link :to="{name:'hotmore'}" tag="li" class="more-link">更多</nuxt-link>
         </ul>
       </div>
       <div class="index-center fl">
-        <div class="content-wrap clearfloat">
+        <div class="content-wrap clearfloat" v-for="(item,index) in defaultArticleData" :key="index">
           <p class="p-wrap">
-            <img src="../assets/images/person.png" alt="">
-            <span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>
-            <img src="../assets/images/emotion.png" alt="">
-            &nbsp;&nbsp; 被关注：1000
+            <img v-if="item.url" :src="item.url" :onerror="errorAuthImg" alt="">
+            <img src="../assets/images/person.png"  v-else  alt="">
+            <span class="color666">&nbsp;&nbsp;{{item.nickname}}&nbsp;&nbsp;</span>
+            <!--<img src="../assets/images/emotion.png" alt="">-->
+            <span>{{item.topicName}}</span>
+            &nbsp;&nbsp; 被关注：{{item.likesCount}}
           </p>
           <div class="fl content-left">
-            <p class="colorblue">2017的最后一天，2018年的第一天</p>
-            <span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》
-             《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且
-             他们这个作为他们的一个工作方式...</span>
-            <span class="colorgray">5分钟前</span>
+            <p class="colorblue" v-html="item.title"></p>
+            <span class="line-hei-span" v-html="item.content"></span>
+            <span class="colorgray">{{item.createTime}}</span>
             <p class="colorgray icon-p">
-              <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>
-              <span><i class="iconfont icon-yiyue"></i> 25</span>
-              <span><i class="iconfont icon-xiaoxi"></i> 111</span>
-              <span><i class="iconfont icon-xing"></i> 111</span>
-              <span><i class="iconfont icon-cha"></i> 111</span>
+              <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> {{item.coinCount}}</span>
+              <span><i class="iconfont icon-yiyue"></i> {{item.readCount}}</span>
+              <span><i class="iconfont icon-xiaoxi"></i> {{item.commentCount}}</span>
+              <span><i class="iconfont icon-xing"></i> {{item.favoriteCount}}</span>
+              <span><i class="iconfont icon-cha"></i> {{item.followCount}}</span>
             </p>
           </div>
           <div class="fr content-right">
             <img src="../assets/images/article_img.png" alt="">
           </div>
         </div>
-        <div class="content-wrap clearfloat">
-          <p class="p-wrap">
-            <img src="../assets/images/person.png" alt="">
-            <span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>
-            <img src="../assets/images/emotion.png" alt="">
-            &nbsp;&nbsp; 被关注：1000
-          </p>
-          <div class="fl content-left">
-            <p class="colorblue">2017的最后一天，2018年的第一天</p>
-            <span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》
-             《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且
-             他们这个作为他们的一个工作方式...</span>
-            <span class="colorgray">5分钟前</span>
-            <p class="colorgray icon-p">
-              <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>
-              <span><i class="iconfont icon-yiyue"></i> 25</span>
-              <span><i class="iconfont icon-xiaoxi"></i> 111</span>
-              <span><i class="iconfont icon-xing"></i> 111</span>
-              <span><i class="iconfont icon-cha"></i> 111</span>
-            </p>
-          </div>
-          <div class="fr content-right">
-            <img src="../assets/images/article_img.png" alt="">
-          </div>
-        </div>
-        <div class="content-wrap clearfloat">
-          <p class="p-wrap">
-            <img src="../assets/images/person.png" alt="">
-            <span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>
-            <img src="../assets/images/emotion.png" alt="">
-            &nbsp;&nbsp; 被关注：1000
-          </p>
-          <div class="fl content-left">
-            <p class="colorblue">2017的最后一天，2018年的第一天</p>
-            <span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》
-             《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且
-             他们这个作为他们的一个工作方式...</span>
-            <span class="colorgray">5分钟前</span>
-            <p class="colorgray icon-p">
-              <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>
-              <span><i class="iconfont icon-yiyue"></i> 25</span>
-              <span><i class="iconfont icon-xiaoxi"></i> 111</span>
-              <span><i class="iconfont icon-xing"></i> 111</span>
-              <span><i class="iconfont icon-cha"></i> 111</span>
-            </p>
-          </div>
-          <div class="fr content-right">
-            <img src="../assets/images/article_img.png" alt="">
-          </div>
-        </div>
+        <p class="no-data" v-if="noMoreArticleData!=''">{{noMoreArticleData}}</p>
+        <!--<div class="content-wrap clearfloat">-->
+          <!--<p class="p-wrap">-->
+            <!--<img src="../assets/images/person.png" alt="">-->
+            <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
+            <!--<img src="../assets/images/emotion.png" alt="">-->
+            <!--&nbsp;&nbsp; 被关注：1000-->
+          <!--</p>-->
+          <!--<div class="fl content-left">-->
+            <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
+            <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
+             <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
+             <!--他们这个作为他们的一个工作方式...</span>-->
+            <!--<span class="colorgray">5分钟前</span>-->
+            <!--<p class="colorgray icon-p">-->
+              <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
+              <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
+              <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
+              <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
+              <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
+            <!--</p>-->
+          <!--</div>-->
+          <!--<div class="fr content-right">-->
+            <!--<img src="../assets/images/article_img.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="content-wrap clearfloat">-->
+          <!--<p class="p-wrap">-->
+            <!--<img src="../assets/images/person.png" alt="">-->
+            <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
+            <!--<img src="../assets/images/emotion.png" alt="">-->
+            <!--&nbsp;&nbsp; 被关注：1000-->
+          <!--</p>-->
+          <!--<div class="fl content-left">-->
+            <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
+            <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
+             <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
+             <!--他们这个作为他们的一个工作方式...</span>-->
+            <!--<span class="colorgray">5分钟前</span>-->
+            <!--<p class="colorgray icon-p">-->
+              <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
+              <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
+              <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
+              <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
+              <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
+            <!--</p>-->
+          <!--</div>-->
+          <!--<div class="fr content-right">-->
+            <!--<img src="../assets/images/article_img.png" alt="">-->
+          <!--</div>-->
+        <!--</div>-->
       </div>
       <div class="index-right fl">
         <a href="javascript:;" @click.prevent="todayHot" class="today-hot right-hot">
           <img src="../assets/images/today.png" class="today-img" alt="">
-          <span class="hot-txt">今日最火</span>
+          <span class="hot-txt" :class="[bestFireAct[0] ? 'fire-act-color' :'']">今日最火</span>
         </a>
-        <a href="javascript:;" class="seven-hot right-hot">
+        <a href="javascript:;" @click.prevent="sevenHot" class="seven-hot right-hot">
           <img src="../assets/images/hot.png" class="seven-img" alt="">
-          <span class="seven-txt">7日最火</span>
+          <span class="seven-txt" :class="[bestFireAct[1] ? 'fire-act-color' :'']">7日最火</span>
         </a>
-        <a href="javascript:;" class="history-hot right-hot">
+        <a href="javascript:;" @click.prevent="historyHot" class="history-hot right-hot">
           <img src="../assets/images/time.png" class="history-img" alt="">
-          <span class="history-txt">历史最火</span>
+          <span class="history-txt" :class="[bestFireAct[2] ? 'fire-act-color' :'']">历史最火</span>
         </a>
-        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;" @click="changeAuthor"><i class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
+        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;cursor: pointer" @click="changeAuthor"><i class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
         </p>
+
         <ul class="author-ul">
-          <li class="clearfloat" v-for="(item,index) in authData" :key="index">
+          <li v-if="authData.length<=0">暂无数据</li>
+          <li v-else class="clearfloat" v-for="(item,index) in authData" :key="index">
             <div class="author-li-left fl">
-              <img v-if="item.avatarImg" :src="item.avatarImg.url" :onerror="errorImg" alt="">
+              <img v-if="item.avatarImg" :src="item.avatarImg.url" :onerror="errorAuthImg" alt="">
               <img src="../assets/images/person.png"  v-else  alt="">
               <span class="person-name">{{item.nickname}}</span>
               <p class="txt-p">{{item.wordsCount}}万字 · {{item.followCount}}人关注</p>
@@ -301,53 +302,124 @@
 </template>
 
 <script>
-  import {isnull,getSessionToken} from '../assets/js/common'
+  import {isnull,getSessionToken,pushActClass} from '../assets/js/common'
   import Pagination from '../components/Pagination';
   import {getTopicList,getDefaultArticleList,getArticleListById,
     getTodayHot,getSevenHot,getHistoryHot,getAuthList} from '../service/index'
 
   export default {
-//  asyncData ({ params }) {//页面刷新时不会进入这个函数，页面跳转会进入
-//    return axios.post('user/login.do',{
-//      userName: 'ADMIN',
-//      password: 'uims1234'
-//    })
-//      .then((res) => {
-//        return { title: res.data.responseMsg }
-//      })
-//  },
     data(){
       return {
-        errorImg:'this.src="' + require('../assets/images/person.png') + '"',
+        errorAuthImg:'this.src="' + require('../assets/images/person.png') + '"',
         authData: [],//作者列表
         authPage:1,//作者数据当前页
         moreSign:'default',//文章列表加载更多的标记
+        hotParams:{//热点（话题）参数
+          limit:10
+        },
+        hotData:[],//热点（话题）列表数据
+        hotAct:[],//热点（话题）选中
+        bestFireAct:[false,false,false],//今日，7日，历史最火选中
+        topicDetailParams:{//话题详情文章列表参数
+          topicId:null,
+          pageNumber:1,
+          pageSize:10
+        },
         todayHotArticleParams:{//今日最火文章参数对象
           pageNumber:1,
           pageSize:10
         },
-        todayHotArticleData:[],//今日最火文章列表数据
+        sevenHotArticleParams:{//7日最火文章参数对象
+          pageNumber:1,
+          pageSize:10
+        },
+        historyHotArticleParams:{//历史最火文章参数对象
+          pageNumber:1,
+          pageSize:10
+        },
         defaultArticleParams:{//默认文章参数对象
           pageNumber:1,
           pageSize:10
         },
         defaultArticleData:[],//默认文章列表数据
+        noMoreArticleData:'',//无更多文章数据
       }
     },
     components: {},
-    mounted(){
+    beforeMount(){
+      this.hotCallback();
       this.defaultArticleCallback();
       this.authListCallback();
     },
+    mounted(){
+      var self = this;
+      $(window).scroll(function () {
+        let scrollTop = $(this).scrollTop()
+        let scrollHeight = $(document).height()
+        let windowHeight = $(this).height()
+        if (scrollTop + windowHeight === scrollHeight) {//滚动加载更多
+          if(self.noMoreArticleData == '暂无文章数据了'){
+            return
+          }
+           switch(self.moreSign){
+             case 'topic'://热点
+               self.topicDetailParams.pageNumber++;
+               self.articleListByHotCallback();
+                 break;
+             case 'todyhot'://今日最火
+               self.todayHotArticleParams.pageNumber++;
+               self.todayHotCallback();
+               break;
+             case 'sevenhot'://7日最火
+               self.sevenHotArticleParams.pageNumber++;
+               self.sevenHotCallback();
+               break;
+             case 'historyhot'://历史最火
+               self.historyHotArticleParams.pageNumber++;
+               self.historyHotCallback();
+               break;
+             default://默认
+               self.defaultArticleCallback();
+           }
+        }
+      })
+    },
     methods: {
+        handleAritcleData(data){//统一处理文章数据
+            if(isnull(data)|| data.length<=0){
+              this.noMoreArticleData = '暂无文章数据了';
+            }else{
+              this.noMoreArticleData = '';
+              data.forEach((item,index)=>{
+                this.defaultArticleData.push(item);
+              });
+            }
+        },
+      hotCallback(){//热点（话题）列表数据处理
+        getTopicList(this.hotParams).then((response) => {
+          this.hotData = response.data.data;
+        })
+      },
+      articleListByHotCallback(){//通过热点（话题）id查询文章列表数据处理
+        getArticleListById(this.topicDetailParams).then((response) => {
+          this.handleAritcleData(response.data.data);
+        })
+      },
+      getArticleListByHot(id,index){//通过热点（话题）id查询文章列表
+        this.moreSign = 'topic';
+        this.bestFireAct = [false,false,false];
+        this.hotAct = pushActClass(this.hotData,index);
+        this.defaultArticleData = [];
+        this.topicDetailParams.topicId = id;
+        this.topicDetailParams.pageNumber = 1;
+        this.articleListByHotCallback();
+      },
       defaultArticleCallback(){//默认文章列表数据处理
-        getDefaultArticleList(this.defaultArticleParams,
-          getSessionToken()).then((response) => {
-//          this.defaultArticleData = response.data.data;
+        getDefaultArticleList(this.defaultArticleParams).then((response) => {
+          this.handleAritcleData(response.data.data);
         })
       },
       authListCallback(){//获取作者列表数据处理
-        console.log(getSessionToken(),'index-token');
         getAuthList({
           pageNumber: this.authPage,
           pageSize: 10
@@ -364,13 +436,42 @@
       },
       todayHotCallback(){//今日最火数据处理
         getTodayHot(this.todayHotArticleParams).then((response) => {
-//          this.todayHotArticleData = response.data.data;
+          this.handleAritcleData(response.data.data);
         })
       },
       todayHot(){//今日最火
         this.moreSign = 'todyhot';
+        this.hotAct = [];
+        this.bestFireAct = pushActClass(this.bestFireAct,0);
+        this.defaultArticleData = [];
         this.todayHotArticleParams.pageNumber = 1;
         this.todayHotCallback();
+      },
+      sevenHotCallback(){//今日最火数据处理
+        getSevenHot(this.sevenHotArticleParams).then((response) => {
+          this.handleAritcleData(response.data.data);
+        })
+      },
+      sevenHot(){
+        this.moreSign = 'sevenhot';
+        this.hotAct = [];
+        this.bestFireAct = pushActClass(this.bestFireAct,1);
+        this.defaultArticleData = [];
+        this.sevenHotArticleParams.pageNumber = 1;
+        this.sevenHotCallback();
+      },
+      historyHotCallback(){//历史最火数据处理
+        getHistoryHot(this.historyHotArticleParams).then((response) => {
+          this.handleAritcleData(response.data.data);
+        })
+      },
+      historyHot(){
+        this.moreSign = 'historyhot';
+        this.hotAct = [];
+        this.bestFireAct = pushActClass(this.bestFireAct,2);
+        this.defaultArticleData = [];
+        this.historyHotArticleParams.pageNumber = 1;
+        this.historyHotCallback();
       }
     }
   }

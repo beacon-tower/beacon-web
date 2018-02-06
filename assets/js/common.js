@@ -57,10 +57,28 @@ const validateEmpty = function (values) {
 const getSessionToken = function () {//获取session的token
    return sessionStorage.getItem('rgtk');
 }
+/**
+ * 选中菜单的样式
+ * @param respData data
+ * @param curIndex 选中菜单的下标
+ * @returns {Array}
+ */
+const pushActClass = function (respData, curIndex) {
+  var curTickClass = [];
+  for (var i = 0; i < respData.length; i++) {
+    if (i == curIndex) {
+      curTickClass.push(true);
+    } else {
+      curTickClass.push(false);
+    }
+  }
+  return curTickClass;
+}
 export {
   validatePhone,
   isnull,
   validateEmpty,
   validateEmail,
-  getSessionToken
+  getSessionToken,
+  pushActClass
 }
