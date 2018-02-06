@@ -106,7 +106,7 @@ export default{
         ]
       }
     },
-    props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token", "deleteArticle"],
+    props: ['isPublished', 'id', 'show' , 'hideMenu', "typeList", "token", "deleteArticle", "publishSuccessCallback"],
     methods: {
 
        // 阻止冒泡
@@ -152,7 +152,7 @@ export default{
        // 发布文章
        publish: (THIS)=>{ 
          publishArticle(THIS.id, THIS.token).then(res=>{
-           // console.log(res.data); 
+           THIS.publishSuccessCallback(THIS.id);
          })
        }
     },
