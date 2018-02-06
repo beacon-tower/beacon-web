@@ -124,6 +124,7 @@
           })
           var result = this.$store.state.result;
           if(result.code == 200){
+            sessionStorage.setItem('rgtk',result.data);
             this.$router.push({name:'index'});
           }else{
             this.errTip = result.msg;

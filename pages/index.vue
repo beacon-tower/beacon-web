@@ -27,50 +27,51 @@
       .index-center {
         margin: 0 25px;
         width: 670px;
-        .content-wrap{
+        .content-wrap {
           border-bottom: 1px solid @linecolor;
           padding-bottom: 30px;
           margin-bottom: 20px;
-          .p-wrap{
+          .p-wrap {
             color: @graycolor;
-            img{
+            img {
               vertical-align: middle;
             }
           }
         }
-        .content-left{
+        .content-left {
           width: 546px;
           color: @color666;
-          .colorblue{
+          .colorblue {
             font-weight: bold;
             font-size: 16px;
             margin-top: 10px;
             margin-bottom: 10px;
           }
-          .line-hei-span{
+          .line-hei-span {
             line-height: 22px;
           }
-          .fire_coin{
+          .fire_coin {
             width: 16px;
           }
-          .icon-yiyue{
+          .icon-yiyue {
             font-size: 20px;
           }
-          .icon-p{
+          .icon-p {
             font-size: 12px;
             margin-top: 2px;
-            > span{
+            > span {
               margin-right: 10px;
             }
           }
         }
-        .content-right{
+        .content-right {
           width: 106px;
           margin-top: 20px;
         }
       }
       .index-right {
         .right-hot {
+          display: block;
           width: 238px;
           height: 75px;
           .boder_radius(6px);
@@ -133,7 +134,9 @@
           margin-top: 10px;
           .author-li-left {
             img {
+              display: inline-block;
               width: 40px;
+              height: 42px;
               vertical-align: top;
             }
             .person-name {
@@ -188,31 +191,31 @@
         </ul>
       </div>
       <div class="index-center fl">
-         <div class="content-wrap clearfloat">
-           <p class="p-wrap">
-             <img src="../assets/images/person.png" alt="">
-             <span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>
-             <img src="../assets/images/emotion.png" alt="">
-             &nbsp;&nbsp; 被关注：1000
-           </p>
-           <div class="fl content-left">
-             <p class="colorblue">2017的最后一天，2018年的第一天</p>
+        <div class="content-wrap clearfloat">
+          <p class="p-wrap">
+            <img src="../assets/images/person.png" alt="">
+            <span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>
+            <img src="../assets/images/emotion.png" alt="">
+            &nbsp;&nbsp; 被关注：1000
+          </p>
+          <div class="fl content-left">
+            <p class="colorblue">2017的最后一天，2018年的第一天</p>
             <span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》
              《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且
              他们这个作为他们的一个工作方式...</span>
-             <span class="colorgray">5分钟前</span>
-             <p class="colorgray icon-p">
-               <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>
-               <span><i class="iconfont icon-yiyue"></i> 25</span>
-               <span><i class="iconfont icon-xiaoxi"></i> 111</span>
-               <span><i class="iconfont icon-xing"></i> 111</span>
-               <span><i class="iconfont icon-cha"></i> 111</span>
-             </p>
-           </div>
-           <div class="fr content-right">
-             <img src="../assets/images/article_img.png" alt="">
-           </div>
-         </div>
+            <span class="colorgray">5分钟前</span>
+            <p class="colorgray icon-p">
+              <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>
+              <span><i class="iconfont icon-yiyue"></i> 25</span>
+              <span><i class="iconfont icon-xiaoxi"></i> 111</span>
+              <span><i class="iconfont icon-xing"></i> 111</span>
+              <span><i class="iconfont icon-cha"></i> 111</span>
+            </p>
+          </div>
+          <div class="fr content-right">
+            <img src="../assets/images/article_img.png" alt="">
+          </div>
+        </div>
         <div class="content-wrap clearfloat">
           <p class="p-wrap">
             <img src="../assets/images/person.png" alt="">
@@ -265,66 +268,27 @@
         </div>
       </div>
       <div class="index-right fl">
-        <nuxt-link :to="{name:'index'}" tag="div" class="today-hot right-hot">
+        <a href="javascript:;" @click.prevent="todayHot" class="today-hot right-hot">
           <img src="../assets/images/today.png" class="today-img" alt="">
           <span class="hot-txt">今日最火</span>
-        </nuxt-link>
-        <nuxt-link :to="{name:'index'}" tag="div" class="seven-hot right-hot">
+        </a>
+        <a href="javascript:;" class="seven-hot right-hot">
           <img src="../assets/images/hot.png" class="seven-img" alt="">
           <span class="seven-txt">7日最火</span>
-        </nuxt-link>
-        <nuxt-link :to="{name:'index'}" tag="div" class="history-hot right-hot">
+        </a>
+        <a href="javascript:;" class="history-hot right-hot">
           <img src="../assets/images/time.png" class="history-img" alt="">
           <span class="history-txt">历史最火</span>
-        </nuxt-link>
-        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;"><i class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
+        </a>
+        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;" @click="changeAuthor"><i class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
         </p>
         <ul class="author-ul">
-          <li class="clearfloat">
+          <li class="clearfloat" v-for="(item,index) in authData" :key="index">
             <div class="author-li-left fl">
-              <img src="../assets/images/person.png" alt="">
-              <span class="person-name">董小姐</span>
-              <p class="txt-p">100万字 · 20万人关注</p>
-            </div>
-            <p class="fr">
-              <span class="attention">+关注</span>
-            </p>
-          </li>
-          <li class="clearfloat">
-            <div class="author-li-left fl">
-              <img src="../assets/images/person.png" alt="">
-              <span class="person-name">董小姐</span>
-              <p class="txt-p">100万字 · 20万人关注</p>
-            </div>
-            <p class="fr">
-              <span class="attention">+关注</span>
-            </p>
-          </li>
-          <li class="clearfloat">
-            <div class="author-li-left fl">
-              <img src="../assets/images/person.png" alt="">
-              <span class="person-name">董小姐</span>
-              <p class="txt-p">100万字 · 20万人关注</p>
-            </div>
-            <p class="fr">
-              <span class="attention">+关注</span>
-            </p>
-          </li>
-          <li class="clearfloat">
-            <div class="author-li-left fl">
-              <img src="../assets/images/person.png" alt="">
-              <span class="person-name">董小姐</span>
-              <p class="txt-p">100万字 · 20万人关注</p>
-            </div>
-            <p class="fr">
-              <span class="attention">+关注</span>
-            </p>
-          </li>
-          <li class="clearfloat">
-            <div class="author-li-left fl">
-              <img src="../assets/images/person.png" alt="">
-              <span class="person-name">董小姐</span>
-              <p class="txt-p">100万字 · 20万人关注</p>
+              <img v-if="item.avatarImg" :src="item.avatarImg.url" :onerror="errorImg" alt="">
+              <img src="../assets/images/person.png"  v-else  alt="">
+              <span class="person-name">{{item.nickname}}</span>
+              <p class="txt-p">{{item.wordsCount}}万字 · {{item.followCount}}人关注</p>
             </div>
             <p class="fr">
               <span class="attention">+关注</span>
@@ -337,8 +301,11 @@
 </template>
 
 <script>
+  import {isnull,getSessionToken} from '../assets/js/common'
   import Pagination from '../components/Pagination';
-  import axios from '../plugins/axios'
+  import {getTopicList,getDefaultArticleList,getArticleListById,
+    getTodayHot,getSevenHot,getHistoryHot,getAuthList} from '../service/index'
+
   export default {
 //  asyncData ({ params }) {//页面刷新时不会进入这个函数，页面跳转会进入
 //    return axios.post('user/login.do',{
@@ -350,19 +317,60 @@
 //      })
 //  },
     data(){
-        return{
-
-        }
+      return {
+        errorImg:'this.src="' + require('../assets/images/person.png') + '"',
+        authData: [],//作者列表
+        authPage:1,//作者数据当前页
+        moreSign:'default',//文章列表加载更多的标记
+        todayHotArticleParams:{//今日最火文章参数对象
+          pageNumber:1,
+          pageSize:10
+        },
+        todayHotArticleData:[],//今日最火文章列表数据
+        defaultArticleParams:{//默认文章参数对象
+          pageNumber:1,
+          pageSize:10
+        },
+        defaultArticleData:[],//默认文章列表数据
+      }
     },
-    components: {
-
-    },
+    components: {},
     mounted(){
-      console.log(process.env.NODE_ENV);
+      this.defaultArticleCallback();
+      this.authListCallback();
     },
     methods: {
-      changePage(page){ // 翻页
-        console.log(page,'翻页');
+      defaultArticleCallback(){//默认文章列表数据处理
+        getDefaultArticleList(this.defaultArticleParams,
+          getSessionToken()).then((response) => {
+//          this.defaultArticleData = response.data.data;
+        })
+      },
+      authListCallback(){//获取作者列表数据处理
+        console.log(getSessionToken(),'index-token');
+        getAuthList({
+          pageNumber: this.authPage,
+          pageSize: 10
+        },getSessionToken()).then((response) => {
+          this.authData = response.data.data;
+        })
+      },
+      changeAuthor(){ // 换一换，作者数据列表
+        if(this.authData.length<=0){
+            return
+        }
+        this.authPage++;
+        this.authListCallback();
+      },
+      todayHotCallback(){//今日最火数据处理
+        getTodayHot(this.todayHotArticleParams).then((response) => {
+//          this.todayHotArticleData = response.data.data;
+        })
+      },
+      todayHot(){//今日最火
+        this.moreSign = 'todyhot';
+        this.todayHotArticleParams.pageNumber = 1;
+        this.todayHotCallback();
       }
     }
   }

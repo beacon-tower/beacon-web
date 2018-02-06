@@ -51,6 +51,7 @@
             })
             var result = this.$store.state.result;
             if(result.code == 200){
+              sessionStorage.setItem('rgtk',result.data);
               this.$router.push({name: 'register4'});
             } else if (result.code == 500) {
               this.errTip = '服务器错误，请联系管理员';
