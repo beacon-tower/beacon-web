@@ -42,7 +42,6 @@
 
  // 多话题移动文章
  export function moveArticle( topicId, id, TOKEN = ''){
-     alert(topicId);
      return axios({
         method: 'post',
         url: `author/posts/${id}/move`,
@@ -70,11 +69,11 @@
  }
 
  // 保存文章
- export function saveArticle(data, id, TOKEN = ''){
+ export function saveArticle(postInputDto, TOKEN = ''){
      return axios({
         method: 'post',
         url: `author/posts`,
         headers:  {'token': TOKEN},
-        data: data
+        data: postInputDto
      })
  }

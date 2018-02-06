@@ -129,7 +129,7 @@
             <nuxt-link :to="{name:'login'}" class="login-link"><i class="iconfont icon-suo"></i>&nbsp;登录</nuxt-link>
             <nuxt-link :to="{name:'register1'}" class="primary-btn reg-btn">注册</nuxt-link>
          </span>
-          <nuxt-link :to="{name:'index'}" class="new-article"></nuxt-link>
+          <nuxt-link :to="{name:'write'}" class="new-article"></nuxt-link>
         </p>
       </div>
     </div>

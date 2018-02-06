@@ -54,7 +54,7 @@
         }
     }
     .publish{
-        width: 100px;
+        width: 70px;
         text-align: center;
         line-height: 50px;
         top: 0;
@@ -62,7 +62,7 @@
         position: absolute;
         font-size: 18px;
         color: #333;
-        font-weight:bold;
+        font-weight: normal;
         cursor: pointer;
         &:hover{
             color: #fff;
@@ -70,7 +70,10 @@
         }
     }
     .preview{
-         right: 130px;
+         right: 100px;
+    }
+    .autosave{
+        right: 170px;
     }
     .Preview{
         position: fixed;
@@ -111,8 +114,9 @@
 <template>
     <div style="position: relative">
         <div id="editorElem" style="text-align:left,"></div>
-        <div class="publish" @click="publishPaper">发布文章</div>
+        <div class="publish" @click="publishPaper">发布</div>
         <div class="publish preview" @click="preview">预览</div>
+        <div class="publish autosave" @click="autosave">保存</div>
         <div class="Preview" v-if="previewShow">
             <div class="menu">
                 <div @click="toggleShow">返回</div>
@@ -128,6 +132,8 @@
     * @desc 编辑器内容输入模块 -- 单独提出来
     * @author lihongkai
     */
+    import EVENT from '../EventBus.js';
+
     export default {
       data () {
         return { 
@@ -136,6 +142,7 @@
           previewShow: false, // 预览
         }
       },
+      props: ['autosave'],
       methods: {
           publishPaper: function () {  // 发布文章
             window.localStorage.setItem('previewContent', this.contentHTML);
@@ -150,13 +157,14 @@
       },
       destroyed(){
            window.localStorage.setItem('previewContent', '');
+           // EVENT.off('CONTENT_HTML');
       },
       mounted(){
           var E = require('wangeditor');
           var editor = new E('#editorElem');
 
           // 自定义菜单配置
-         editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+          editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
 
           editor.customConfig.menus = [
                 'head',
@@ -171,7 +179,16 @@
                 'redo'  // 重复
           ];
           editor.customConfig.onchange = (html) => {
-            this.contentHTML = html
+            this.contentHTML = html;
+            setTimeout(()=>{
+                if(html === this.contentHTML){
+                    this.autosave();
+                }
+            }, 5000);
+          };
+
+          editor.customConfig.onblur = () =>{
+              this.autosave();
           };
 
           editor.create();
@@ -181,6 +198,11 @@
           let height = $(window).height() - 200;
           $('.w-e-text-container').css('height', height + "px").css('border', 'none');
           $('.w-e-toolbar').css('height', '50px').css('border', 'none').css('background', '#d9d9d9').css('border-bottom', '1px solid #ccc');
+
+          // 接收文本信息 填入编辑器
+          EVENT.$on('CONTENT_HTML', function(data){
+            editor.txt.html(data);
+          });
       }
     }
 </script>
