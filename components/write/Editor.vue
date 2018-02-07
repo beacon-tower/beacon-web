@@ -36,6 +36,9 @@
     s, strike, del {
         text-decoration: line-through!important;
     }
+    .w-e-list .w-e-icon-paragraph-left, .w-e-icon-paragraph-center, .w-e-icon-paragraph-right{
+        display: none;
+    }
     #editorElem{
         height: 100%;
         .w-e-menu{
