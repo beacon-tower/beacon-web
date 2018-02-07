@@ -40,7 +40,7 @@
           }
         }
         .content-left {
-          width: 546px;
+          /*width: 546px;*/
           color: @color666;
           .colorblue {
             font-weight: bold;
@@ -200,7 +200,7 @@
           </p>
           <div class="fl content-left">
             <p class="colorblue" v-html="item.title"></p>
-            <span class="line-hei-span" v-html="item.content"></span>
+            <div class="line-hei-span" v-html="item.content"></div>
             <span class="colorgray">{{item.createTime}}</span>
             <p class="colorgray icon-p">
               <span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> {{item.coinCount}}</span>
@@ -210,10 +210,11 @@
               <span><i class="iconfont icon-cha"></i> {{item.followCount}}</span>
             </p>
           </div>
-          <div class="fr content-right">
-            <img src="../assets/images/article_img.png" alt="">
-          </div>
+          <!--<div class="fr content-right">-->
+            <!--<img src="../assets/images/article_img.png" alt="">-->
+          <!--</div>-->
         </div>
+        <p style="text-align: center"><img src="../assets/images/loading.gif" v-show="isShowLoading" alt=""></p>
         <p class="no-data" v-if="noMoreArticleData!=''">{{noMoreArticleData}}</p>
         <!--<div class="content-wrap clearfloat">-->
           <!--<p class="p-wrap">-->
@@ -314,6 +315,7 @@
         authData: [],//作者列表
         authPage:1,//作者数据当前页
         moreSign:'default',//文章列表加载更多的标记
+        isShowLoading:true,
         hotParams:{//热点（话题）参数
           limit:10
         },
@@ -361,6 +363,10 @@
           if(self.noMoreArticleData == '暂无文章数据了'){
             return
           }
+          if(self.isShowLoading){//已经发送了，等待处理完了之后再发送（防止重复请求）
+              return
+          }
+          self.isShowLoading = true;
            switch(self.moreSign){
              case 'topic'://热点
                self.topicDetailParams.pageNumber++;
@@ -379,6 +385,7 @@
                self.historyHotCallback();
                break;
              default://默认
+               self.defaultArticleParams.pageNumber++;
                self.defaultArticleCallback();
            }
         }
@@ -394,6 +401,7 @@
                 this.defaultArticleData.push(item);
               });
             }
+          this.isShowLoading = false;
         },
       hotCallback(){//热点（话题）列表数据处理
         getTopicList(this.hotParams).then((response) => {
@@ -407,6 +415,7 @@
       },
       getArticleListByHot(id,index){//通过热点（话题）id查询文章列表
         this.moreSign = 'topic';
+        this.isShowLoading = true;
         this.bestFireAct = [false,false,false];
         this.hotAct = pushActClass(this.hotData,index);
         this.defaultArticleData = [];
@@ -441,6 +450,7 @@
       },
       todayHot(){//今日最火
         this.moreSign = 'todyhot';
+        this.isShowLoading = true;
         this.hotAct = [];
         this.bestFireAct = pushActClass(this.bestFireAct,0);
         this.defaultArticleData = [];
@@ -454,6 +464,7 @@
       },
       sevenHot(){
         this.moreSign = 'sevenhot';
+        this.isShowLoading = true;
         this.hotAct = [];
         this.bestFireAct = pushActClass(this.bestFireAct,1);
         this.defaultArticleData = [];
@@ -467,6 +478,7 @@
       },
       historyHot(){
         this.moreSign = 'historyhot';
+        this.isShowLoading = true;
         this.hotAct = [];
         this.bestFireAct = pushActClass(this.bestFireAct,2);
         this.defaultArticleData = [];
