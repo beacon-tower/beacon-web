@@ -3,7 +3,6 @@
  */
 import axios from '../plugins/axios'
 import {isnull} from '../assets/js/common'
-var qs = require('qs');
 export const state = () => ({
   result:null,
 })
@@ -24,7 +23,7 @@ export const actions = {
   },
   async login({ commit }, { username, publicKey }) {//登录
     try {
-      const { data } = await axios.post('user/login', qs.stringify({ username, publicKey }))
+      const { data } = await axios.post('user/login', { username, publicKey })
       commit('SET_RESULT', data);
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -36,7 +35,7 @@ export const actions = {
   async reg3({ commit }, { nickname, publicKey, mobile }) {//注册最后一步
     try {
       const { data } = await axios.post('user/register/third/step',
-        qs.stringify({ nickname, publicKey, mobile}))
+        { nickname, publicKey, mobile})
       commit('SET_RESULT', data);
     } catch (error) {
       if (error.response && error.response.status === 401) {

@@ -75,10 +75,9 @@
       },
       getSecretInfo(){//获取密钥和地址信息
         if (sessionStorage.getItem('ph')) {
-          var qs = require('qs');
-          axios.post('user/register/second/step', qs.stringify({
+          axios.post('user/register/second/step', {
             mobile: sessionStorage.getItem('ph')
-          }))
+          })
             .then((response) => {
               if (response.data.code == 200) {
                 this.regForm.password = response.data.data.secret;

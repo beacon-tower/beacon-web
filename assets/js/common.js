@@ -30,7 +30,7 @@ const validateEmail = function (_vm, value) {
  * @returns {boolean}
  */
 const isnull = function (val) {
-  if (val === null || val === 'null' || val === '' || val === undefined || val === 'undefined'|| val === -1) {
+  if (val === null || val === 'null' || val === '' || val === undefined || val === 'undefined' || val === -1) {
     return true;
   } else {
     return false;
@@ -55,7 +55,7 @@ const validateEmpty = function (values) {
   }
 }
 const getSessionToken = function () {//获取session的token
-   return sessionStorage.getItem('rgtk');
+  return sessionStorage.getItem('rgtk');
 }
 /**
  * 选中菜单的样式
@@ -74,11 +74,23 @@ const pushActClass = function (respData, curIndex) {
   }
   return curTickClass;
 }
+const handleNeedLogin = function (response, successCb) {//请求结果
+  if (response.data.code == 200) {
+    if (successCb) {
+      successCb();
+    }
+  } else {
+    if (response.data.code == 401) {//请登录的弹框
+      alert(response.data.msg);
+    }
+  }
+}
 export {
   validatePhone,
   isnull,
   validateEmpty,
   validateEmail,
   getSessionToken,
-  pushActClass
+  pushActClass,
+  handleNeedLogin
 }

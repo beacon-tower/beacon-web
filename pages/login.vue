@@ -1,6 +1,6 @@
 <template>
-  <div class="login-wrap" style="height: 430px;">
-    <form action="">
+  <div class="login-wrap"  style="height: 430px;">
+    <form action="" @keyup.enter="loginMethod">
       <div class="input-wrap">
         <div class="form-icon-group">
           <i class="iconfont icon-yonghu"></i>

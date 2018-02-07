@@ -11,12 +11,12 @@ export function getTopicList(param){
   })
 }
 // 获取默认文章列表
-export function getDefaultArticleList(param,TOKEN){
+export function getDefaultArticleList(param){
   return axios({
     method: 'get',
     url: 'index/posts/list',
     params:param,
-    headers:  {'token': TOKEN}
+    // headers:  {'token': TOKEN}
   })
 }
 // 根据话题（热点）id获取文章列表
@@ -57,6 +57,14 @@ export function getAuthList(param,TOKEN){
     method: 'get',
     url: 'index/author/list',
     params:param,
+    headers:  {'token': TOKEN}
+  })
+}
+// 添加关注
+export function addAuthAttention(id,TOKEN){
+  return axios({
+    method: 'post',
+    url: `posts/toggle_follow_author/${id}`,
     headers:  {'token': TOKEN}
   })
 }

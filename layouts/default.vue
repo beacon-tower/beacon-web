@@ -117,7 +117,7 @@
         <img src="../assets/images/index_logo.png" class="index-logo" alt="">
         <p class="fr right-p">
           <nuxt-link :to="{name:'index'}" class="index-link"><i class="iconfont icon-diqiu"></i>&nbsp;首页</nuxt-link>
-          <span v-if="logintoken" class="login-info">
+          <span v-if="logintoken && logintoken.length>0" class="login-info">
             <img class="pic-img" :src="userPicture" alt="">
             <i class="iconfont icon-sanjiaodown"></i>
             <ul class="button-wrap">
@@ -176,9 +176,10 @@
           if(result.code == 200){
             //清除所有键值sessionStorage
             sessionStorage.clear();
+            this.logintoken = null;
             this.$router.push({name:'index'});
           }else{
-            alert(data.msg);
+            alert(result.msg);
           }
         } catch (e) {
           alert(e.message);

@@ -54,8 +54,7 @@
               this.errTip = '验证码不能为空';
             }else{
               sessionStorage.setItem('ph',this.regForm.mobile);
-              var qs = require('qs');
-              axios.post('user/register/first/step', qs.stringify(this.regForm))
+              axios.post('user/register/first/step', this.regForm)
                 .then( (response)=> {
                   if(response.data.code==200){
                     this.$router.push({name: 'register2'});
@@ -111,11 +110,10 @@
         }else{
             if(validatePhone(this,this.regForm.mobile)){
               let countID = this.etClocking(this, 60);
-              var qs = require('qs');
-              axios.post('sms/code', qs.stringify({
+              axios.post('sms/code', {
                 mobile:this.regForm.mobile,
                 type:'register'
-              }))
+              })
                 .then( (response)=> {
                   if (response.data.code != 200) {
                     this.clearClockingTime(this, countID);

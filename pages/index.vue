@@ -164,15 +164,15 @@
         }
       }
     }
-    .no-data{
+    .no-data {
       color: @graycolor;
       text-align: center;
       padding: 10px;
     }
-    .fire-act-color{
+    .fire-act-color {
       color: #0c797d;
     }
-    a{
+    a {
       text-decoration: none;
     }
   }
@@ -184,7 +184,9 @@
       <div class="index-left fl">
         <span class="hot-span">热点</span>
         <ul class="hot-ul">
-          <li :class="[hotAct[index] ? 'act-color':'']" v-for="(item,index) in hotData" :key="index" @click="getArticleListByHot(item.id,index)" >{{item.name}}</li>
+          <li :class="[hotAct[index] ? 'act-color':'']" v-for="(item,index) in hotData" :key="index"
+              @click="getArticleListByHot(item.id,index)">{{item.name}}
+          </li>
           <nuxt-link :to="{name:'hotmore'}" tag="li" class="more-link">更多</nuxt-link>
         </ul>
       </div>
@@ -192,7 +194,7 @@
         <div class="content-wrap clearfloat" v-for="(item,index) in defaultArticleData" :key="index">
           <p class="p-wrap">
             <img v-if="item.url" :src="item.url" :onerror="errorAuthImg" alt="">
-            <img src="../assets/images/person.png"  v-else  alt="">
+            <img src="../assets/images/person.png" v-else alt="">
             <span class="color666">&nbsp;&nbsp;{{item.nickname}}&nbsp;&nbsp;</span>
             <!--<img src="../assets/images/emotion.png" alt="">-->
             <span>{{item.topicName}}</span>
@@ -211,60 +213,60 @@
             </p>
           </div>
           <!--<div class="fr content-right">-->
-            <!--<img src="../assets/images/article_img.png" alt="">-->
+          <!--<img src="../assets/images/article_img.png" alt="">-->
           <!--</div>-->
         </div>
         <p style="text-align: center"><img src="../assets/images/loading.gif" v-show="isShowLoading" alt=""></p>
         <p class="no-data" v-if="noMoreArticleData!=''">{{noMoreArticleData}}</p>
         <!--<div class="content-wrap clearfloat">-->
-          <!--<p class="p-wrap">-->
-            <!--<img src="../assets/images/person.png" alt="">-->
-            <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
-            <!--<img src="../assets/images/emotion.png" alt="">-->
-            <!--&nbsp;&nbsp; 被关注：1000-->
-          <!--</p>-->
-          <!--<div class="fl content-left">-->
-            <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
-            <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
-             <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
-             <!--他们这个作为他们的一个工作方式...</span>-->
-            <!--<span class="colorgray">5分钟前</span>-->
-            <!--<p class="colorgray icon-p">-->
-              <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
-              <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
-              <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
-              <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
-              <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div class="fr content-right">-->
-            <!--<img src="../assets/images/article_img.png" alt="">-->
-          <!--</div>-->
+        <!--<p class="p-wrap">-->
+        <!--<img src="../assets/images/person.png" alt="">-->
+        <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
+        <!--<img src="../assets/images/emotion.png" alt="">-->
+        <!--&nbsp;&nbsp; 被关注：1000-->
+        <!--</p>-->
+        <!--<div class="fl content-left">-->
+        <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
+        <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
+        <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
+        <!--他们这个作为他们的一个工作方式...</span>-->
+        <!--<span class="colorgray">5分钟前</span>-->
+        <!--<p class="colorgray icon-p">-->
+        <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
+        <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
+        <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
+        <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
+        <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--<div class="fr content-right">-->
+        <!--<img src="../assets/images/article_img.png" alt="">-->
+        <!--</div>-->
         <!--</div>-->
         <!--<div class="content-wrap clearfloat">-->
-          <!--<p class="p-wrap">-->
-            <!--<img src="../assets/images/person.png" alt="">-->
-            <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
-            <!--<img src="../assets/images/emotion.png" alt="">-->
-            <!--&nbsp;&nbsp; 被关注：1000-->
-          <!--</p>-->
-          <!--<div class="fl content-left">-->
-            <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
-            <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
-             <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
-             <!--他们这个作为他们的一个工作方式...</span>-->
-            <!--<span class="colorgray">5分钟前</span>-->
-            <!--<p class="colorgray icon-p">-->
-              <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
-              <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
-              <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
-              <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
-              <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
-            <!--</p>-->
-          <!--</div>-->
-          <!--<div class="fr content-right">-->
-            <!--<img src="../assets/images/article_img.png" alt="">-->
-          <!--</div>-->
+        <!--<p class="p-wrap">-->
+        <!--<img src="../assets/images/person.png" alt="">-->
+        <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
+        <!--<img src="../assets/images/emotion.png" alt="">-->
+        <!--&nbsp;&nbsp; 被关注：1000-->
+        <!--</p>-->
+        <!--<div class="fl content-left">-->
+        <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
+        <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
+        <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
+        <!--他们这个作为他们的一个工作方式...</span>-->
+        <!--<span class="colorgray">5分钟前</span>-->
+        <!--<p class="colorgray icon-p">-->
+        <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
+        <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
+        <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
+        <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
+        <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
+        <!--</p>-->
+        <!--</div>-->
+        <!--<div class="fr content-right">-->
+        <!--<img src="../assets/images/article_img.png" alt="">-->
+        <!--</div>-->
         <!--</div>-->
       </div>
       <div class="index-right fl">
@@ -280,20 +282,21 @@
           <img src="../assets/images/time.png" class="history-img" alt="">
           <span class="history-txt" :class="[bestFireAct[2] ? 'fire-act-color' :'']">历史最火</span>
         </a>
-        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;cursor: pointer" @click="changeAuthor"><i class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
+        <p class="author-p"><span>推荐作者</span><span style="margin-left: 123px;cursor: pointer" @click="changeAuthor"><i
+          class="iconfont icon-shuaxin"></i>&nbsp;换一批</span>
         </p>
 
         <ul class="author-ul">
           <li v-if="authData.length<=0">暂无数据</li>
-          <li v-else class="clearfloat" v-for="(item,index) in authData" :key="index">
+          <li class="clearfloat" v-else v-for="(item,index) in authData" :key="index">
             <div class="author-li-left fl">
               <img v-if="item.avatarImg" :src="item.avatarImg.url" :onerror="errorAuthImg" alt="">
-              <img src="../assets/images/person.png"  v-else  alt="">
+              <img src="../assets/images/person.png" v-else alt="">
               <span class="person-name">{{item.nickname}}</span>
               <p class="txt-p">{{item.wordsCount}}万字 · {{item.followCount}}人关注</p>
             </div>
             <p class="fr">
-              <span class="attention">+关注</span>
+              <span class="attention" @click="attentionFun(item.id)">+关注</span>
             </p>
           </li>
         </ul>
@@ -303,48 +306,50 @@
 </template>
 
 <script>
-  import {isnull,getSessionToken,pushActClass} from '../assets/js/common'
+  import {isnull, getSessionToken, pushActClass, handleNeedLogin} from '../assets/js/common'
   import Pagination from '../components/Pagination';
-  import {getTopicList,getDefaultArticleList,getArticleListById,
-    getTodayHot,getSevenHot,getHistoryHot,getAuthList} from '../service/index'
+  import {
+    getTopicList, getDefaultArticleList, getArticleListById,
+    getTodayHot, getSevenHot, getHistoryHot, getAuthList, addAuthAttention
+  } from '../service/index'
 
   export default {
     data(){
       return {
-        errorAuthImg:'this.src="' + require('../assets/images/person.png') + '"',
+        errorAuthImg: 'this.src="' + require('../assets/images/person.png') + '"',
         authData: [],//作者列表
-        authPage:1,//作者数据当前页
-        moreSign:'default',//文章列表加载更多的标记
-        isShowLoading:true,
-        hotParams:{//热点（话题）参数
-          limit:10
+        authPage: 1,//作者数据当前页
+        moreSign: 'default',//文章列表加载更多的标记
+        isShowLoading: true,
+        hotParams: {//热点（话题）参数
+          limit: 10
         },
-        hotData:[],//热点（话题）列表数据
-        hotAct:[],//热点（话题）选中
-        bestFireAct:[false,false,false],//今日，7日，历史最火选中
-        topicDetailParams:{//话题详情文章列表参数
-          topicId:null,
-          pageNumber:1,
-          pageSize:10
+        hotData: [],//热点（话题）列表数据
+        hotAct: [],//热点（话题）选中
+        bestFireAct: [false, false, false],//今日，7日，历史最火选中
+        topicDetailParams: {//话题详情文章列表参数
+          topicId: null,
+          pageNumber: 1,
+          pageSize: 10
         },
-        todayHotArticleParams:{//今日最火文章参数对象
-          pageNumber:1,
-          pageSize:10
+        todayHotArticleParams: {//今日最火文章参数对象
+          pageNumber: 1,
+          pageSize: 10
         },
-        sevenHotArticleParams:{//7日最火文章参数对象
-          pageNumber:1,
-          pageSize:10
+        sevenHotArticleParams: {//7日最火文章参数对象
+          pageNumber: 1,
+          pageSize: 10
         },
-        historyHotArticleParams:{//历史最火文章参数对象
-          pageNumber:1,
-          pageSize:10
+        historyHotArticleParams: {//历史最火文章参数对象
+          pageNumber: 1,
+          pageSize: 10
         },
-        defaultArticleParams:{//默认文章参数对象
-          pageNumber:1,
-          pageSize:10
+        defaultArticleParams: {//默认文章参数对象
+          pageNumber: 1,
+          pageSize: 10
         },
-        defaultArticleData:[],//默认文章列表数据
-        noMoreArticleData:'',//无更多文章数据
+        defaultArticleData: [],//默认文章列表数据
+        noMoreArticleData: '',//无更多文章数据
       }
     },
     components: {},
@@ -360,49 +365,53 @@
         let scrollHeight = $(document).height()
         let windowHeight = $(this).height()
         if (scrollTop + windowHeight === scrollHeight) {//滚动加载更多
-          if(self.noMoreArticleData == '暂无文章数据了'){
+          if (self.noMoreArticleData.indexOf('暂无') != -1) {//没有更多数据了
             return
           }
-          if(self.isShowLoading){//已经发送了，等待处理完了之后再发送（防止重复请求）
-              return
+          if (self.isShowLoading) {//已经发送了，等待处理完了之后再发送（防止重复请求）
+            return
           }
           self.isShowLoading = true;
-           switch(self.moreSign){
-             case 'topic'://热点
-               self.topicDetailParams.pageNumber++;
-               self.articleListByHotCallback();
-                 break;
-             case 'todyhot'://今日最火
-               self.todayHotArticleParams.pageNumber++;
-               self.todayHotCallback();
-               break;
-             case 'sevenhot'://7日最火
-               self.sevenHotArticleParams.pageNumber++;
-               self.sevenHotCallback();
-               break;
-             case 'historyhot'://历史最火
-               self.historyHotArticleParams.pageNumber++;
-               self.historyHotCallback();
-               break;
-             default://默认
-               self.defaultArticleParams.pageNumber++;
-               self.defaultArticleCallback();
-           }
+          switch (self.moreSign) {
+            case 'topic'://热点
+              self.topicDetailParams.pageNumber++;
+              self.articleListByHotCallback();
+              break;
+            case 'todyhot'://今日最火
+              self.todayHotArticleParams.pageNumber++;
+              self.todayHotCallback();
+              break;
+            case 'sevenhot'://7日最火
+              self.sevenHotArticleParams.pageNumber++;
+              self.sevenHotCallback();
+              break;
+            case 'historyhot'://历史最火
+              self.historyHotArticleParams.pageNumber++;
+              self.historyHotCallback();
+              break;
+            default://默认
+              self.defaultArticleParams.pageNumber++;
+              self.defaultArticleCallback();
+          }
         }
       })
     },
     methods: {
-        handleAritcleData(data){//统一处理文章数据
-            if(isnull(data)|| data.length<=0){
-              this.noMoreArticleData = '暂无文章数据了';
-            }else{
-              this.noMoreArticleData = '';
-              data.forEach((item,index)=>{
-                this.defaultArticleData.push(item);
-              });
-            }
-          this.isShowLoading = false;
-        },
+      handleAritcleData(data){//统一处理文章数据
+        if (isnull(data) || data.length <= 0) {
+          this.noMoreArticleData = '暂无更多文章数据了';
+        } else {
+          this.noMoreArticleData = '';
+          data.forEach((item, index) => {
+            this.defaultArticleData.push(item);
+          });
+        }
+        //第一页都没有数据的提示文字
+        if (this.defaultArticleData.length <= 0) {
+          this.noMoreArticleData = '暂无文章数据';
+        }
+        this.isShowLoading = false;
+      },
       hotCallback(){//热点（话题）列表数据处理
         getTopicList(this.hotParams).then((response) => {
           this.hotData = response.data.data;
@@ -413,11 +422,11 @@
           this.handleAritcleData(response.data.data);
         })
       },
-      getArticleListByHot(id,index){//通过热点（话题）id查询文章列表
+      getArticleListByHot(id, index){//通过热点（话题）id查询文章列表
         this.moreSign = 'topic';
         this.isShowLoading = true;
-        this.bestFireAct = [false,false,false];
-        this.hotAct = pushActClass(this.hotData,index);
+        this.bestFireAct = [false, false, false];
+        this.hotAct = pushActClass(this.hotData, index);
         this.defaultArticleData = [];
         this.topicDetailParams.topicId = id;
         this.topicDetailParams.pageNumber = 1;
@@ -432,13 +441,13 @@
         getAuthList({
           pageNumber: this.authPage,
           pageSize: 10
-        },getSessionToken()).then((response) => {
+        }, getSessionToken()).then((response) => {
           this.authData = response.data.data;
         })
       },
       changeAuthor(){ // 换一换，作者数据列表
-        if(this.authData.length<=0){
-            return
+        if (this.authData.length <= 0) {
+          return
         }
         this.authPage++;
         this.authListCallback();
@@ -452,7 +461,7 @@
         this.moreSign = 'todyhot';
         this.isShowLoading = true;
         this.hotAct = [];
-        this.bestFireAct = pushActClass(this.bestFireAct,0);
+        this.bestFireAct = pushActClass(this.bestFireAct, 0);
         this.defaultArticleData = [];
         this.todayHotArticleParams.pageNumber = 1;
         this.todayHotCallback();
@@ -466,7 +475,7 @@
         this.moreSign = 'sevenhot';
         this.isShowLoading = true;
         this.hotAct = [];
-        this.bestFireAct = pushActClass(this.bestFireAct,1);
+        this.bestFireAct = pushActClass(this.bestFireAct, 1);
         this.defaultArticleData = [];
         this.sevenHotArticleParams.pageNumber = 1;
         this.sevenHotCallback();
@@ -480,10 +489,17 @@
         this.moreSign = 'historyhot';
         this.isShowLoading = true;
         this.hotAct = [];
-        this.bestFireAct = pushActClass(this.bestFireAct,2);
+        this.bestFireAct = pushActClass(this.bestFireAct, 2);
         this.defaultArticleData = [];
         this.historyHotArticleParams.pageNumber = 1;
         this.historyHotCallback();
+      },
+      attentionFun(id){
+        addAuthAttention(id, getSessionToken()).then((response) => {
+          handleNeedLogin(response, () => {
+            this.authListCallback();
+          });
+        })
       }
     }
   }
