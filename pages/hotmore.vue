@@ -148,3 +148,10 @@
   </ul>
 </div>
 </template>
+<script>
+  export default{
+      mounted(){
+        console.log(this.$store.state.token, '加载头部信息token');
+      }
+  }
+</script>

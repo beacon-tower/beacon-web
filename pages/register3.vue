@@ -36,31 +36,31 @@
         this.regForm.mobile = sessionStorage.getItem('ph');
     },
     methods: {
-      goReg4(){
+      async goReg4(){
         if (validateEmpty(this.regForm)) {
           this.errTip = '输入框不能为空';
         } else {
-          var qs = require('qs');
-          var AschJS = require('asch-js');
-          var publicKey = AschJS.crypto.getKeys(this.regForm.secret).publicKey;  //根据密码生成公钥
-          axios.post('user/register/third/step', qs.stringify({
-            nickname: this.regForm.nickname,
-            publicKey: publicKey,
-            mobile: this.regForm.mobile
-          }))
-            .then((response) => {
-              if (response.data.code == 200) {
-                sessionStorage.setItem('rgtk', response.data.data);
-                this.$router.push({name: 'register4'});
-              } else if (response.data.code == 500) {
-                this.errTip = '服务器错误，请联系管理员';
-              } else {
-                this.errTip = response.data.msg;
-              }
+          try {
+            var qs = require('qs');
+            var AschJS = require('asch-js');
+            var publicKey = AschJS.crypto.getKeys(this.regForm.secret).publicKey;  //根据密码生成公钥
+            await this.$store.dispatch('reg3', {
+              nickname: this.regForm.nickname,
+              publicKey: publicKey,
+              mobile: this.regForm.mobile
             })
-            .catch((error) => {
-              console.log(error);
-            });
+            var result = this.$store.state.result;
+            if(result.code == 200){
+              sessionStorage.setItem('rgtk',result.data);
+              this.$router.push({name: 'register4'});
+            } else if (result.code == 500) {
+              this.errTip = '服务器错误，请联系管理员';
+            } else {
+              this.errTip = result.msg;
+            }
+          } catch (e) {
+            this.errTip = e.message
+          }
         }
       }
     }

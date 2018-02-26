@@ -1,6 +1,6 @@
 <template>
-  <div class="login-wrap" style="height: 430px;">
-    <form action="">
+  <div class="login-wrap"  style="height: 430px;">
+    <form action="" @keyup.enter="loginMethod">
       <div class="input-wrap">
         <div class="form-icon-group">
           <i class="iconfont icon-yonghu"></i>
@@ -25,7 +25,7 @@
 </template>
 <script>
   import axios from '../plugins/axios'
-  import {validatePhone, validateEmpty, validateEmail} from '../assets/js/common'
+  import {validatePhone, validateEmpty, validateEmail,isnull} from '../assets/js/common'
   import '../assets/js/gt';//极验依赖
   export default{
     layout: 'loginwrap',
@@ -113,27 +113,26 @@
           }
         }
       },
-      requestLogin(){
-        var qs = require('qs');
-        var AschJS = require('asch-js');
-        var publicKey = AschJS.crypto.getKeys(this.loginForm.secret).publicKey;  //根据密码生成公钥
-        axios.post('user/login', qs.stringify({
-          username: this.loginForm.username,
-          publicKey: publicKey
-        }))
-          .then((response) => {
-            if (response.data.code == 200) {
-              sessionStorage.setItem('rgtk', response.data.data);
-              this.$router.push({name: 'index'});
-            } else {
-              this.errTip = response.data.msg;
-            }
+      async requestLogin(){
+        try {
+          console.log(this.loginForm,'dispatch----之前');
+          var AschJS = require('asch-js');
+          var publicKey = AschJS.crypto.getKeys(this.loginForm.secret).publicKey;  //根据密码生成公钥
+          await this.$store.dispatch('login', {
+            username: this.loginForm.username,
+            publicKey: publicKey
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          var result = this.$store.state.result;
+          if(result.code == 200){
+            sessionStorage.setItem('rgtk',result.data);
+            this.$router.push({name:'index'});
+          }else{
+            this.errTip = result.msg;
+          }
+        } catch (e) {
+          this.errTip = e.message
+        }
       }
-
     }
 
   }

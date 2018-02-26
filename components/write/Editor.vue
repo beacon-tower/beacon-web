@@ -36,6 +36,9 @@
     s, strike, del {
         text-decoration: line-through!important;
     }
+    .w-e-list .w-e-icon-paragraph-left, .w-e-icon-paragraph-center, .w-e-icon-paragraph-right{
+        display: none;
+    }
     #editorElem{
         height: 100%;
         .w-e-menu{
@@ -54,7 +57,7 @@
         }
     }
     .publish{
-        width: 100px;
+        width: 70px;
         text-align: center;
         line-height: 50px;
         top: 0;
@@ -62,7 +65,7 @@
         position: absolute;
         font-size: 18px;
         color: #333;
-        font-weight:bold;
+        font-weight: normal;
         cursor: pointer;
         &:hover{
             color: #fff;
@@ -70,7 +73,10 @@
         }
     }
     .preview{
-         right: 130px;
+         right: 100px;
+    }
+    .autosave{
+        right: 170px;
     }
     .Preview{
         position: fixed;
@@ -111,14 +117,16 @@
 <template>
     <div style="position: relative">
         <div id="editorElem" style="text-align:left,"></div>
-        <div class="publish" @click="publishPaper">发布文章</div>
+        <div class="publish"  v-if="isPublished">已发布</div>
+        <div class="publish" @click="publishPaper" v-else>发布</div>
         <div class="publish preview" @click="preview">预览</div>
+        <div class="publish autosave" @click="autosave">保存</div>
         <div class="Preview" v-if="previewShow">
             <div class="menu">
                 <div @click="toggleShow">返回</div>
                 <div>发布文章</div>
             </div>
-            <div class="content" v-html="contentHTML"></div>
+            <div class="content" v-html="previewHTML"></div>
         </div>
     </div>
 </template>
@@ -128,35 +136,46 @@
     * @desc 编辑器内容输入模块 -- 单独提出来
     * @author lihongkai
     */
+    import EVENT from '../EventBus.js';
+    import {publishArticle}from '../../service/write.js';
+
     export default {
       data () {
         return { 
           contentHTML: '',  // 输入栏里的内容
           Editor: '' , // 编辑器缓存对象
+          previewHTML: '',
           previewShow: false, // 预览
         }
       },
+      props: ['autosave', 'token', '_id', 'isPublished', "publishSuccessCallback"],
       methods: {
-          publishPaper: function () {  // 发布文章
-            window.localStorage.setItem('previewContent', this.contentHTML);
-            window.open('/articlepreview');
+          // 发布文章
+          publishPaper: function () {
+            publishArticle(this._id, this.token).then(res=>{
+               this.publishSuccessCallback(this._id); 
+             })
          },
          preview: function() { // 预览
+            this.previewHTML = document.getElementsByClassName('w-e-text')[0].innerHTML;
             this.toggleShow();
          },
-         toggleShow: function(){ // 显示/隐藏 预览
+         // 显示/隐藏 预览
+         toggleShow: function(){ 
             this.previewShow = !this.previewShow;
          }
       },
       destroyed(){
            window.localStorage.setItem('previewContent', '');
+           // EVENT.off('CONTENT_HTML');
       },
       mounted(){
           var E = require('wangeditor');
           var editor = new E('#editorElem');
 
           // 自定义菜单配置
-          editor.customConfig.uploadImgServer = '/upload'; // 上传图片到服务器
+          editor.customConfig.uploadImgShowBase64 = true;   // 使用 base64 保存图片
+
           editor.customConfig.menus = [
                 'head',
                 'bold',
@@ -170,7 +189,16 @@
                 'redo'  // 重复
           ];
           editor.customConfig.onchange = (html) => {
-            this.contentHTML = html
+            this.contentHTML = html;
+            setTimeout(()=>{
+                if(html === this.contentHTML){
+                    this.autosave();
+                }
+            }, 5000);
+          };
+
+          editor.customConfig.onblur = () =>{
+              this.autosave();
           };
 
           editor.create();
@@ -180,6 +208,11 @@
           let height = $(window).height() - 200;
           $('.w-e-text-container').css('height', height + "px").css('border', 'none');
           $('.w-e-toolbar').css('height', '50px').css('border', 'none').css('background', '#d9d9d9').css('border-bottom', '1px solid #ccc');
+
+          // 接收文本信息 填入编辑器
+          EVENT.$on('CONTENT_HTML', function(data){
+            editor.txt.html(data);
+          });
       }
     }
 </script>
