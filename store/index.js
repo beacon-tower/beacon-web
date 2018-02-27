@@ -15,7 +15,8 @@ export const mutations = {
 export const actions = {
   // nuxtServerInit is called by Nuxt.js before server-rendering every page
   nuxtServerInit({ commit }, { req }) {
-    console.log('store,setuser,nuxtServerInit----');
+    console.log('store,setuser,nuxtServerInit----======');
+   // console.log(sessionStorage.getItem('rgtk'));
     if (req.session && req.session.authUser) {
       console.log('store,setuser');
       //commit('SET_USER', req.session.authUser)

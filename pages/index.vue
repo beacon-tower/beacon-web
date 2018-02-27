@@ -53,9 +53,13 @@
           }
           .fire_coin {
             width: 16px;
+            position: relative;
+            top: 3px;
           }
           .icon-yiyue {
-            font-size: 20px;
+            font-size: 23px;
+            position: relative;
+            top: 4px;
           }
           .icon-p {
             font-size: 12px;
@@ -175,6 +179,13 @@
     a {
       text-decoration: none;
     }
+    .border-span{
+      border: 1px solid @primarycolor;
+      .boder_radius(10px);
+      font-size: 12px;
+      color:@primarycolor;
+      padding: 1px 7px;
+    }
   }
 </style>
 <template>
@@ -196,8 +207,7 @@
             <img v-if="item.url" :src="item.url" :onerror="errorAuthImg" alt="">
             <img src="../assets/images/person.png" v-else alt="">
             <span class="color666">&nbsp;&nbsp;{{item.nickname}}&nbsp;&nbsp;</span>
-            <!--<img src="../assets/images/emotion.png" alt="">-->
-            <span>{{item.topicName}}</span>
+            <span class="border-span">{{item.topicName}}</span>
             &nbsp;&nbsp; 被关注：{{item.likesCount}}
           </p>
           <div class="fl content-left">
@@ -216,58 +226,8 @@
           <!--<img src="../assets/images/article_img.png" alt="">-->
           <!--</div>-->
         </div>
-        <p style="text-align: center"><img src="../assets/images/loading.gif" v-show="isShowLoading" alt=""></p>
+        <p class="text-center"><img src="../assets/images/loading.gif" v-show="isShowLoading" alt=""></p>
         <p class="no-data" v-if="noMoreArticleData!=''">{{noMoreArticleData}}</p>
-        <!--<div class="content-wrap clearfloat">-->
-        <!--<p class="p-wrap">-->
-        <!--<img src="../assets/images/person.png" alt="">-->
-        <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
-        <!--<img src="../assets/images/emotion.png" alt="">-->
-        <!--&nbsp;&nbsp; 被关注：1000-->
-        <!--</p>-->
-        <!--<div class="fl content-left">-->
-        <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
-        <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
-        <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
-        <!--他们这个作为他们的一个工作方式...</span>-->
-        <!--<span class="colorgray">5分钟前</span>-->
-        <!--<p class="colorgray icon-p">-->
-        <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
-        <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
-        <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
-        <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
-        <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
-        <!--</p>-->
-        <!--</div>-->
-        <!--<div class="fr content-right">-->
-        <!--<img src="../assets/images/article_img.png" alt="">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="content-wrap clearfloat">-->
-        <!--<p class="p-wrap">-->
-        <!--<img src="../assets/images/person.png" alt="">-->
-        <!--<span class="color666">&nbsp;&nbsp;董小姐&nbsp;&nbsp;</span>-->
-        <!--<img src="../assets/images/emotion.png" alt="">-->
-        <!--&nbsp;&nbsp; 被关注：1000-->
-        <!--</p>-->
-        <!--<div class="fl content-left">-->
-        <!--<p class="colorblue">2017的最后一天，2018年的第一天</p>-->
-        <!--<span class="line-hei-span"> 早起对我们都非常重要。我看过《高效能人士的七个习惯》《每天最重要的2小时》-->
-        <!--《晨间日记》等一些关于提高效能的书，和一些中外财经杂志的报道，调查领导、公众人物特点，而且-->
-        <!--他们这个作为他们的一个工作方式...</span>-->
-        <!--<span class="colorgray">5分钟前</span>-->
-        <!--<p class="colorgray icon-p">-->
-        <!--<span><img class="fire_coin" src="../assets/images/fire_coin.png" alt=""> 25</span>-->
-        <!--<span><i class="iconfont icon-yiyue"></i> 25</span>-->
-        <!--<span><i class="iconfont icon-xiaoxi"></i> 111</span>-->
-        <!--<span><i class="iconfont icon-xing"></i> 111</span>-->
-        <!--<span><i class="iconfont icon-cha"></i> 111</span>-->
-        <!--</p>-->
-        <!--</div>-->
-        <!--<div class="fr content-right">-->
-        <!--<img src="../assets/images/article_img.png" alt="">-->
-        <!--</div>-->
-        <!--</div>-->
       </div>
       <div class="index-right fl">
         <a href="javascript:;" @click.prevent="todayHot" class="today-hot right-hot">
@@ -287,7 +247,7 @@
         </p>
 
         <ul class="author-ul">
-          <li v-if="authData.length<=0">暂无数据</li>
+          <li v-if="authData.length<=0" class="text-center">{{authNoData}}</li>
           <li class="clearfloat" v-else v-for="(item,index) in authData" :key="index">
             <div class="author-li-left fl">
               <img v-if="item.avatarImg" :src="item.avatarImg.url" :onerror="errorAuthImg" alt="">
@@ -318,6 +278,7 @@
       return {
         errorAuthImg: 'this.src="' + require('../assets/images/person.png') + '"',
         authData: [],//作者列表
+        authNoData:'暂无作者推荐',
         authPage: 1,//作者数据当前页
         moreSign: 'default',//文章列表加载更多的标记
         isShowLoading: true,
@@ -437,20 +398,25 @@
           this.handleAritcleData(response.data.data);
         })
       },
-      authListCallback(){//获取作者列表数据处理
+      authListCallback(sign){//获取作者列表数据处理
         getAuthList({
           pageNumber: this.authPage,
           pageSize: 10
         }, getSessionToken()).then((response) => {
           this.authData = response.data.data;
+          if(sign=='change'){//换一换--》执行
+            if (this.authData.length <= 0) {
+              this.authNoData = '暂无更多作者推荐了';
+            }
+          }
         })
       },
       changeAuthor(){ // 换一换，作者数据列表
         if (this.authData.length <= 0) {
-          return
+          this.authPage = 0;//回到第一页
         }
         this.authPage++;
-        this.authListCallback();
+        this.authListCallback('change');
       },
       todayHotCallback(){//今日最火数据处理
         getTodayHot(this.todayHotArticleParams).then((response) => {

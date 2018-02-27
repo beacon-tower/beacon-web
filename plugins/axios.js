@@ -11,8 +11,14 @@ let options = {
   },
   transformRequest: [function (data, headers) {
     // Do whatever you want to transform the data
-    var qs = require('qs');
-    return qs.stringify(data);
+    if(headers['Content-Type'] == 'multipart/form-data'){
+      return data;
+    }if(headers['Content-Type'] == 'application/json;charset=utf-8'){
+      return JSON.stringify(data);
+    }else{
+      var qs = require('qs');
+      return qs.stringify(data);
+    }
   }]
 }
 options.baseURL = (process.env.NODE_ENV === 'development') ? '/api/v1/' : '/api/v1/';

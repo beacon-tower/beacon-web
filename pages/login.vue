@@ -115,7 +115,6 @@
       },
       async requestLogin(){
         try {
-          console.log(this.loginForm,'dispatch----之前');
           var AschJS = require('asch-js');
           var publicKey = AschJS.crypto.getKeys(this.loginForm.secret).publicKey;  //根据密码生成公钥
           await this.$store.dispatch('login', {

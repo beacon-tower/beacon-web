@@ -149,6 +149,7 @@
 </div>
 </template>
 <script>
+  import {getTopicList} from '../service/index'
   export default{
       mounted(){
         console.log(this.$store.state.token, '加载头部信息token');

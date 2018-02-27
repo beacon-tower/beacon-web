@@ -10,3 +10,25 @@ export function getUser(TOKEN = ''){
     headers:  {'token': TOKEN}
   })
 }
+// 上传头像
+export function uploadPicture(filedata,TOKEN = ''){
+  return axios({
+    method: 'post',
+    url: 'image/upload',
+    data:filedata,
+    headers:  {
+      'token': TOKEN,
+      'Content-Type': 'multipart/form-data'}
+  })
+}
+// 修改个人信息
+export function updateUserInfo(userdata,TOKEN = ''){
+  return axios({
+    method: 'put',
+    url: 'user/info',
+    data:userdata,
+    headers:  {
+      'token': TOKEN,
+      'Content-Type': 'application/json;charset=utf-8'}
+  })
+}

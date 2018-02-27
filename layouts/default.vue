@@ -151,21 +151,21 @@
       }
     },
     mounted(){
-      this.getUserInfo();
+      this.getUserPicture();
     },
     methods: {
-      getUserInfo(){//获取用户信息-头像
+      getUserPicture(){//获取用户信息-头像
         this.logintoken = getSessionToken();
         if(isnull(this.logintoken)){
             return
         }
-        getUser(this.logintoken).then(function (response) {
+        getUser(this.logintoken).then( (response)=>{
             let imgObj = response.data.data.avatarImage;
             if(!isnull(imgObj)){
               this.userPicture = imgObj.url;
             }
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
           });
       },
