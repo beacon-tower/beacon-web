@@ -246,3 +246,25 @@
     </ul>
   </div>
 </template>
+<script>
+  import {getDetail} from '../service/articleDetail'
+  export default {
+    data(){
+      return {
+        detailData:[]
+
+      }
+    },
+    mounted(){
+      getDetail(39).then((response) => {
+        console.log(response);
+        this.authData = response.data.data;
+      })
+    },
+    methods:{
+      getDetailData(){
+
+      }
+    }
+  }
+</script>

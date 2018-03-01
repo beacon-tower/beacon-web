@@ -15,7 +15,7 @@ export function getDefaultArticleList(param){
   return axios({
     method: 'get',
     url: 'index/posts/list',
-    params:param,
+    params:param
     // headers:  {'token': TOKEN}
   })
 }
