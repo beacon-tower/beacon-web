@@ -142,3 +142,30 @@ a{
 .act-color{
   color: @primarycolor;
 }
+
+// 提示框样式
+.vue-notification {
+  padding: 6px;
+  margin: 8px 8px 8px;
+
+  .notification-title{
+    line-height: 18px;
+  }
+  .notification-content{
+    line-height: 18px;
+  }
+  &.warn {
+    background: #EF6C00;
+    border-left-color: #E65100;
+  }
+
+  &.error {
+    background: #F44336;
+    border-left-color: #B71C1C;
+  }
+
+  &.success {
+    background: #68CD86;
+    border-left-color: #42A85F;
+  }
+}

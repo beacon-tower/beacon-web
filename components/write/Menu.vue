@@ -49,7 +49,7 @@
           top: -9px;
           border-left: 9px solid transparent;
           border-right: 9px solid transparent;
-          border-bottom: 9px solid #fff;        
+          border-bottom: 9px solid #fff;
     }
   }
 }
@@ -77,28 +77,29 @@
 @author lihongkai
 **/
 import { moveArticle, removeArticle, publishArticle}from '../../service/write.js';
+import {showMessager} from '../../plugins/messager.js';
 
 export default{
     data(){
       return {
         menuList: [
-          { 
-            text: `${this.isPublished === 'published' ? '已发布' : '发布文章'}`, 
-            fn: this.isPublished === 'published' ? ()=>{} : ()=>this.publish(this), 
+          {
+            text: `${this.isPublished === 'published' ? '已发布' : '发布文章'}`,
+            fn: this.isPublished === 'published' ? ()=>{} : ()=>this.publish(this),
             subMenu:[],
             icon: 'iconfont icon-aui-icon-paper',
             selected: false
           },
           {
-            text: '移动文章', 
-            fn: ()=>{}, subMenu: this.typeList, 
+            text: '移动文章',
+            fn: ()=>{}, subMenu: this.typeList,
             subFun: this.move,
-            icon: 'iconfont icon-yidong', 
+            icon: 'iconfont icon-yidong',
             selected: false
           },
           {
-            text: '删除文章', 
-            fn: this.remove, 
+            text: '删除文章',
+            fn: this.remove,
             subMenu:[],
             icon: 'iconfont icon-shanchu',
             selected: false
@@ -110,7 +111,7 @@ export default{
     methods: {
 
        // 阻止冒泡
-       stopPropagation: function(e){ 
+       stopPropagation: function(e){
          this.hideMenu();
          e.stopPropagation();
        },
@@ -126,19 +127,22 @@ export default{
                 $('.subMenu').css('top', '0px');
             };
          };
-         
+
          this.menuList[index]['selected'] = true;
        },
 
        // 隐藏菜单按钮
-       hideSubMenu: function(index){ 
+       hideSubMenu: function(index){
          this.menuList[index]['selected'] = false;
        },
 
        // 移动文章到其他话题
-       move: function(topicId){ 
+       move: function(topicId){
          moveArticle(topicId, this.id, this.token).then(res=>{
            this.deleteArticle(this.id);
+           showMessager.call(this, '移动成功！');
+         }).catch(err=>{
+           showMessager.call(this, '移动失败！', 'error');
          })
        },
 
@@ -146,13 +150,19 @@ export default{
        remove: function(){
          removeArticle(this.id, this.token).then(res=>{
            this.deleteArticle(this.id);
+           showMessager.call(this, '删除成功！');
+         }).catch(err=>{
+           showMessager.call(this, '删除失败！', 'error');
          })
        },
-       
+
        // 发布文章
-       publish: (THIS)=>{ 
+       publish: (THIS)=>{
          publishArticle(THIS.id, THIS.token).then(res=>{
            THIS.publishSuccessCallback(THIS.id);
+           showMessager.call(THIS, '发布成功！', 'error');
+         }).catch(err=>{
+           showMessager.call(THIS, '发布失败！', 'error');
          })
        }
     },

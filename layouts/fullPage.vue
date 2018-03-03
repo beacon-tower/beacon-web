@@ -1,6 +1,7 @@
 <template>
   <div class="fullPage">
    <nuxt />
+   <notifications group="notice" position="top center"/>
   </div>
 </template>
 
@@ -8,7 +9,7 @@
   export default {
     data(){
         return {
-            
+
         }
     }
   }

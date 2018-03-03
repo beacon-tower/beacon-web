@@ -41,13 +41,16 @@ module.exports = {
        // config.devServer
       }
     },
-    vendor: ['axios','./assets/js/jquery.min.js','promise-polyfill','babel-polyfill']
+    vendor: ['axios','./assets/js/jquery.min.js','promise-polyfill','babel-polyfill', '~/plugins/vue-notification']
   },
   css: [
     'reset.css',
     '~assets/fonts/iconfont.css',
     // 项目中的 less 文件
     { src: '~assets/less/main.less', lang: 'less' } // 指定 less
+  ],
+  plugins: [
+    { src: '~/plugins/vue-notification', ssr: false }
   ],
   env: {
     NODE_ENV: process.env.NODE_ENV

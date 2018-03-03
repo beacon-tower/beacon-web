@@ -190,6 +190,14 @@
                 text-indent: 20px;
             }
         }
+        .loading{
+          position: absolute;
+          width: 100px;
+          height: 100px;
+          margin-left: -50px;
+          left: 50%;
+          background-image:url(../assets/images/loading.gif);
+        }
     }
 
 }
@@ -243,6 +251,7 @@
         <div class="write wr-inline">
               <div v-if='articleList.length === 0'></div>
               <div v-else>
+                <div v-if="getCurrentArticlePending" class="loading">查询中...</div>
                 <div class="w-title"><input type="text" v-model="currentArticle" @blur="autosave"/></div>
                 <Editor ref="Editor" :autosave="autosave" :token="token" :_id="currentArticleId" :isPublished="currentPublished" :publishSuccessCallback="publishSuccessCallback"/>
               </div>
@@ -260,6 +269,7 @@
   import {isnull} from '../assets/js/common';
   import { getTopics, getArticleList, getArticle, moveArticleUnderTopic, saveArticle} from '../service/write.js';
   import EVENT from '../components/EventBus.js';
+  import { showMessager }  from '../plugins/messager.js';
 
   export default{
     layout: 'default',
@@ -275,6 +285,7 @@
             token: '', // 登录认证标识
             contentHTML: '', // 当前文章内容
             currentPublished: false, //  当前文章内容是否发布
+            getCurrentArticlePending: false, // 是否正在获取文章
             articleList: []  // 文章列表
         }
     },
@@ -390,12 +401,15 @@
 
             this.articleList = temp;
         }).catch(err=>{
-           //
+           showMessager.call(this, '获取文章列表失败', 'error');
         });
       },
 
       // 新建文章
       newArticle(){
+        // showMessager.call(this, '成功的提示信');
+        // showMessager.call(this, '失败的提示信息', 'error');
+        // showMessager.call(this, '警告的提示信息', 'warn'　);
         let newArticle = {
             topicId: this.currentTopicId,
             content: '<h3>欢迎！</h3>',
@@ -407,7 +421,9 @@
 
       // 获取当前文章
       getCurrentArticle(articleId, title){
+        　this.getCurrentArticlePending = true;
           getArticle(articleId, this.token).then(res=>{
+              this.getCurrentArticlePending = false;
               this.currentArticle = title;
               // 使用事件班车传递文本数据到编辑器组件
               EVENT.$emit('CONTENT_HTML', res.data.data);

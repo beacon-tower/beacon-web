@@ -136,6 +136,7 @@
     <div class="main-content">
       <nuxt/>
     </div>
+    <notifications group="notice" position="top center"/>
   </div>
 </template>
 <script>
