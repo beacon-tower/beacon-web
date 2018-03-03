@@ -8,7 +8,7 @@
                 margin-left: 5px;
                 height: 30px;
             }
-            
+
         }
         ._time{
            display: inline-block;
@@ -62,12 +62,12 @@
             <div class="pagination">
                 <Pagination :callback="changePage" :records="items" />
             </div>
-        </div>   
+        </div>
     </div>
 </template>
 <script>
   import Pagination from '../Pagination';
-  import VueDatepickerLocal  from 'vue-datePicker-Local';
+  import VueDatepickerLocal  from 'vue-datepicker-local';
   import TransTab from './Trans.vue';
   import EarnTab from './Earn.vue';
 

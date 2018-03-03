@@ -105,7 +105,7 @@
                         margin-top: -8px;
                         margin-left: -10px;
                         .paper{
-                            font-size: 22px;          
+                            font-size: 22px;
                         }
                     }
                     .wordsNum{
@@ -191,9 +191,9 @@
             }
         }
     }
-    
+
 }
-   
+
 </style>
 <template>
     <div class="writer-wrap" @click="frameClick">
@@ -241,8 +241,11 @@
             </div>
         </div>
         <div class="write wr-inline">
-            <div class="w-title"><input type="text" v-model="currentArticle" @blur="autosave"/></div>
-            <Editor ref="Editor" :autosave="autosave" :token="token" :_id="currentArticleId" :isPublished="currentPublished" :publishSuccessCallback="publishSuccessCallback"/>
+              <div v-if='articleList.length === 0'></div>
+              <div v-else>
+                <div class="w-title"><input type="text" v-model="currentArticle" @blur="autosave"/></div>
+                <Editor ref="Editor" :autosave="autosave" :token="token" :_id="currentArticleId" :isPublished="currentPublished" :publishSuccessCallback="publishSuccessCallback"/>
+              </div>
         </div>
     </div>
 </template>
@@ -272,7 +275,7 @@
             token: '', // 登录认证标识
             contentHTML: '', // 当前文章内容
             currentPublished: false, //  当前文章内容是否发布
-            articleList: []  // 文章列表    
+            articleList: []  // 文章列表
         }
     },
     beforeMount(){
@@ -310,7 +313,7 @@
     methods:{
 
       // 显示/隐藏设置按钮
-      frameClick(e){ 
+      frameClick(e){
           if(!e.target.className || e.target.className.indexOf('SEETING') === -1){
               this.menuShow = false;
           }else{
@@ -319,7 +322,7 @@
       },
 
       // 从子组件传过来隐藏菜单
-      hideMenu(){ 
+      hideMenu(){
           this.menuShow = false;
       },
 
@@ -329,7 +332,7 @@
               if(e[key] === value){
                   this[list][i]['selected'] = true;
                   this[currentV] = value;
-                  
+
                   if(currentV === 'currentTopic'){ //  获取对应话题文章列表
                       this.getMiddlelist(e.id);
                   }else{
@@ -343,7 +346,7 @@
       },
 
       // 采用节流的思想，避免多次向后台发送数据请求
-      checkMove(evt){  
+      checkMove(evt){
           if(this.timer){
               return;
           }
@@ -353,18 +356,18 @@
               let sendArr = this.articleList.map((e, i)=>{
                   return e.id;
               });
-              
+
               // 移动文章列表
               moveArticleUnderTopic(sendArr, this.token).then(res=>{
-                 // 移动成功，什么也不做~ 
+                 // 移动成功，什么也不做~
               }).catch(err=>{
                   alert('移动失败!');
-              });  
+              });
           }, 1400)
       },
 
       // 获取中间文章列表数据
-      getMiddlelist(id){ 
+      getMiddlelist(id){
         getArticleList(id, this.token).then(resp =>{
             let temp = [];
             // 重置右侧输入区域
@@ -385,10 +388,10 @@
                 temp.push(e);
             });
 
-            this.articleList = temp;   
+            this.articleList = temp;
         }).catch(err=>{
            //
-        }); 
+        });
       },
 
       // 新建文章
@@ -421,7 +424,7 @@
         };
         this.save(data);
       },
-      
+
       // 发布成功后的回调
       publishSuccessCallback(articleId){
            let index = this.articleList.findIndex((e, i)=> e.id === articleId);
@@ -435,11 +438,10 @@
             let index = this.articleList.findIndex((e, i)=> e.id === data.id);
 
             // 修改已有文章进行保存
-            if(index > -1){ 
+            if(index > -1){
                 this.articleList[index].title = data.title;
 
             }else{ // 新建文章进行保存
-
                 // 更新文章列表，设置新建文章为当前选定文章，重置文章id 文章内容 文章标题
                 let _new = Object.assign({}, res.data.data, {selected: true});
                 this.articleList.forEach((e)=>{
@@ -448,14 +450,14 @@
                 this.currentArticle = _new.title;
                 this.currentArticleId = _new.id;
                 this.currentPublished = _new.state === 'published';
-                
+
                 EVENT.$emit('CONTENT_HTML', '<h3>欢迎！</h3>');
 
                 this.articleList.unshift(_new);
             }
         })
       },
-      
+
       // 设置文章第一项被选择
       firstArticleSelected(){
           let len = this.articleList.length;
@@ -480,7 +482,7 @@
       },
 
       // 把删除文章从列表移除
-      deleteArticle(articleId){ 
+      deleteArticle(articleId){
           let index = this.articleList.findIndex((e)=> e.id === articleId);
           if(index > -1){
               this.articleList.splice(index, 1);
